@@ -1,50 +1,15 @@
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 // @ts-ignore
 import me from '../../assets/images/me.png';
+import { useAmountAnimation } from '../../helpers/amount-animation';
 
 export default function HomeScreen() {
-  const animatedValue = useRef(new Animated.Value(0)).current;
-  const [displayValue, setDisplayValue] = useState(0);
-  
-  const targetBalance = 2450.75;
-  const duration = 1000; // 2 seconds
-  
-  useEffect(() => {
-    console.log('Starting animation...');
-    const animation = Animated.timing(animatedValue, {
-      toValue: targetBalance,
-      duration: duration,
-      useNativeDriver: false,
-    });
-    
-    animation.start(() => {
-      console.log('Animation completed');
-    });
-    
-    const listener = animatedValue.addListener(({ value }: { value: number }) => {
-      console.log('Animation value:', value);
-      setDisplayValue(value);
-    });
-    
-    return () => {
-      animatedValue.removeListener(listener);
-    };
-  }, []);
-  
-  const formatCurrency = (value: number) => {
-    return `$${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
-  };
-  
-  const restartAnimation = () => {
-    animatedValue.setValue(0);
-    Animated.timing(animatedValue, {
-      toValue: targetBalance,
-      duration: duration,
-      useNativeDriver: false,
-    }).start();
-  };
+  const { displayValue, restartAnimation, formatCurrency } = useAmountAnimation({
+    targetValue: 2450.75,
+    duration: 2000
+  });
 
   return (
     <ScrollView
