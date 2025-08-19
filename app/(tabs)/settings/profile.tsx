@@ -21,8 +21,8 @@ export default function ProfileScreen() {
           >
             <Feather name="arrow-left" size={24} color="#CBFD03" />
           </TouchableOpacity>
-          <Text className='text-white text-5xl font-bold'>Profile</Text>
-          <MaterialCommunityIcons name='bell-outline' size={24} color='#CBFD03'/>
+          <Text className='text-white text-4xl font-bold mr-10'>Profile</Text>
+          <View></View>
         </View>
 
         {/* Profile Picture & Basic Info */}
