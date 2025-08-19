@@ -104,9 +104,10 @@ export default function SettingsScreen() {
         </View>
 
         <TouchableOpacity
-          className='bg-[#CBFD03] w-full rounded-xl p-2 items-center justify-center'
+          className='bg-[#CBFD03] w-full rounded-xl p-2 items-center justify-center flex-row gap-2'
         >
-          <Text className='text-black text-2xl font-bold'>Logout</Text>
+          <Text className='text-black text-2xl font-semibold'>Log out</Text>
+          <MaterialCommunityIcons name='exit-to-app' size={24} color='black'/>
         </TouchableOpacity>
       </View>
     </ScrollView>
