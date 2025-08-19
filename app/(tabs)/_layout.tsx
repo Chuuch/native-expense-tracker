@@ -1,43 +1,91 @@
+import { AntDesign, Feather, FontAwesome, Foundation } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
+        tabBarStyle: {
+          position: 'absolute',
+          bottom: 40,
+          left: 20,
+          right: 20,
+          height: 60,
+          marginHorizontal: 20,
+          backgroundColor: 'transparent',
+          borderRadius: 30,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 4,
           },
-          default: {},
-        }),
+          shadowOpacity: 0.15,
+          shadowRadius: 8,
+          elevation: 8,
+          borderTopWidth: 0,
+          overflow: 'hidden',
+        },
+        tabBarBackground: () => (
+          <BlurView 
+            intensity={20} 
+            tint="light"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+          />
+        ),
+        tabBarActiveTintColor: '#CBFD03',
+        tabBarInactiveTintColor: '#6b7280',
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginTop: -4,
+        },
+        tabBarIconStyle: {
+          marginTop: 4,
+        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Dashboard',
+          tabBarIcon: ({ color, size }) => (
+            <Foundation name="graph-bar" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="transactions"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Transactions',
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="swap" size={size} color={color} />
+          ),
+        }}
+      />
+        <Tabs.Screen
+          name="analytics"
+          options={{
+            title: 'Analytics',
+            tabBarIcon: ({ color, size }) => (
+              <FontAwesome name="pie-chart" size={size} color={color} />
+            ),
+          }}
+        />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="settings" size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
