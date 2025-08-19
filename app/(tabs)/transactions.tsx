@@ -30,7 +30,7 @@ export default function TransactionsScreen() {
             <View className='flex-row items-end justify-center gap-4'>
 
             
-            <View className='bg-[#CBFD03] rounded-xl p-2'>
+            <View className='bg-[#CBFD03] rounded-full p-2'>
               <AntDesign name="swap" size={30} color="black" />
             </View>
             <Text className='text-white text-4xl font-bold'>Transactions</Text>
