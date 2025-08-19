@@ -1,4 +1,5 @@
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import * as Font from 'expo-font';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -86,6 +87,12 @@ const appStats = [
 
 export default function ApplicationScreen() {
   const router = useRouter();
+  
+  // Load Oswald fonts
+  const [fontsLoaded] = Font.useFonts({
+    'Oswald-Bold': require('../../../assets/fonts/Oswald-Bold.ttf'),
+    'Oswald-Regular': require('../../../assets/fonts/Oswald-Regular.ttf'),
+  });
 
   return (
     <ScrollView 
@@ -113,7 +120,15 @@ export default function ApplicationScreen() {
           <View className='flex flex-col items-center justify-center bg-[#CBFD03] rounded-2xl p-4 mb-4'>
             <MaterialCommunityIcons name="safe-square-outline" size={60} color="black" />
           </View>
-          <Text className='text-white text-2xl font-bold mb-2'>MoneyMate</Text>
+          <Text 
+            className='text-white text-2xl font-bold mb-2'
+            style={{ 
+              fontFamily: fontsLoaded ? 'Oswald-Bold' : 'System',
+              letterSpacing: 1
+            }}
+          >
+            MoneyMate
+          </Text>
           <Text className='text-gray-400 text-base mb-4'>Your Personal Finance Companion</Text>
           <View className='flex-row items-center gap-4'>
             <Text className='text-[#CBFD03] text-sm font-semibold'>Version 1.0.0</Text>

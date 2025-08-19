@@ -1,5 +1,6 @@
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View, Animated } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import me from '../../assets/images/me.png';
 
