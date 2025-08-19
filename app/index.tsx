@@ -11,5 +11,5 @@ export default function Index() {
       </View>
     }
 
-    return <Redirect href="/(tabs)" />;
+    return <Redirect href="/(onboarding)" />;
 }
