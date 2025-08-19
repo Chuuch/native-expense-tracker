@@ -1,9 +1,21 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 // @ts-ignore
 import me from '../../assets/images/me.png';
+import TransactionModal from '../../components/modals/transaction-modal';
 
 export default function TransactionsScreen() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleAddTransaction = (transaction: any) => {
+    // Here you would typically save the transaction to your state/database
+    console.log('New transaction:', transaction);
+    Alert.alert('Success', 'Transaction added successfully!');
+  };
+
+  const openModal = () => setIsModalVisible(true);
+  const closeModal = () => setIsModalVisible(false);
   return (
     <View className='flex-1 bg-stone-950'>
       <ScrollView 
@@ -180,9 +192,19 @@ export default function TransactionsScreen() {
       </ScrollView>
 
       {/* Floating Add Button - Now properly positioned */}
-      <TouchableOpacity className='absolute bottom-36 right-6 bg-[#CBFD03] rounded-full p-4 shadow-lg z-50'>
+      <TouchableOpacity 
+        className='absolute bottom-36 right-6 bg-[#CBFD03] rounded-full p-4 shadow-lg z-50'
+        onPress={openModal}
+      >
         <Feather name="plus" size={28} color="black" />
       </TouchableOpacity>
+
+      {/* Transaction Modal */}
+      <TransactionModal
+        visible={isModalVisible}
+        onClose={closeModal}
+        onSubmit={handleAddTransaction}
+      />
     </View>
   );
 }
