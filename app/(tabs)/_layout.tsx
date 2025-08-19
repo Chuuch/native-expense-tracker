@@ -15,7 +15,7 @@ export default function TabLayout() {
           right: 20,
           height: 60,
           marginHorizontal: 20,
-          backgroundColor: 'transparent',
+          backgroundColor: '#0c0a09',
           borderRadius: 30,
           shadowColor: '#000',
           shadowOffset: {
