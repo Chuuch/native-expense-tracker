@@ -6,6 +6,18 @@ export default function SettingsLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="profile" />
+      <Stack.Screen name="subscription" />
+      <Stack.Screen name="notifications" />
+      <Stack.Screen name="privacy" />
+      <Stack.Screen name="darkMode" />
+      <Stack.Screen name="currency" />
+      <Stack.Screen name="language" />
+      <Stack.Screen name="support" />
+      <Stack.Screen name="feedback" />
+      <Stack.Screen name="rate" />
+      <Stack.Screen name="terms" />
+      <Stack.Screen name="privacyPolicy" />
+      <Stack.Screen name="application" />
     </Stack>
   );
 }
