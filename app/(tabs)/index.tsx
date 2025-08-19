@@ -1,10 +1,51 @@
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Image, ScrollView, Text, TouchableOpacity, View, Animated } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 // @ts-ignore
 import me from '../../assets/images/me.png';
 
 export default function HomeScreen() {
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const [displayValue, setDisplayValue] = useState(0);
+  
+  const targetBalance = 2450.75;
+  const duration = 1000; // 2 seconds
+  
+  useEffect(() => {
+    console.log('Starting animation...');
+    const animation = Animated.timing(animatedValue, {
+      toValue: targetBalance,
+      duration: duration,
+      useNativeDriver: false,
+    });
+    
+    animation.start(() => {
+      console.log('Animation completed');
+    });
+    
+    const listener = animatedValue.addListener(({ value }: { value: number }) => {
+      console.log('Animation value:', value);
+      setDisplayValue(value);
+    });
+    
+    return () => {
+      animatedValue.removeListener(listener);
+    };
+  }, []);
+  
+  const formatCurrency = (value: number) => {
+    return `$${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+  };
+  
+  const restartAnimation = () => {
+    animatedValue.setValue(0);
+    Animated.timing(animatedValue, {
+      toValue: targetBalance,
+      duration: duration,
+      useNativeDriver: false,
+    }).start();
+  };
+
   return (
     <ScrollView
       className='flex-1 bg-stone-950'
@@ -30,9 +71,15 @@ export default function HomeScreen() {
         </View>
 
         {/* Balance Summary Card */}
-        <View className='w-full bg-stone-800 rounded-xl p-6'>
+        <TouchableOpacity 
+          className='w-full bg-stone-800 rounded-xl p-6'
+          onPress={restartAnimation}
+          activeOpacity={0.8}
+        >
           <Text className='text-white text-lg font-semibold mb-2'>Total Balance</Text>
-          <Text className='text-[#CBFD03] text-4xl font-bold mb-4'>$2,450.75</Text>
+          <Text className='text-[#CBFD03] text-4xl font-bold mb-4'>
+            {formatCurrency(displayValue)}
+          </Text>
           <View className='flex-row items-center justify-between'>
             <View className='flex-row items-center gap-2'>
               <Feather name="trending-up" size={20} color="#CBFD03" />
@@ -40,7 +87,7 @@ export default function HomeScreen() {
             </View>
             <Text className='text-gray-400 text-sm'>This month</Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Quick Actions */}
         <View className='w-full'>
