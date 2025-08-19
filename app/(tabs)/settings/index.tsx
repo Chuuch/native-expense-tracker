@@ -45,9 +45,9 @@ const settingsItems = [
 
 const preferencesItems = [
   {
-    id: 'darkMode',
-    title: 'Dark Mode',
-    subtitle: 'Toggle dark theme',
+    id: 'theme',
+    title: 'Appearance',
+    subtitle: 'Change your theme',
     icon: Ionicons,
     iconName: 'bulb-outline' as const,
     iconSize: 24,
@@ -156,8 +156,8 @@ export default function SettingsScreen() {
       case 'language':
         router.push('/settings/language');
         break;
-      case 'darkMode':
-        router.push('/settings/dark-mode');
+      case 'theme':
+        router.push('/settings/theme');
         break;
       case 'help':
         router.push('/settings/support');
@@ -191,7 +191,7 @@ export default function SettingsScreen() {
       <View className='flex items-center justify-start bg-stone-950 p-4 gap-8 top-20'>
         {/* Header */}
         <View className='flex-row items-end justify-start w-full gap-2'>
-          <View className='bg-[#CBFD03] rounded-xl p-2'>
+          <View className='bg-[#CBFD03] rounded-full p-2'>
             <SimpleLineIcons name="settings" size={30} color="black" />
           </View>
           <Text className='text-white text-4xl font-bold'>Settings</Text>
