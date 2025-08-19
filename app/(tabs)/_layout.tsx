@@ -1,4 +1,4 @@
-import { AntDesign, Feather, FontAwesome, Foundation } from '@expo/vector-icons';
+import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { Tabs } from 'expo-router';
 import React from 'react';
@@ -57,7 +57,7 @@ export default function TabLayout() {
         options={{
           title: 'Dashboard',
           tabBarIcon: ({ color, size }) => (
-            <Foundation name="graph-bar" size={size} color={color} />
+            <Feather name="bar-chart-2" size={size} color={color} />
           ),
         }}
       />
@@ -75,7 +75,7 @@ export default function TabLayout() {
           options={{
             title: 'Analytics',
             tabBarIcon: ({ color, size }) => (
-              <FontAwesome name="pie-chart" size={size} color={color} />
+              <Ionicons name="pie-chart-outline" size={size} color={color} />
             ),
           }}
         />
