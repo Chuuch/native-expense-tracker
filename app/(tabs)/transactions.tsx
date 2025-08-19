@@ -6,7 +6,7 @@ import me from '../../assets/images/me.png';
 import TransactionModal from '../../components/modals/transaction-modal';
 
 export default function TransactionsScreen() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const handleAddTransaction = (transaction: any) => {
     // Here you would typically save the transaction to your state/database
