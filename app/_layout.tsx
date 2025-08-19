@@ -16,7 +16,7 @@ export default function RootLayout() {
   }
 
   return (
-    <View style={{ flex: 1 }} className="bg-slate-900">
+    <View style={{ flex: 1 }} className="bg-stone-950">
       <SafeAreaProvider>
         <Stack screenOptions={{ headerShown: false }} >
           <Stack.Screen name="index" />
