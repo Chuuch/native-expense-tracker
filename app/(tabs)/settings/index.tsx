@@ -142,13 +142,40 @@ export default function SettingsScreen() {
         router.push('/settings/profile');
         break;
       case 'subscription':
-        // Handle subscription navigation
+        router.push('/settings/subscription');
         break;
       case 'notifications':
         // Handle notifications navigation
         break;
       case 'privacy':
         // Handle privacy navigation
+        break;
+      case 'currency':
+        router.push('/settings/currency');
+        break;
+      case 'language':
+        router.push('/settings/language');
+        break;
+      case 'darkMode':
+        router.push('/settings/dark-mode');
+        break;
+      case 'help':
+        router.push('/settings/support');
+        break;
+      case 'feedback':
+        router.push('/settings/feedback');
+        break;
+      case 'rate':
+        router.push('/settings/rate');
+        break;
+      case 'terms':
+        router.push('/settings/terms');
+        break;
+      case 'privacy-policy':
+        router.push('/settings/privacy-policy');
+        break;
+      case 'application':
+        router.push('/settings/application');
         break;
       default:
         console.log('Setting pressed:', settingId);
@@ -165,9 +192,9 @@ export default function SettingsScreen() {
         {/* Header */}
         <View className='flex-row items-end justify-start w-full gap-2'>
           <View className='bg-[#CBFD03] rounded-xl p-2'>
-            <SimpleLineIcons name="settings" size={40} color="black" />
+            <SimpleLineIcons name="settings" size={30} color="black" />
           </View>
-          <Text className='text-white text-5xl font-bold'>Settings</Text>
+          <Text className='text-white text-4xl font-bold'>Settings</Text>
         </View>
 
         {/* Account Section */}
@@ -212,6 +239,7 @@ export default function SettingsScreen() {
                 <TouchableOpacity
                   key={item.id}
                   className='flex-row items-center justify-between w-full p-3 rounded-lg'
+                  onPress={() => handleSettingPress(item.id)}
                 >
                   <View className='flex-row items-center justify-start gap-3 flex-1'>
                     <View className='bg-stone-700 rounded-full p-2'>
@@ -243,6 +271,7 @@ export default function SettingsScreen() {
                 <TouchableOpacity
                   key={item.id}
                   className='flex-row items-center justify-between w-full p-3 rounded-lg'
+                  onPress={() => handleSettingPress(item.id)}
                 >
                   <View className='flex-row items-center justify-start gap-3 flex-1'>
                     <View className='bg-stone-700 rounded-full p-2'>
@@ -274,6 +303,7 @@ export default function SettingsScreen() {
                 <TouchableOpacity
                   key={item.id}
                   className='flex-row items-center justify-between w-full p-3 rounded-lg'
+                  onPress={() => handleSettingPress(item.id)}
                 >
                   <View className='flex-row items-center justify-start gap-3 flex-1'>
                     <View className='bg-stone-700 rounded-full p-2'>
