@@ -1,9 +1,11 @@
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+// @ts-ignore
+import me from '../../assets/images/me.png';
 
 export default function HomeScreen() {
   return (
-    <ScrollView 
+    <ScrollView
       className='flex-1 bg-stone-950'
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingBottom: 140 }}
@@ -11,10 +13,19 @@ export default function HomeScreen() {
       <View className='flex items-center justify-start bg-stone-950 p-4 top-20 gap-8'>
         {/* Header */}
         <View className='flex-row items-end justify-start w-full gap-2'>
-          <View className='bg-[#CBFD03] rounded-xl p-2'>
-            <Feather name="bar-chart-2" size={40} color="black" />
+          <View className='flex-row items-center justify-between w-full'>
+            <View className='flex-row items-end justify-center gap-4'>
+
+            
+            <View className='bg-[#CBFD03] rounded-xl p-2'>
+              <Feather name="bar-chart-2" size={30} color="black" />
+            </View>
+            <Text className='text-white text-4xl font-bold'>Dashboard</Text>
+            </View>
+            <View className='flex-row items-center justify-center'>
+            <Image source={me} alt='Profile' className='w-12 h-12 object-contain self-center rounded-full'/>
+            </View>
           </View>
-          <Text className='text-white text-5xl font-bold'>Dashboard</Text>
         </View>
 
         {/* Balance Summary Card */}
