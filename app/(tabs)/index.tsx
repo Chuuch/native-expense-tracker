@@ -12,28 +12,27 @@ export default function HomeScreen() {
   });
 
   return (
-    <ScrollView
-      className='flex-1 bg-stone-950'
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: 140 }}
-    >
-      <View className='flex items-center justify-start bg-stone-950 p-4 top-20 gap-8'>
-        {/* Header */}
-        <View className='flex-row items-end justify-start w-full gap-2'>
-          <View className='flex-row items-center justify-between w-full'>
-            <View className='flex-row items-end justify-center gap-4'>
-
-            
+    <View className='flex-1 bg-stone-950 pt-20'>
+      {/* Header */}
+      <View className='flex-row items-end justify-start w-full gap-2 p-4'>
+        <View className='flex-row items-center justify-between w-full'>
+          <View className='flex-row items-end justify-center gap-4'>
             <View className='bg-[#CBFD03] rounded-full p-2'>
               <Feather name="bar-chart-2" size={30} color="black" />
             </View>
             <Text className='text-white text-4xl font-bold'>Dashboard</Text>
-            </View>
-            <View className='flex-row items-center justify-center'>
+          </View>
+          <View className='flex-row items-center justify-center'>
             <Image source={me} alt='Profile' className='w-12 h-12 object-contain self-center rounded-full'/>
-            </View>
           </View>
         </View>
+      </View>
+
+      <ScrollView 
+        className='flex-1 bg-stone-950 px-4'
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
+      >
 
         {/* Balance Summary Card */}
         <TouchableOpacity 
@@ -147,7 +146,7 @@ export default function HomeScreen() {
         </View>
 
         {/* Tip of the Day */}
-        <View className='w-full bg-stone-800 rounded-xl p-4 mb-20'>
+        <View className='w-full bg-stone-800 rounded-xl p-4 mb-2'>
           <View className='flex-row items-start gap-3'>
             <Ionicons name="bulb-outline" size={24} color="#CBFD03" />
             <View className='flex-1'>
@@ -156,7 +155,7 @@ export default function HomeScreen() {
             </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
