@@ -46,7 +46,7 @@ const subscriptionPlans = [
     limitations: [],
     isCurrent: false,
     isPopular: true,
-    color: 'bg-[#CBFD03]',
+    color: 'bg-white',
     textColor: 'text-black'
   },
   {
@@ -68,8 +68,8 @@ const subscriptionPlans = [
     limitations: [],
     isCurrent: false,
     isPopular: false,
-    color: 'bg-purple-600',
-    textColor: 'text-white'
+    color: 'bg-[#CBFD03]',
+    textColor: 'text-black'
   }
 ];
 
@@ -78,27 +78,28 @@ export default function SubscriptionScreen() {
   const [selectedPlan, setSelectedPlan] = useState('premium');
 
   return (
-    <ScrollView 
-      className='flex-1 bg-stone-950'
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: 140 }}
-    >
-      <View className='flex items-center justify-start bg-stone-950 p-4 gap-8 top-20'>
-        {/* Header */}
-        <View className='flex-row items-center justify-between w-full'>
-          <TouchableOpacity 
-            className='bg-stone-800 rounded-xl p-2'
-            onPress={() => router.back()}
-          >
-            <Feather name="arrow-left" size={24} color="#CBFD03" />
-          </TouchableOpacity>
-          <View className='flex-row items-center'>
-            <Text className='text-white text-5xl font-bold'>Plans</Text>
-          </View>
-          <TouchableOpacity className='bg-stone-800 rounded-xl p-2'>
-            <Feather name="help-circle" size={24} color="#CBFD03" />
-          </TouchableOpacity>
+    <View className='flex-1 bg-stone-950 pt-20'>
+      {/* Header */}
+      <View className='flex-row items-center justify-between w-full p-4'>
+        <TouchableOpacity 
+          className='bg-stone-800 rounded-xl p-2'
+          onPress={() => router.back()}
+        >
+          <Feather name="arrow-left" size={24} color="#CBFD03" />
+        </TouchableOpacity>
+        <View className='flex-row items-center'>
+          <Text className='text-white text-5xl font-bold'>Plans</Text>
         </View>
+        <TouchableOpacity className='bg-stone-800 rounded-xl p-2'>
+          <Feather name="help-circle" size={24} color="#CBFD03" />
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView 
+        className='flex-1 bg-stone-950 px-4'
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
+      >
 
         {/* Current Plan Status */}
         <View className='w-full bg-stone-800 rounded-xl p-6'>
@@ -307,7 +308,7 @@ export default function SubscriptionScreen() {
             <Text className='text-black text-base font-semibold'>Contact Support</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
