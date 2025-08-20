@@ -17,29 +17,27 @@ export default function TransactionsScreen() {
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
   return (
-    <View className='flex-1 bg-stone-950'>
-      <ScrollView 
-        className='flex-1 bg-stone-950'
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 140 }}
-      >
-        <View className='flex items-center justify-start bg-stone-950 p-4 top-20 gap-8'>
-          {/* Header */}
-          <View className='flex-row items-end justify-start w-full gap-2'>
-          <View className='flex-row items-center justify-between w-full'>
-            <View className='flex-row items-end justify-center gap-4'>
-
-            
+    <View className='flex-1 bg-stone-950 pt-20'>
+      {/* Header */}
+      <View className='flex-row items-end justify-start w-full gap-2 p-4'>
+        <View className='flex-row items-center justify-between w-full'>
+          <View className='flex-row items-end justify-center gap-4'>
             <View className='bg-[#CBFD03] rounded-full p-2'>
               <AntDesign name="swap" size={30} color="black" />
             </View>
             <Text className='text-white text-4xl font-bold'>Transactions</Text>
-            </View>
-            <View className='flex-row items-center justify-center'>
+          </View>
+          <View className='flex-row items-center justify-center'>
             <Image source={me} alt='Profile' className='w-12 h-12 object-contain self-center rounded-full'/>
-            </View>
           </View>
         </View>
+      </View>
+
+      <ScrollView 
+        className='flex-1 bg-stone-950 px-4'
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
+      >
 
           {/* Summary Cards */}
           <View className='w-full flex-row gap-4'>
@@ -188,7 +186,6 @@ export default function TransactionsScreen() {
           <TouchableOpacity className='w-full bg-stone-800 rounded-xl p-4 items-center mb-20'>
             <Text className='text-[#CBFD03] text-base font-semibold'>Load More Transactions</Text>
           </TouchableOpacity>
-        </View>
       </ScrollView>
 
       {/* Floating Add Button - Now properly positioned */}
