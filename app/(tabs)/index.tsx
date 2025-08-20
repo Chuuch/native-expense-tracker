@@ -38,7 +38,7 @@ export default function HomeScreen() {
         <TouchableOpacity 
           className='w-full rounded-2xl p-6 overflow-hidden'
           style={{
-            backgroundColor: '#1E1B2E',
+            backgroundColor: '#1E1A4D',
             shadowColor: '#CBFD03',
             shadowOffset: { width: 0, height: 4 },
             shadowOpacity: 0.15,
@@ -52,8 +52,15 @@ export default function HomeScreen() {
         >
           {/* Geometric Pattern Background */}
           <View className='absolute top-0 right-0 w-full h-full opacity-20'>
-            {/* Diagonal Lines */}
-            <View className='absolute top-0 right-0 w-40 h-40 transform rotate-45'>
+            {/* Diagonal Lines - Upper Right */}
+            <View className='absolute -top-8 -right-8 w-40 h-40 transform rotate-45'>
+              <View className='w-full h-0.5 bg-[#CBFD03] opacity-60'></View>
+              <View className='w-full h-0.5 bg-[#CBFD03] opacity-40 mt-8'></View>
+              <View className='w-full h-0.5 bg-[#CBFD03] opacity-30 mt-16'></View>
+            </View>
+            
+            {/* Diagonal Lines - Lower Left */}
+            <View className='absolute -bottom-20 -left-24 w-40 h-40 transform rotate-45'>
               <View className='w-full h-0.5 bg-[#CBFD03] opacity-60'></View>
               <View className='w-full h-0.5 bg-[#CBFD03] opacity-40 mt-8'></View>
               <View className='w-full h-0.5 bg-[#CBFD03] opacity-30 mt-16'></View>
