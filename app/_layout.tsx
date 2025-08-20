@@ -3,6 +3,7 @@ import { Stack } from "expo-router";
 import { View } from "react-native";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AuthProvider } from "../contexts/AuthContext";
 import "../global.css";
 
 export default function RootLayout() {
@@ -17,13 +18,15 @@ export default function RootLayout() {
 
   return (
     <View style={{ flex: 1 }} className="bg-stone-950">
-      <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }} >
-          <Stack.Screen name="index" />
-          <Stack.Screen name="(onboarding)" />
-          <Stack.Screen name="(tabs)" />
-        </Stack>
-      </SafeAreaProvider>
+      <AuthProvider>
+        <SafeAreaProvider>
+          <Stack screenOptions={{ headerShown: false }} >
+            <Stack.Screen name="index" />
+            <Stack.Screen name="(onboarding)" />
+            <Stack.Screen name="(tabs)" />
+          </Stack>
+        </SafeAreaProvider>
+      </AuthProvider>
     </View>
   );
 }
