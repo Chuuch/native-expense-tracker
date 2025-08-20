@@ -95,25 +95,26 @@ export default function ApplicationScreen() {
   });
 
   return (
-    <ScrollView 
-      className='flex-1 bg-stone-950'
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: 140 }}
-    >
-      <View className='flex items-center justify-start bg-stone-950 p-4 gap-8 top-20'>
-        {/* Header */}
-        <View className='flex-row items-center justify-between w-full'>
-          <TouchableOpacity 
-            className='bg-stone-800 rounded-xl p-2'
-            onPress={() => router.back()}
-          >
-            <Feather name="arrow-left" size={24} color="#CBFD03" />
-          </TouchableOpacity>
-          <Text className='text-white text-4xl font-bold'>About App</Text>
-          <TouchableOpacity className='bg-stone-800 rounded-xl p-2'>
-            <Feather name="info" size={24} color="#CBFD03" />
-          </TouchableOpacity>
-        </View>
+    <View className='flex-1 bg-stone-950 pt-20'>
+      {/* Header */}
+      <View className='flex-row items-center justify-between w-full p-4'>
+        <TouchableOpacity 
+          className='bg-stone-800 rounded-xl p-2'
+          onPress={() => router.back()}
+        >
+          <Feather name="arrow-left" size={24} color="#CBFD03" />
+        </TouchableOpacity>
+        <Text className='text-white text-4xl font-bold'>About App</Text>
+        <TouchableOpacity className='bg-stone-800 rounded-xl p-2'>
+          <Feather name="info" size={24} color="#CBFD03" />
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView 
+        className='flex-1 bg-stone-950 px-4'
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
+      >
 
         {/* App Logo and Basic Info */}
         <View className='flex flex-col items-center justify-center w-full bg-stone-800 rounded-xl p-6'>
@@ -274,7 +275,7 @@ export default function ApplicationScreen() {
             Made with ❤️ for better financial management
           </Text>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
