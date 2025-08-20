@@ -204,7 +204,7 @@ export default function AnalyticsScreen() {
               <MaterialCommunityIcons name="target" size={24} color="#CBFD03" />
               <View className='flex-1'>
                 <Text className='text-white text-base font-semibold mb-1'>Budget Alert</Text>
-                <Text className='text-gray-400 text-sm'>You're on track to exceed your monthly budget by $150. Consider reducing non-essential expenses.</Text>
+                <Text className='text-gray-400 text-sm'>You&apos;re on track to exceed your monthly budget by $150. Consider reducing non-essential expenses.</Text>
               </View>
             </View>
             
@@ -212,7 +212,7 @@ export default function AnalyticsScreen() {
               <Feather name="award" size={24} color="#CBFD03" />
               <View className='flex-1'>
                 <Text className='text-white text-base font-semibold mb-1'>Great Job!</Text>
-                <Text className='text-gray-400 text-sm'>You've saved 23% more this month compared to last month. Keep up the good work!</Text>
+                <Text className='text-gray-400 text-sm'>You&apos;ve saved 23% more this month compared to last month. Keep up the good work!</Text>
               </View>
             </View>
           </View>
