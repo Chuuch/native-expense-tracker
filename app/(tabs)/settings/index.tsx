@@ -145,7 +145,7 @@ export default function SettingsScreen() {
         router.push('/settings/subscription');
         break;
       case 'notifications':
-        // Handle notifications navigation
+        router.push('/settings/notification-settings');
         break;
       case 'privacy':
         // Handle privacy navigation

@@ -7,7 +7,7 @@ export default function SettingsLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="profile" />
       <Stack.Screen name="subscription" />
-      <Stack.Screen name="notifications" />
+      <Stack.Screen name="notification-settings" />
       <Stack.Screen name="privacy" />
       <Stack.Screen name="darkMode" />
       <Stack.Screen name="currency" />
