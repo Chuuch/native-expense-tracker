@@ -1,7 +1,7 @@
-import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import { Tabs } from "expo-router";
+import React from "react";
 
 export default function TabLayout() {
   return (
@@ -9,13 +9,13 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          position: 'absolute',
+          position: "absolute",
           bottom: 40,
           height: 60,
           marginHorizontal: 20,
-          backgroundColor: '#0c0a09',
+          backgroundColor: "#0c0a09",
           borderRadius: 30,
-          shadowColor: '#000',
+          shadowColor: "#000",
           shadowOffset: {
             width: 0,
             height: 4,
@@ -24,14 +24,14 @@ export default function TabLayout() {
           shadowRadius: 8,
           elevation: 8,
           borderTopWidth: 0,
-          overflow: 'hidden',
+          overflow: "hidden",
         },
         tabBarBackground: () => (
-          <BlurView 
-            intensity={20} 
+          <BlurView
+            intensity={20}
             tint="light"
             style={{
-              position: 'absolute',
+              position: "absolute",
               top: 0,
               left: 0,
               right: 0,
@@ -39,21 +39,22 @@ export default function TabLayout() {
             }}
           />
         ),
-        tabBarActiveTintColor: '#CBFD03',
-        tabBarInactiveTintColor: '#6b7280',
+        tabBarActiveTintColor: "#CBFD03",
+        tabBarInactiveTintColor: "#6b7280",
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: '600',
+          fontWeight: "600",
           marginTop: -4,
         },
         tabBarIconStyle: {
           marginTop: 4,
         },
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Dashboard',
+          title: "Dashboard",
           tabBarIcon: ({ color, size }) => (
             <Feather name="bar-chart-2" size={size} color={color} />
           ),
@@ -62,25 +63,25 @@ export default function TabLayout() {
       <Tabs.Screen
         name="transactions"
         options={{
-          title: 'Transactions',
+          title: "Transactions",
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="swap" size={size} color={color} />
           ),
         }}
       />
-        <Tabs.Screen
-          name="analytics"
-          options={{
-            title: 'Analytics',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="pie-chart-outline" size={size} color={color} />
-            ),
-          }}
-        />
+      <Tabs.Screen
+        name="analytics"
+        options={{
+          title: "Analytics",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="pie-chart-outline" size={size} color={color} />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
+          title: "Settings",
           tabBarIcon: ({ color, size }) => (
             <Feather name="settings" size={size} color={color} />
           ),
