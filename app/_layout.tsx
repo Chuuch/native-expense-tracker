@@ -4,7 +4,26 @@ import { View } from "react-native";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider } from "../contexts/AuthContext";
+import { ThemeProvider, useTheme } from "../contexts/ThemeContext";
 import "../global.css";
+
+function RootLayoutContent() {
+  const { colors } = useTheme();
+  
+  return (
+    <View style={{ flex: 1 }} className={colors.background}>
+      <AuthProvider>
+        <SafeAreaProvider>
+          <Stack screenOptions={{ headerShown: false }} >
+            <Stack.Screen name="index" />
+            <Stack.Screen name="(onboarding)" />
+            <Stack.Screen name="(tabs)" />
+          </Stack>
+        </SafeAreaProvider>
+      </AuthProvider>
+    </View>
+  );
+}
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -17,16 +36,8 @@ export default function RootLayout() {
   }
 
   return (
-    <View style={{ flex: 1 }} className="bg-stone-950">
-      <AuthProvider>
-        <SafeAreaProvider>
-          <Stack screenOptions={{ headerShown: false }} >
-            <Stack.Screen name="index" />
-            <Stack.Screen name="(onboarding)" />
-            <Stack.Screen name="(tabs)" />
-          </Stack>
-        </SafeAreaProvider>
-      </AuthProvider>
-    </View>
+    <ThemeProvider>
+      <RootLayoutContent />
+    </ThemeProvider>
   );
 }
