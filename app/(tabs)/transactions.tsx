@@ -9,8 +9,10 @@ import TransactionModal from "@/components/modals/transaction-modal";
 import SummaryCards from "@/components/SummaryCards";
 import TransactionFilters from "@/components/TransactionFilters";
 import TransactionList from "@/components/TransactionList";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function TransactionsScreen() {
+  const { colors } = useTheme();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const handleAddTransaction = (transaction: any) => {
@@ -22,7 +24,7 @@ export default function TransactionsScreen() {
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
   return (
-    <View className="flex-1 bg-stone-950 pt-20">
+    <View className={`flex-1 ${colors.background} pt-20`}>
       {/* Header */}
       <View className="flex-row items-end justify-start w-full gap-2 p-4">
         <View className="flex-row items-center justify-between w-full">
@@ -30,7 +32,7 @@ export default function TransactionsScreen() {
             <View className="bg-[#CBFD03] rounded-full p-2">
               <AntDesign name="swap" size={30} color="black" />
             </View>
-            <Text className="text-white text-4xl font-bold">Transactions</Text>
+            <Text className={`${colors.text} text-4xl font-bold`}>Transactions</Text>
           </View>
           <View className="flex-row items-center justify-center">
             <Image
@@ -43,7 +45,7 @@ export default function TransactionsScreen() {
       </View>
 
       <ScrollView
-        className="flex-1 bg-stone-950 px-4"
+        className={`flex-1 ${colors.background} px-4`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
       >

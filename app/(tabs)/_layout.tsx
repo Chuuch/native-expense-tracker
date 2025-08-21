@@ -1,9 +1,12 @@
+import { useTheme } from "@/contexts/ThemeContext";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
 import React from "react";
 
 export default function TabLayout() {
+  const { colors } = useTheme();
+  
   return (
     <Tabs
       screenOptions={{
@@ -13,7 +16,9 @@ export default function TabLayout() {
           bottom: 40,
           height: 60,
           marginHorizontal: 20,
-          backgroundColor: "#0c0a09",
+          backgroundColor: colors.background.includes('stone-950') ? "#0c0a09" : 
+                         colors.background.includes('white') ? "#ffffff" : 
+                         colors.background.includes('black') ? "#000000" : "#0c0a09",
           borderRadius: 30,
           shadowColor: "#000",
           shadowOffset: {
@@ -29,7 +34,7 @@ export default function TabLayout() {
         tabBarBackground: () => (
           <BlurView
             intensity={20}
-            tint="light"
+            tint="systemChromeMaterial"
             style={{
               position: "absolute",
               top: 0,

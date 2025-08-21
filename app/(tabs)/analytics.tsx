@@ -8,10 +8,13 @@ import AnalyticsSummaryCards from "@/components/AnalyticsSummaryCards";
 import CategoryBreakdown from "@/components/CategoryBreakdown";
 import ExportAnalytics from "@/components/ExportAnalytics";
 import MonthlyTrendGraph from "@/components/MonthlyTrendGraph";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function AnalyticsScreen() {
+  const { colors } = useTheme();
+  
   return (
-    <View className="flex-1 bg-stone-950 pt-20">
+    <View className={`flex-1 ${colors.background} pt-20`}>
       {/* Header */}
       <View className="flex-row items-end justify-start w-full gap-2 p-4">
         <View className="flex-row items-center justify-between w-full">
@@ -19,7 +22,7 @@ export default function AnalyticsScreen() {
             <View className="bg-[#CBFD03] rounded-full p-2">
               <Ionicons name="pie-chart-outline" size={30} color="black" />
             </View>
-            <Text className="text-white text-4xl font-bold">Analytics</Text>
+            <Text className={`${colors.text} text-4xl font-bold`}>Analytics</Text>
           </View>
           <View className="flex-row items-center justify-center">
             <Image
@@ -32,7 +35,7 @@ export default function AnalyticsScreen() {
       </View>
 
       <ScrollView
-        className="flex-1 bg-stone-950 px-4"
+        className={`flex-1 ${colors.background} px-4`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
       >
