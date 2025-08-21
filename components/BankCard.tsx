@@ -1,12 +1,14 @@
 
 
 
+import { useTheme } from '@/contexts/ThemeContext';
 import { useAmountAnimation } from '@/helpers/amount-animation';
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 export default function BankCard() {
+    const { colors } = useTheme();
     const { displayValue, restartAnimation, formatCurrency } = useAmountAnimation({
         targetValue: 24375.75,
         duration: 1500
@@ -180,7 +182,7 @@ export default function BankCard() {
               <View className='bg-[#CBFD03] rounded-full p-1'>
                 <Feather name="credit-card" size={16} color="black" />
               </View>
-              <Text className='text-white text-sm font-medium'>DEBIT CARD</Text>
+              <Text className={`${colors.text} text-sm font-medium`}>DEBIT CARD</Text>
             </View>
             <View className='flex-row items-center gap-1'>
               <View className='w-8 h-6 bg-[#CBFD03] rounded-sm'></View>
@@ -190,13 +192,13 @@ export default function BankCard() {
 
           {/* Card Number */}
           <View className='mb-6'>
-            <Text className='text-white text-lg font-mono tracking-wider mb-1'>**** **** **** 1234</Text>
-            <Text className='text-gray-400 text-xs'>Card Number</Text>
+            <Text className={`${colors.text} text-lg font-mono tracking-wider mb-1`}>**** **** **** 1234</Text>
+            <Text className={`${colors.textSecondary} text-xs`}>Card Number</Text>
           </View>
 
           {/* Balance Amount */}
           <View className='mb-6'>
-            <Text className='text-gray-400 text-sm mb-1'>Available Balance</Text>
+            <Text className={`${colors.textSecondary} text-sm mb-1`}>Available Balance</Text>
             <Text className='text-[#CBFD03] text-3xl font-bold'>
               {formatCurrency(displayValue)}
             </Text>
@@ -205,12 +207,12 @@ export default function BankCard() {
           {/* Card Footer */}
           <View className='flex-row items-center justify-between'>
             <View className='flex-1'>
-              <Text className='text-gray-400 text-xs mb-1'>CARD HOLDER</Text>
-              <Text className='text-white text-sm font-semibold'>JOHN DOE</Text>
+              <Text className={`${colors.textSecondary} text-xs mb-1`}>CARD HOLDER</Text>
+              <Text className={`${colors.text} text-sm font-semibold`}>JOHN DOE</Text>
             </View>
             <View className='flex-1'>
-              <Text className='text-gray-400 text-xs mb-1'>EXPIRES</Text>
-              <Text className='text-white text-sm font-semibold'>12/28</Text>
+              <Text className={`${colors.textSecondary} text-xs mb-1`}>EXPIRES</Text>
+              <Text className={`${colors.text} text-sm font-semibold`}>12/28</Text>
             </View>
             <View className='flex-row items-center gap-2'>
               <Feather name="trending-up" size={16} color="#CBFD03" />
