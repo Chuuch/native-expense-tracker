@@ -72,7 +72,7 @@ export default function OnboardingScreen() {
       });
       setCurrentIndex(nextIndex);
     } else {
-      // Navigate to auth flow
+      // Navigate directly to auth flow
       router.replace('/login');
     }
   };

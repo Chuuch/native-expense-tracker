@@ -3,7 +3,6 @@ import { Stack } from "expo-router";
 import { View } from "react-native";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { AuthProvider } from "../contexts/AuthContext";
 import { ThemeProvider, useTheme } from "../contexts/ThemeContext";
 import "../global.css";
 
@@ -12,15 +11,14 @@ function RootLayoutContent() {
   
   return (
     <View style={{ flex: 1 }} className={colors.background}>
-      <AuthProvider>
         <SafeAreaProvider>
           <Stack screenOptions={{ headerShown: false }} >
             <Stack.Screen name="index" />
+            <Stack.Screen name="(auth)" />
             <Stack.Screen name="(onboarding)" />
             <Stack.Screen name="(tabs)" />
           </Stack>
         </SafeAreaProvider>
-      </AuthProvider>
     </View>
   );
 }

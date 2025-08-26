@@ -8,15 +8,14 @@ export default function SettingsLayout() {
       <Stack.Screen name="profile" />
       <Stack.Screen name="subscription" />
       <Stack.Screen name="notification-settings" />
-      <Stack.Screen name="privacy" />
-      <Stack.Screen name="darkMode" />
+      <Stack.Screen name="privacy-policy" />
+      <Stack.Screen name="theme" />
       <Stack.Screen name="currency" />
       <Stack.Screen name="language" />
       <Stack.Screen name="support" />
       <Stack.Screen name="feedback" />
       <Stack.Screen name="rate" />
       <Stack.Screen name="terms" />
-      <Stack.Screen name="privacyPolicy" />
       <Stack.Screen name="application" />
     </Stack>
   );

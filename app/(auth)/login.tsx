@@ -1,10 +1,35 @@
+import { supabase } from '@/lib/supabase';
 import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      router.replace('/(tabs)');
+    } catch (error: any) {
+      Alert.alert('Login Failed', error.message || 'An error occurred during login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <ScrollView 
@@ -37,6 +62,8 @@ export default function LoginScreen() {
                 placeholderTextColor="#6b7280"
                 keyboardType="email-address"
                 autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
               />
             </View>
           </View>
@@ -50,10 +77,12 @@ export default function LoginScreen() {
                 className='flex-1 text-white text-base ml-3'
                 placeholder="Enter your password"
                 placeholderTextColor="#6b7280"
-                secureTextEntry
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={setPassword}
               />
-              <TouchableOpacity>
-                <Feather name="eye" size={20} color="#6b7280" />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Feather name={showPassword ? "eye-off" : "eye"} size={20} color="#6b7280" />
               </TouchableOpacity>
             </View>
           </View>
@@ -72,8 +101,14 @@ export default function LoginScreen() {
           </View>
 
           {/* Login Button */}
-          <TouchableOpacity className='bg-[#CBFD03] rounded-xl p-4 items-center mb-6'>
-            <Text className='text-black text-lg font-semibold'>Sign In</Text>
+          <TouchableOpacity 
+            className={`rounded-xl p-4 items-center mb-6 ${isLoading ? 'bg-stone-600' : 'bg-[#CBFD03]'}`}
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            <Text className={`text-lg font-semibold ${isLoading ? 'text-gray-400' : 'text-black'}`}>
+              {isLoading ? 'Signing In...' : 'Sign In'}
+            </Text>
           </TouchableOpacity>
 
           {/* Divider */}
@@ -99,27 +134,11 @@ export default function LoginScreen() {
 
         {/* Sign Up Link */}
         <View className='flex-row justify-center items-center'>
-          <Text className='text-gray-400 text-base'>Don't have an account? </Text>
+          <Text className='text-gray-400 text-base'>Don&apos;t have an account? </Text>
           <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
             <Text className='text-[#CBFD03] text-base font-semibold'>Sign Up</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Skip to App (for testing) */}
-        <TouchableOpacity 
-          className='mt-8 bg-stone-800 rounded-xl p-4 items-center'
-          onPress={() => router.replace('/(tabs)')}
-        >
-          <Text className='text-gray-400 text-sm'>Skip to App</Text>
-        </TouchableOpacity>
-
-        {/* Test Verify Screen (for testing) */}
-        <TouchableOpacity 
-          className='mt-4 bg-stone-800 rounded-xl p-4 items-center'
-          onPress={() => router.push('/verify')}
-        >
-          <Text className='text-gray-400 text-sm'>Test Verify Screen</Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
