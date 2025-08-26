@@ -18,7 +18,7 @@ export default function BankCard() {
     <View>
               {/* Balance Summary Card */}
               <TouchableOpacity 
-          className='w-full rounded-2xl p-6 overflow-hidden'
+          className='w-full rounded-2xl p-6 overflow-hidden mt-8'
           style={{
             backgroundColor: '#1E1A4D',
             shadowColor: '#CBFD03',
