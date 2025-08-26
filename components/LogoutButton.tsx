@@ -1,17 +1,39 @@
 
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React from 'react';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function LogoutButton() {
+  const { signOut } = useAuth();
+
+  const handleLogout = async () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Logout',
+          style: 'destructive',
+          onPress: async () => {
+            await signOut();
+            // AuthGuard will handle navigation automatically
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <View className='w-full mb-20'>
-    <TouchableOpacity
-      className='bg-[#CBFD03] w-full rounded-xl p-4 items-center justify-center flex-row gap-3'
-    >
-      <MaterialCommunityIcons name='exit-to-app' size={24} color='black'/>
-      <Text className='text-lg font-semibold text-black'>Log out</Text>
-    </TouchableOpacity>
-  </View>
+      <TouchableOpacity
+        onPress={handleLogout}
+        className='bg-[#CBFD03] w-full rounded-xl p-4 items-center justify-center flex-row gap-3'
+      >
+        <MaterialCommunityIcons name='exit-to-app' size={24} color='black'/>
+        <Text className='text-lg font-semibold text-black'>Log out</Text>
+      </TouchableOpacity>
+    </View>
   )
 }
