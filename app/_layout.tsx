@@ -3,22 +3,20 @@ import { Stack } from "expo-router";
 import { View } from "react-native";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ThemeProvider, useTheme } from "../contexts/ThemeContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
 import "../global.css";
 
 function RootLayoutContent() {
-  const { colors } = useTheme();
-  
   return (
-    <View style={{ flex: 1 }} className={colors.background}>
-        <SafeAreaProvider>
-          <Stack screenOptions={{ headerShown: false }} >
-            <Stack.Screen name="index" />
-            <Stack.Screen name="(auth)" />
-            <Stack.Screen name="(onboarding)" />
-            <Stack.Screen name="(tabs)" />
-          </Stack>
-        </SafeAreaProvider>
+    <View style={{ flex: 1, backgroundColor: '#0c0a09' }}>
+      <SafeAreaProvider>
+        <Stack screenOptions={{ headerShown: false }} >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(onboarding)" />
+          <Stack.Screen name="(tabs)" />
+        </Stack>
+      </SafeAreaProvider>
     </View>
   );
 }
