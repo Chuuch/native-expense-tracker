@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import * as SecureStore from 'expo-secure-store';
+import { AppState, Platform } from "react-native";
 
 const ExpoSecureStoreAdapter = {
     getItem: (key: string) => {
@@ -26,3 +27,13 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
         detectSessionInUrl: false,
     },
 });
+
+if (Platform.OS !== 'web') {
+    AppState.addEventListener('change', (state) => {
+        if (state === 'active') {
+            supabase.auth.startAutoRefresh();
+        } else {
+            supabase.auth.stopAutoRefresh();
+        }
+    })
+}
