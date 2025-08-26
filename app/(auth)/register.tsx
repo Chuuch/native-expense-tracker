@@ -1,59 +1,10 @@
-import { supabase } from '@/lib/supabase';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function RegisterScreen() {
   const router = useRouter();
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-
-  const handleRegister = async () => {
-    if (!fullName || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all required fields');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
-
-    if (!acceptedTerms) {
-      Alert.alert('Error', 'Please accept the terms and conditions');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            fullName
-          }
-        }
-      });
-      Alert.alert(
-        'Registration Successful', 
-        'Please check your email to verify your account before signing in.',
-        [{ text: 'OK', onPress: () => router.push('/(auth)/login') }]
-      );
-    } catch (error: any) {
-      Alert.alert('Registration Failed', error.message || 'An error occurred during registration');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <ScrollView 
@@ -61,7 +12,7 @@ export default function RegisterScreen() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
     >
-      <View className='flex-1 bg-stone-950 p-6 justify-center mt-20 mb-12'>
+      <View className='flex-1 bg-stone-950 p-6 justify-center mt-20'>
         {/* Header */}
         <View className='items-center mb-8'>
           <View className='bg-[#CBFD03] rounded-full p-6 mb-6'>
@@ -77,7 +28,7 @@ export default function RegisterScreen() {
         <View className='mb-6'>
           {/* Full Name Input */}
           <View className='mb-4'>
-            <Text className='text-white text-base font-semibold mb-2'>Full Name *</Text>
+            <Text className='text-white text-base font-semibold mb-2'>Full Name</Text>
             <View className='bg-stone-800 rounded-xl p-4 flex-row items-center'>
               <Feather name="user" size={20} color="#6b7280" />
               <TextInput
@@ -85,15 +36,13 @@ export default function RegisterScreen() {
                 placeholder="Enter your full name"
                 placeholderTextColor="#6b7280"
                 autoCapitalize="words"
-                value={fullName}
-                onChangeText={setFullName}
               />
             </View>
           </View>
 
           {/* Email Input */}
           <View className='mb-4'>
-            <Text className='text-white text-base font-semibold mb-2'>Email Address *</Text>
+            <Text className='text-white text-base font-semibold mb-2'>Email Address</Text>
             <View className='bg-stone-800 rounded-xl p-4 flex-row items-center'>
               <Feather name="mail" size={20} color="#6b7280" />
               <TextInput
@@ -102,8 +51,6 @@ export default function RegisterScreen() {
                 placeholderTextColor="#6b7280"
                 keyboardType="email-address"
                 autoCapitalize="none"
-                value={email}
-                onChangeText={setEmail}
               />
             </View>
           </View>
@@ -118,58 +65,49 @@ export default function RegisterScreen() {
                 placeholder="Enter your phone number"
                 placeholderTextColor="#6b7280"
                 keyboardType="phone-pad"
-                value={phone}
-                onChangeText={setPhone}
               />
             </View>
           </View>
 
           {/* Password Input */}
           <View className='mb-4'>
-            <Text className='text-white text-base font-semibold mb-2'>Password *</Text>
+            <Text className='text-white text-base font-semibold mb-2'>Password</Text>
             <View className='bg-stone-800 rounded-xl p-4 flex-row items-center'>
               <Feather name="lock" size={20} color="#6b7280" />
               <TextInput
                 className='flex-1 text-white text-base ml-3'
                 placeholder="Create a password"
                 placeholderTextColor="#6b7280"
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
+                secureTextEntry
               />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Feather name={showPassword ? "eye-off" : "eye"} size={20} color="#6b7280" />
+              <TouchableOpacity>
+                <Feather name="eye" size={20} color="#6b7280" />
               </TouchableOpacity>
             </View>
           </View>
 
           {/* Confirm Password Input */}
           <View className='mb-6'>
-            <Text className='text-white text-base font-semibold mb-2'>Confirm Password *</Text>
+            <Text className='text-white text-base font-semibold mb-2'>Confirm Password</Text>
             <View className='bg-stone-800 rounded-xl p-4 flex-row items-center'>
               <Feather name="lock" size={20} color="#6b7280" />
               <TextInput
                 className='flex-1 text-white text-base ml-3'
                 placeholder="Confirm your password"
                 placeholderTextColor="#6b7280"
-                secureTextEntry={!showConfirmPassword}
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
+                secureTextEntry
               />
-              <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-                <Feather name={showConfirmPassword ? "eye-off" : "eye"} size={20} color="#6b7280" />
+              <TouchableOpacity>
+                <Feather name="eye" size={20} color="#6b7280" />
               </TouchableOpacity>
             </View>
           </View>
 
           {/* Terms and Conditions */}
           <View className='flex-row items-start mb-6'>
-            <TouchableOpacity 
-              className='flex-row items-start'
-              onPress={() => setAcceptedTerms(!acceptedTerms)}
-            >
-              <View className={`w-5 h-5 rounded mr-3 mt-1 ${acceptedTerms ? 'bg-[#CBFD03]' : 'bg-stone-700'}`}>
-                {acceptedTerms && <Text className='text-black text-center'>✓</Text>}
+            <TouchableOpacity className='flex-row items-start'>
+              <View className='w-5 h-5 bg-stone-700 rounded mr-3 mt-1'>
+                <View className='w-5 h-5 bg-[#CBFD03] rounded' />
               </View>
               <View className='flex-1'>
                 <Text className='text-gray-400 text-sm leading-5'>
@@ -182,15 +120,21 @@ export default function RegisterScreen() {
             </TouchableOpacity>
           </View>
 
+          {/* Newsletter Subscription */}
+          <View className='flex-row items-start mb-8'>
+            <TouchableOpacity className='flex-row items-start'>
+              <View className='w-5 h-5 bg-stone-700 rounded mr-3 mt-1' />
+            </TouchableOpacity>
+            <View className='flex-1'>
+              <Text className='text-gray-400 text-sm leading-5'>
+                Subscribe to our newsletter for financial tips and updates
+              </Text>
+            </View>
+          </View>
+
           {/* Register Button */}
-          <TouchableOpacity 
-            className={`rounded-xl p-4 items-center mb-6 ${isLoading ? 'bg-stone-600' : 'bg-[#CBFD03]'}`}
-            onPress={handleRegister}
-            disabled={isLoading}
-          >
-            <Text className={`text-lg font-semibold ${isLoading ? 'text-gray-400' : 'text-black'}`}>
-              {isLoading ? 'Creating Account...' : 'Create Account'}
-            </Text>
+          <TouchableOpacity className='bg-[#CBFD03] rounded-xl p-4 items-center mb-6'>
+            <Text className='text-black text-lg font-semibold'>Create Account</Text>
           </TouchableOpacity>
 
           {/* Divider */}
@@ -221,6 +165,22 @@ export default function RegisterScreen() {
             <Text className='text-[#CBFD03] text-base font-semibold'>Sign In</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Skip to App (for testing) */}
+        <TouchableOpacity 
+          className='mt-6 bg-stone-800 rounded-xl p-4 items-center'
+          onPress={() => router.replace('/(tabs)')}
+        >
+          <Text className='text-gray-400 text-sm'>Skip to App</Text>
+        </TouchableOpacity>
+
+        {/* Test Verify Screen (for testing) */}
+        <TouchableOpacity 
+          className='mt-4 bg-stone-800 rounded-xl p-4 items-center'
+          onPress={() => router.push('/verify')}
+        >
+          <Text className='text-gray-400 text-sm'>Test Verify Screen</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

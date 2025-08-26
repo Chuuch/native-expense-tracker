@@ -1,13 +1,11 @@
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import ProtectedRoute from "../../components/ProtectedRoute";
 import { useTheme } from "../../contexts/ThemeContext";
 
 export default function TabLayout() {
   const { colors } = useTheme();
 
   return (
-    <ProtectedRoute>
       <Tabs
         screenOptions={{
           headerShown: false,
@@ -48,6 +46,5 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-    </ProtectedRoute>
   );
 }
