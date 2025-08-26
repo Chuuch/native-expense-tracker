@@ -2,9 +2,11 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function GetStartedScreen() {
   const router = useRouter();
+  const { user, completeOnboarding } = useAuth();
 
   const features = [
     {
@@ -28,7 +30,14 @@ export default function GetStartedScreen() {
   ];
 
   const handleGetStarted = () => {
-    router.replace('/register');
+    if (user) {
+      // User is already authenticated, complete onboarding and go to main app
+      completeOnboarding();
+      router.replace('/(tabs)');
+    } else {
+      // User is not authenticated, go to registration
+      router.replace('/register');
+    }
   };
 
   const handleSignIn = () => {
@@ -78,18 +87,20 @@ export default function GetStartedScreen() {
             onPress={handleGetStarted}
           >
             <Text className="text-black text-lg font-semibold">
-              Create Account
+              {user ? 'Get Started' : 'Create Account'}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            className="bg-transparent border border-stone-700 rounded-xl py-4 items-center"
-            onPress={handleSignIn}
-          >
-            <Text className="text-white text-lg font-semibold">
-              I already have an account
-            </Text>
-          </TouchableOpacity>
+          {!user && (
+            <TouchableOpacity
+              className="bg-transparent border border-stone-700 rounded-xl py-4 items-center"
+              onPress={handleSignIn}
+            >
+              <Text className="text-white text-lg font-semibold">
+                I already have an account
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </View>
