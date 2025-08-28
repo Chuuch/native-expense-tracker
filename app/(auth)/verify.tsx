@@ -22,7 +22,7 @@ export default function VerifyScreen() {
           </View>
           <Text className='text-white text-4xl font-bold mb-2'>Verify Email</Text>
           <Text className='text-gray-400 text-lg text-center mb-2'>
-            We've sent a verification code to
+            We&apos;ve sent a verification code to
           </Text>
           <Text className='text-[#CBFD03] text-lg font-semibold'>
             john.doe@example.com
@@ -68,7 +68,7 @@ export default function VerifyScreen() {
         {/* Resend Section */}
         <View className='items-center mb-8'>
           <Text className='text-gray-400 text-base text-center mb-4'>
-            Didn't receive the code?
+            Didn&apos;t receive the code?
           </Text>
           
           {timeLeft > 0 ? (

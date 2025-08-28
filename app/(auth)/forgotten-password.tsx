@@ -48,7 +48,7 @@ export default function ForgottenPasswordScreen() {
               <Text className='text-white text-base font-semibold ml-2'>What happens next?</Text>
             </View>
             <Text className='text-gray-400 text-sm leading-5'>
-              We'll send you an email with a link to reset your password. The link will expire in 1 hour for security.
+              We&apos;ll send you an email with a link to reset your password. The link will expire in 1 hour for security.
             </Text>
           </View>
 

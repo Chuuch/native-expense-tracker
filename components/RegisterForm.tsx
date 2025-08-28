@@ -2,7 +2,6 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useAuth } from '../contexts/AuthContext';
 
 export default function RegisterForm() {
   const [fullName, setFullName] = useState<string>('');
@@ -11,7 +10,6 @@ export default function RegisterForm() {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const { signUp, completeOnboarding } = useAuth();
 
   async function signUpWithEmail() {
     // Validation
@@ -31,20 +29,13 @@ export default function RegisterForm() {
     }
 
     setLoading(true);
-    const { error } = await signUp(email, password);
     setLoading(false);
 
-    if (error) {
-      Alert.alert('Error', error.message);
-    } else {
-      // Complete onboarding and redirect to main app
-      await completeOnboarding();
       Alert.alert(
         'Success',
         'Account created successfully! Please check your email for verification.',
-        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
-      );
-    }
+      [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
+    );
   }
 
   return (

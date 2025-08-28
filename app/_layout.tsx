@@ -3,14 +3,11 @@ import { Stack } from "expo-router";
 import { View } from "react-native";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import AuthGuard from "../components/AuthGuard";
-import { AuthProvider } from "../contexts/AuthContext";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import "../global.css";
 
 function RootLayoutContent() {
   return (
-    <AuthGuard>
       <View style={{ flex: 1, backgroundColor: '#0c0a09' }}>
         <SafeAreaProvider>
           <Stack screenOptions={{ headerShown: false }} >
@@ -21,7 +18,6 @@ function RootLayoutContent() {
           </Stack>
         </SafeAreaProvider>
       </View>
-    </AuthGuard>
   );
 }
 
@@ -35,10 +31,8 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
       <ThemeProvider>
         <RootLayoutContent />
       </ThemeProvider>
-    </AuthProvider>
   );
 }

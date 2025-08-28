@@ -2,11 +2,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { useAuth } from '../contexts/AuthContext';
 
 export default function LogoutButton() {
-  const { signOut } = useAuth();
-
   const handleLogout = async () => {
     Alert.alert(
       'Logout',
@@ -17,8 +14,8 @@ export default function LogoutButton() {
           text: 'Logout',
           style: 'destructive',
           onPress: async () => {
-            await signOut();
-            // AuthGuard will handle navigation automatically
+            
+            // TODO: Implement logout
           },
         },
       ]
