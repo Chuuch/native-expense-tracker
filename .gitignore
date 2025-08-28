@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+.md
 
 # Expo
 .expo/
@@ -40,3 +41,4 @@ yarn-error.*
 
 app-example
 .env
+.md
