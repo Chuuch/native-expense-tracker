@@ -3,7 +3,10 @@
     "ignorePaths": [],
     "dictionaryDefinitions": [],
     "dictionaries": [],
-    "words": [],
+    "words": [
+        "godotenv",
+        "joho"
+    ],
     "ignoreWords": [],
     "import": []
 }
