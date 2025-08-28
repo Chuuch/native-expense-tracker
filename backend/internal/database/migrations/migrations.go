@@ -12,5 +12,7 @@ func RunMigrations(db *gorm.DB) error {
 		&models.Transaction{},
 		&models.SavingsGoal{},
 		&models.SavingsContribution{},
+		&models.VerificationCode{},
+		&models.RefreshToken{},
 	)
 }
