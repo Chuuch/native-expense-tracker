@@ -16,6 +16,7 @@ type AuthHandler struct {
 	db              *gorm.DB
 	verificationSvc *services.VerificationService
 	refreshTokenSvc *services.RefreshTokenService
+	emailSvc        *services.EmailService
 }
 
 func NewAuthHandler(db *gorm.DB) *AuthHandler {
@@ -23,6 +24,7 @@ func NewAuthHandler(db *gorm.DB) *AuthHandler {
 		db:              db,
 		verificationSvc: services.NewVerificationService(db),
 		refreshTokenSvc: services.NewRefreshTokenService(db),
+		emailSvc:        services.NewEmailService(),
 	}
 }
 
@@ -100,8 +102,8 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		return
 	}
 
-	if err := h.verificationSvc.SendVerificationCode(&user, verificationCode.Code, "email_verification"); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send verification code"})
+	if err := h.emailSvc.SendVerificationEmail(&user, verificationCode.Code); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send verification email"})
 		return
 	}
 
@@ -179,6 +181,12 @@ func (h *AuthHandler) VerifyEmail(c *gin.Context) {
 
 	h.db.Model(&user).Update("email_verified", true)
 
+	// Send welcome email following the same pattern as other functions
+	if err := h.emailSvc.SendWelcomeEmail(&user); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send welcome email"})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "Email verified successfully"})
 }
 
@@ -201,8 +209,8 @@ func (h *AuthHandler) ResendVerification(c *gin.Context) {
 		return
 	}
 
-	if err := h.verificationSvc.SendVerificationCode(&user, verificationCode.Code, "email_verification"); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send verification code"})
+	if err := h.emailSvc.SendVerificationEmail(&user, verificationCode.Code); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send verification email"})
 		return
 	}
 
