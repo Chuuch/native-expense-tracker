@@ -1,7 +1,8 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useAuth } from '../hooks';
 
 export default function RegisterForm() {
   const [fullName, setFullName] = useState<string>('');
@@ -9,7 +10,8 @@ export default function RegisterForm() {
   const [phone, setPhone] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  
+  const { register, isLoadingRegister } = useAuth();
 
   async function signUpWithEmail() {
     // Validation
@@ -28,14 +30,22 @@ export default function RegisterForm() {
       return;
     }
 
-    setLoading(true);
-    setLoading(false);
-
+    try {
+      await register({
+        email,
+        fullName,
+        phone,
+        password,
+      });
+      
       Alert.alert(
         'Success',
         'Account created successfully! Please check your email for verification.',
-      [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
-    );
+        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
+      );
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
   }
 
   return (
@@ -160,11 +170,11 @@ export default function RegisterForm() {
         {/* Register Button */}
         <TouchableOpacity
           className='bg-[#CBFD03] rounded-xl p-4 items-center mb-6'
-          disabled={loading}
+          disabled={isLoadingRegister}
           onPress={signUpWithEmail}
         >
           <Text className='text-black text-lg font-semibold'>
-            {loading ? 'Creating Account...' : 'Create Account'}
+            {isLoadingRegister ? 'Creating Account...' : 'Create Account'}
           </Text>
         </TouchableOpacity>
 
@@ -191,5 +201,3 @@ export default function RegisterForm() {
     </>
   )
 }
-
-const styles = StyleSheet.create({})
