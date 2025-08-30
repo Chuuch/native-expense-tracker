@@ -7,7 +7,6 @@ import { useAuth } from '../hooks';
 export default function RegisterForm() {
   const [fullName, setFullName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   
@@ -25,8 +24,8 @@ export default function RegisterForm() {
       return;
     }
 
-    if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters long');
+    if (password.length < 8) {
+      Alert.alert('Error', 'Password must be at least 8 characters long');
       return;
     }
 
@@ -34,7 +33,6 @@ export default function RegisterForm() {
       await register({
         email,
         fullName,
-        phone,
         password,
       });
       
@@ -80,22 +78,6 @@ export default function RegisterForm() {
               autoCapitalize="none"
               value={email}
               onChangeText={setEmail}
-            />
-          </View>
-        </View>
-
-        {/* Phone Input */}
-        <View className='mb-4'>
-          <Text className='text-white text-base font-semibold mb-2'>Phone Number</Text>
-          <View className='bg-stone-800 rounded-xl p-4 flex-row items-center'>
-            <Feather name="phone" size={20} color="#6b7280" />
-            <TextInput
-              className='flex-1 text-white text-base ml-3'
-              placeholder="Enter your phone number"
-              placeholderTextColor="#6b7280"
-              keyboardType="phone-pad"
-              value={phone}
-              onChangeText={setPhone}
             />
           </View>
         </View>
