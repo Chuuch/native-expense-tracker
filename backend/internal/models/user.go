@@ -8,10 +8,10 @@ import (
 
 type User struct {
 	ID            uint           `json:"id" gorm:"primaryKey"`
-	Email         string         `json:"email" gorm:"uniqueIndex;not null"`
-	Password      string         `json:"-" gorm:"not null"`
-	Fullname      string         `json:"full_name" gorm:"not null"`
-	Currency      string         `json:"currency" gorm:"default:'USD'"`
+	Email         string         `json:"email" gorm:"size:255;uniqueIndex;not null"`
+	Password      string         `json:"-" gorm:"size:255;not null"`
+	Fullname      string         `json:"full_name" gorm:"size:255;not null"`
+	Currency      string         `json:"currency" gorm:"size:3;default:'USD'"`
 	EmailVerified bool           `json:"email_verified" gorm:"default:false"`
 	CreatedAt     time.Time      `json:"created_at"`
 	UpdatedAt     time.Time      `json:"updated_at"`
