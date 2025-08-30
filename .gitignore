@@ -36,6 +36,11 @@ yarn-error.*
 .env
 .gitignore
 
+# Backend config
+backend/pkg/config/config.go
+backend/config.go
+config.go
+
 # typescript
 *.tsbuildinfo
 
