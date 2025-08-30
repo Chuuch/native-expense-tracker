@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = 'http://localhost:8080/api'; // Update with your actual backend URL
+const API_BASE_URL = 'http://localhost:8080'; // Update with your actual backend URL
 
 // API client with authentication
 class ApiClient {
@@ -17,8 +17,24 @@ class ApiClient {
 
   private async handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      let errorMessage = `HTTP error! status: ${response.status}`;
+      
+      try {
+        const errorData = await response.json();
+        if (errorData.error) {
+          errorMessage = errorData.error;
+        } else if (errorData.message) {
+          errorMessage = errorData.message;
+        }
+      } catch (parseError) {
+        // If we can't parse JSON, use the status text
+        errorMessage = response.statusText || errorMessage;
+      }
+      
+      const error = new Error(errorMessage);
+      (error as any).status = response.status;
+      (error as any).statusText = response.statusText;
+      throw error;
     }
     return response.json();
   }
@@ -35,18 +51,18 @@ class ApiClient {
     return this.handleResponse<T>(response);
   }
 
-  async post<T>(endpoint: string, data?: any): Promise<T> {
-    const headers = await this.getAuthHeaders();
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers,
-      },
-      body: data ? JSON.stringify(data) : undefined,
-    });
-    return this.handleResponse<T>(response);
-  }
+  async post<T>(endpoint: string, data?: any, skipAuth: boolean = false): Promise<T> {
+  const headers = skipAuth ? {} : await this.getAuthHeaders();
+  const response = await fetch(`${this.baseURL}${endpoint}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...headers,
+    },
+    body: data ? JSON.stringify(data) : undefined,
+  });
+  return this.handleResponse<T>(response);
+}
 
   async put<T>(endpoint: string, data: any): Promise<T> {
     const headers = await this.getAuthHeaders();
@@ -79,18 +95,18 @@ export const apiClient = new ApiClient(API_BASE_URL);
 // Auth API
 export const authAPI = {
   login: async (email: string, password: string) => {
-    return apiClient.post<{ user: User; accessToken: string; refreshToken: string }>('/auth/login', {
+    return apiClient.post<{ user: User; access_token: string; refresh_token: string }>('/auth/login', {
       email,
       password,
-    });
+    }, true);
   },
 
   register: async (userData: RegisterData) => {
-    return apiClient.post<{ user: User; accessToken: string; refreshToken: string }>('/auth/register', userData);
+    return apiClient.post<{ message: string; user: User }>('/auth/register', userData, true);
   },
 
   refreshToken: async (refreshToken: string) => {
-    return apiClient.post<{ accessToken: string }>('/auth/refresh', { refreshToken });
+    return apiClient.post<{ accessToken: string }>('/auth/refresh', { refreshToken }, true);
   },
 
   logout: async () => {
@@ -98,30 +114,30 @@ export const authAPI = {
   },
 
   verifyEmail: async (code: string) => {
-    return apiClient.post('/auth/verify', { code });
+    return apiClient.post('/auth/verify-email', { code }, true);
   },
 
   forgotPassword: async (email: string) => {
-    return apiClient.post('/auth/forgot-password', { email });
+    return apiClient.post('/auth/forgot-password', { email }, true);
   },
 
   resetPassword: async (token: string, newPassword: string) => {
-    return apiClient.post('/auth/reset-password', { token, newPassword });
+    return apiClient.post('/auth/reset-password', { token, newPassword }, true);
   },
 };
 
 // User API
 export const userAPI = {
   getProfile: async () => {
-    return apiClient.get<User>('/user/profile');
+    return apiClient.get<User>('/api/auth/profile');
   },
 
   updateProfile: async (updates: Partial<User>) => {
-    return apiClient.put<User>('/user/profile', updates);
+    return apiClient.put<User>('/api/auth/profile', updates);
   },
 
   deleteAccount: async () => {
-    return apiClient.delete('/user/account');
+    return apiClient.delete('/api/user/account');
   },
 };
 
@@ -135,53 +151,53 @@ export const transactionAPI = {
     if (params?.startDate) queryParams.append('startDate', params.startDate);
     if (params?.endDate) queryParams.append('endDate', params.endDate);
     
-    return apiClient.get<PaginatedResponse<Transaction>>(`/transactions?${queryParams}`);
+    return apiClient.get<PaginatedResponse<Transaction>>(`/api/transactions?${queryParams}`);
   },
 
   createTransaction: async (transaction: CreateTransactionData) => {
-    return apiClient.post<Transaction>('/transactions', transaction);
+    return apiClient.post<Transaction>('/api/transactions', transaction);
   },
 
   updateTransaction: async (id: string, updates: Partial<Transaction>) => {
-    return apiClient.put<Transaction>(`/transactions/${id}`, updates);
+    return apiClient.put<Transaction>(`/api/transactions/${id}`, updates);
   },
 
   deleteTransaction: async (id: string) => {
-    return apiClient.delete(`/transactions/${id}`);
+    return apiClient.delete(`/api/transactions/${id}`);
   },
 };
 
 // Analytics API
 export const analyticsAPI = {
   getSummary: async (period: string) => {
-    return apiClient.get<AnalyticsSummary>(`/analytics/summary?period=${period}`);
+    return apiClient.get<AnalyticsSummary>(`/api/analytics/summary?period=${period}`);
   },
 
   getCategoryBreakdown: async (period: string) => {
-    return apiClient.get<CategoryBreakdown[]>(`/analytics/categories?period=${period}`);
+    return apiClient.get<CategoryBreakdown[]>(`/api/analytics/categories?period=${period}`);
   },
 
   getTrends: async (period: string) => {
-    return apiClient.get<TrendData[]>(`/analytics/trends?period=${period}`);
+    return apiClient.get<TrendData[]>(`/api/analytics/trends?period=${period}`);
   },
 };
 
 // Savings Goals API
 export const savingsGoalAPI = {
   getGoals: async () => {
-    return apiClient.get<SavingsGoal[]>('/savings-goals');
+    return apiClient.get<SavingsGoal[]>('/api/savings-goals');
   },
 
   createGoal: async (goal: CreateSavingsGoalData) => {
-    return apiClient.post<SavingsGoal>('/savings-goals', goal);
+    return apiClient.post<SavingsGoal>('/api/savings-goals', goal);
   },
 
   updateGoal: async (id: string, updates: Partial<SavingsGoal>) => {
-    return apiClient.put<SavingsGoal>(`/savings-goals/${id}`, updates);
+    return apiClient.put<SavingsGoal>(`/api/savings-goals/${id}`, updates);
   },
 
   deleteGoal: async (id: string) => {
-    return apiClient.delete(`/savings-goals/${id}`);
+    return apiClient.delete(`/api/savings-goals/${id}`);
   },
 };
 
