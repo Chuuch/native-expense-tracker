@@ -9,6 +9,7 @@ import (
 	migrations "money-mate/internal/database"
 	"money-mate/internal/handlers"
 	"money-mate/internal/middleware"
+	"money-mate/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -32,6 +33,9 @@ func main() {
 		log.Fatal("Failed to run migrations:", err)
 	}
 
+	// Initialize email service
+	emailService := services.NewEmailService(cfg)
+
 	// Initialize Gin router
 	router := gin.Default()
 
@@ -41,7 +45,7 @@ func main() {
 	router.Use(middleware.CORS())
 
 	// Initialize handlers
-	authHandler := auth.NewAuthHandler(db)
+	authHandler := auth.NewAuthHandler(db, emailService, cfg.JWTSecret)
 	transactionHandler := handlers.NewTransactionHandler(db)
 	savingsHandler := handlers.NewSavingsGoalHandler(db)
 	analyticsHandler := handlers.NewAnalyticsHandler(db)
@@ -66,11 +70,11 @@ func main() {
 
 	// Protected routes (authentication required)
 	protected := router.Group("/api")
-	protected.Use(auth.AuthMiddleware())
+	protected.Use(auth.AuthMiddleware(cfg.JWTSecret))
 	{
 		// Authentication routes
 		protected.POST("/auth/logout", authHandler.Logout)
-		// protected.GET("/auth/profile", authHandler.GetProfile)
+		protected.GET("/auth/profile", authHandler.GetProfile)
 		// protected.PUT("/auth/profile", authHandler.UpdateProfile)
 		// protected.PUT("/auth/change-password", authHandler.ChangePassword)
 
