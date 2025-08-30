@@ -24,9 +24,15 @@ export function useAuth() {
     mutationFn: ({ email, password }: { email: string; password: string }) => 
       authAPI.login(email, password),
     onSuccess: async (data) => {
+      // Validate response data before storing tokens
+      if (!data || !data.access_token || !data.refresh_token) {
+        console.error('Login response missing required fields:', data);
+        throw new Error('Invalid login response from server');
+      }
+      
       // Store tokens
-      await AsyncStorage.setItem('accessToken', data.accessToken);
-      await AsyncStorage.setItem('refreshToken', data.refreshToken);
+      await AsyncStorage.setItem('accessToken', data.access_token);
+      await AsyncStorage.setItem('refreshToken', data.refresh_token);
       
       // Fetch user profile
       await queryClient.fetchQuery({
@@ -46,18 +52,8 @@ export function useAuth() {
   const registerMutation = useMutation({
     mutationFn: (userData: any) => authAPI.register(userData),
     onSuccess: async (data) => {
-      // Store tokens
-      await AsyncStorage.setItem('accessToken', data.accessToken);
-      await AsyncStorage.setItem('refreshToken', data.refreshToken);
-      
-      // Fetch user profile
-      await queryClient.fetchQuery({
-        queryKey: queryKeys.auth.profile,
-        queryFn: userAPI.getProfile,
-      });
-      
-      // Navigate to main app
-      router.replace('/(tabs)');
+      // Navigate to email verification screen
+      router.replace('/(auth)/verify');
     },
     onError: (error) => {
       console.error('Registration failed:', error);
