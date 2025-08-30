@@ -47,3 +47,4 @@ config.go
 app-example
 .env
 .md
+.development.env
