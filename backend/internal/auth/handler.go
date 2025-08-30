@@ -31,8 +31,7 @@ func NewAuthHandler(db *gorm.DB) *AuthHandler {
 type RegisterRequest struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=8"`
-	FullName string `json:"full_name" binding:"required"`
-	Currency string `json:"currency" binding:"required"`
+	FullName string `json:"fullName" binding:"required"`
 }
 
 type LoginRequest struct {
@@ -79,15 +78,11 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		return
 	}
 
-	if req.Currency == "" {
-		req.Currency = "USD"
-	}
-
 	user := models.User{
 		Email:         req.Email,
 		Password:      string(hashedPassword),
 		Fullname:      req.FullName,
-		Currency:      req.Currency,
+		Currency:      "USD",
 		EmailVerified: false,
 	}
 
