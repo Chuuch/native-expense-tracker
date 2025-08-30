@@ -3,31 +3,55 @@ package services
 import (
 	"fmt"
 	"money-mate/internal/models"
-	"os"
+	"money-mate/pkg/config"
+	"strconv"
 
-	"github.com/sendgrid/sendgrid-go"
-	"github.com/sendgrid/sendgrid-go/helpers/mail"
+	"gopkg.in/mail.v2"
 )
 
 type EmailService struct {
-	client *sendgrid.Client
-	from   *mail.Email
+	dialer   *mail.Dialer
+	from     string
+	fromName string
 }
 
-func NewEmailService() *EmailService {
-	client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
-	from := mail.NewEmail("Money Mate", os.Getenv("FROM_EMAIL"))
+func NewEmailService(cfg *config.Config) *EmailService {
+	port, err := strconv.Atoi(cfg.SMTPPort)
+	if err != nil {
+		// Log the error and use default port
+		fmt.Printf("Failed to parse SMTP port '%s': %v, using default port 2525\n", cfg.SMTPPort, err)
+		port = 2525
+	}
+
+	fmt.Printf("Creating email service with SMTP config: Host=%s, Port=%d, Username=%s, FromEmail=%s\n",
+		cfg.SMTPHost, port, cfg.SMTPUsername, cfg.FromEmail)
+
+	dialer := mail.NewDialer(cfg.SMTPHost, port, cfg.SMTPUsername, cfg.SMTPPassword)
+
+	// For local development without authentication
+	if cfg.SMTPUsername == "" && cfg.SMTPPassword == "" {
+		dialer = mail.NewDialer(cfg.SMTPHost, port, "", "")
+	}
 
 	return &EmailService{
-		client: client,
-		from:   from,
+		dialer:   dialer,
+		from:     cfg.FromEmail,
+		fromName: cfg.FromName,
 	}
 }
 
 func (s *EmailService) SendVerificationEmail(user *models.User, code string) error {
-	to := mail.NewEmail(user.Fullname, user.Email)
-	subject := "Verify your email - Money Mate"
+	fmt.Printf("Attempting to send verification email to: %s with code: %s\n", user.Email, code)
+	fmt.Printf("Using SMTP dialer: Host=%s, From=%s <%s>\n", s.dialer.Host, s.fromName, s.from)
 
+	m := mail.NewMessage()
+
+	// Set headers
+	m.SetHeader("From", fmt.Sprintf("%s <%s>", s.fromName, s.from))
+	m.SetHeader("To", user.Email)
+	m.SetHeader("Subject", "Verify your email - Money Mate")
+
+	// Set body
 	htmlContent := fmt.Sprintf(`
 		<!DOCTYPE html>
 		<html>
@@ -91,17 +115,28 @@ func (s *EmailService) SendVerificationEmail(user *models.User, code string) err
 		The Money Mate Team
 	`, user.Fullname, code)
 
-	message := mail.NewSingleEmail(s.from, subject, to, plainTextContent, htmlContent)
+	m.SetBody("text/html", htmlContent)
+	m.AddAlternative("text/plain", plainTextContent)
 
-	_, err := s.client.Send(message)
-	return err
+	err := s.dialer.DialAndSend(m)
+	if err != nil {
+		fmt.Printf("Failed to send email: %v\n", err)
+		return err
+	}
+
+	fmt.Printf("Email sent successfully to %s\n", user.Email)
+	return nil
 }
 
 func (s *EmailService) SendPasswordResetEmail(user *models.User, resetToken string) error {
-	to := mail.NewEmail(user.Fullname, user.Email)
-	subject := "Reset Your Password - Money Mate"
+	m := mail.NewMessage()
 
-	resetLink := fmt.Sprintf("%s/reset-password?token=%s", os.Getenv("FRONTEND_URL"), resetToken)
+	// Set headers
+	m.SetHeader("From", fmt.Sprintf("%s <%s>", s.fromName, s.from))
+	m.SetHeader("To", user.Email)
+	m.SetHeader("Subject", "Reset Your Password - Money Mate")
+
+	resetLink := fmt.Sprintf("%s/reset-password?token=%s", "http://localhost:3000", resetToken)
 
 	htmlContent := fmt.Sprintf(`
 		<!DOCTYPE html>
@@ -167,15 +202,19 @@ func (s *EmailService) SendPasswordResetEmail(user *models.User, resetToken stri
 		The Money Mate Team
 	`, user.Fullname, resetLink)
 
-	message := mail.NewSingleEmail(s.from, subject, to, plainTextContent, htmlContent)
+	m.SetBody("text/html", htmlContent)
+	m.AddAlternative("text/plain", plainTextContent)
 
-	_, err := s.client.Send(message)
-	return err
+	return s.dialer.DialAndSend(m)
 }
 
 func (s *EmailService) SendWelcomeEmail(user *models.User) error {
-	to := mail.NewEmail(user.Fullname, user.Email)
-	subject := "Welcome to Money Mate!"
+	m := mail.NewMessage()
+
+	// Set headers
+	m.SetHeader("From", fmt.Sprintf("%s <%s>", s.fromName, s.from))
+	m.SetHeader("To", user.Email)
+	m.SetHeader("Subject", "Welcome to Money Mate!")
 
 	htmlContent := fmt.Sprintf(`
 		<!DOCTYPE html>
@@ -247,8 +286,8 @@ func (s *EmailService) SendWelcomeEmail(user *models.User) error {
 		The Money Mate Team
 	`, user.Fullname)
 
-	message := mail.NewSingleEmail(s.from, subject, to, plainTextContent, htmlContent)
+	m.SetBody("text/html", htmlContent)
+	m.AddAlternative("text/plain", plainTextContent)
 
-	_, err := s.client.Send(message)
-	return err
+	return s.dialer.DialAndSend(m)
 }
