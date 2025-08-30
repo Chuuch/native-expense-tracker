@@ -2,19 +2,26 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useAuth } from "../hooks";
 
 export default function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+
+  const { login, isLoadingLogin } = useAuth();
 
   async function signInWithEmail() {
     if (!email || !password) {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
-    setLoading(true);
-    setLoading(false);
+
+    try {
+      await login(email, password);
+      router.replace("/(tabs)");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   }
 
   return (
@@ -81,11 +88,11 @@ export default function LoginForm() {
         {/* Login Button */}
         <TouchableOpacity
           className="bg-[#CBFD03] rounded-xl p-4 items-center mb-6"
-          disabled={loading}
+          disabled={isLoadingLogin}
           onPress={signInWithEmail}
         >
           <Text className="text-black text-lg font-semibold">
-            {loading ? "Signing In..." : "Sign In"}
+            {isLoadingLogin ? "Signing In..." : "Sign In"}
           </Text>
         </TouchableOpacity>
 
