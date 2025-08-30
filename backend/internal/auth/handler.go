@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"log"
 	"money-mate/internal/models"
 	"money-mate/internal/services"
 	"net/http"
@@ -17,14 +18,16 @@ type AuthHandler struct {
 	verificationSvc *services.VerificationService
 	refreshTokenSvc *services.RefreshTokenService
 	emailSvc        *services.EmailService
+	jwtSecret       string
 }
 
-func NewAuthHandler(db *gorm.DB) *AuthHandler {
+func NewAuthHandler(db *gorm.DB, emailSvc *services.EmailService, jwtSecret string) *AuthHandler {
 	return &AuthHandler{
 		db:              db,
 		verificationSvc: services.NewVerificationService(db),
 		refreshTokenSvc: services.NewRefreshTokenService(db),
-		emailSvc:        services.NewEmailService(),
+		emailSvc:        emailSvc,
+		jwtSecret:       jwtSecret,
 	}
 }
 
@@ -40,8 +43,7 @@ type LoginRequest struct {
 }
 
 type VerifyEmailRequest struct {
-	Email string `json:"email" binding:"required,email"`
-	Code  string `json:"code" binding:"required"`
+	Code string `json:"code" binding:"required"`
 }
 
 type ResendVerificationRequest struct {
@@ -87,18 +89,18 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	}
 
 	if err := h.db.Create(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user: " + err.Error()})
 		return
 	}
 
 	verificationCode, err := h.verificationSvc.CreateVerificationCode(user.ID, "email_verification")
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create verification code"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create verification code: " + err.Error()})
 		return
 	}
 
 	if err := h.emailSvc.SendVerificationEmail(&user, verificationCode.Code); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send verification email"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send verification email: " + err.Error()})
 		return
 	}
 
@@ -158,30 +160,42 @@ func (h *AuthHandler) Login(c *gin.Context) {
 func (h *AuthHandler) VerifyEmail(c *gin.Context) {
 	var req VerifyEmailRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Printf("❌ VerifyEmail - Validation error: %v", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	log.Printf("✅ VerifyEmail - Request validated successfully: %+v", req)
+
+	// Find verification code first
+	var verificationCode models.VerificationCode
+	if err := h.db.Where("code = ? AND type = ? AND expires_at > ?", req.Code, "email_verification", time.Now()).First(&verificationCode).Error; err != nil {
+		log.Printf("❌ VerifyEmail - Invalid or expired code: %s", req.Code)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid or expired verification code"})
+		return
+	}
+
+	// Find user by the verification code's user_id
 	var user models.User
-	if err := h.db.Where("email = ?", req.Email).First(&user).Error; err != nil {
+	if err := h.db.Where("id = ?", verificationCode.UserID).First(&user).Error; err != nil {
+		log.Printf("❌ VerifyEmail - User not found for code: %s", req.Code)
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
-	valid, err := h.verificationSvc.VerifyCode(user.ID, req.Code, "email_verification")
-	if err != nil || !valid {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid or expired verification code"})
-		return
-	}
+	// Mark the verification code as used
+	h.db.Model(&verificationCode).Update("used", true)
 
 	h.db.Model(&user).Update("email_verified", true)
 
 	// Send welcome email following the same pattern as other functions
 	if err := h.emailSvc.SendWelcomeEmail(&user); err != nil {
+		log.Printf("❌ VerifyEmail - Failed to send welcome email: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send welcome email"})
 		return
 	}
 
+	log.Printf("✅ VerifyEmail - Email verified successfully for user: %s", user.Email)
 	c.JSON(http.StatusOK, gin.H{"message": "Email verified successfully"})
 }
 
@@ -254,6 +268,21 @@ func (h *AuthHandler) Logout(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Logged out successfully"})
 }
 
+func (h *AuthHandler) GetProfile(c *gin.Context) {
+	userID := c.GetUint("user_id")
+
+	var user models.User
+	if err := h.db.Where("id = ?", userID).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	// Don't send password in response
+	user.Password = ""
+
+	c.JSON(http.StatusOK, user)
+}
+
 func (h *AuthHandler) generateAccessToken(userID uint) (string, time.Time, error) {
 	expiresAt := time.Now().Add(15 * time.Minute)
 
@@ -264,7 +293,7 @@ func (h *AuthHandler) generateAccessToken(userID uint) (string, time.Time, error
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte("your-secret-key"))
+	tokenString, err := token.SignedString([]byte(h.jwtSecret))
 	if err != nil {
 		return "", time.Time{}, err
 	}
