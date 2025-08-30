@@ -1,12 +1,79 @@
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { authAPI } from '../../lib/api';
 
 export default function VerifyScreen() {
   const router = useRouter();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timeLeft, setTimeLeft] = useState(30);
+  const [isVerifying, setIsVerifying] = useState(false);
+  
+  // Create refs for each input box
+  const inputRefs = useRef<(TextInput | null)[]>([]);
+  
+  // Auto-focus first input when component mounts
+  useEffect(() => {
+    // Focus the first input after a short delay to ensure component is rendered
+    const timer = setTimeout(() => {
+      inputRefs.current[0]?.focus();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+  
+  const handleSubmit = async () => {
+    // Combine OTP digits into a single string
+    const code = otp.join('');
+    
+    // Validate OTP
+    if (code.length !== 6) {
+      Alert.alert('Error', 'Please enter the complete 6-digit code');
+      return;
+    }
+
+    setIsVerifying(true);
+    
+    try {
+      await authAPI.verifyEmail(code);
+      Alert.alert(
+        'Success',
+        'Email verified successfully! You can now log in.',
+        [{ text: 'OK', onPress: () => router.replace('/(auth)/login') }]
+      );
+    } catch (error: any) {
+      console.error('🔍 Verification failed - Full error:', error);
+      console.error('🔍 Error message:', error.message);
+      console.error('🔍 Error status:', error.status);
+      console.error('🔍 Error statusText:', error.statusText);
+      
+      let errorMessage = 'Failed to verify email. Please try again.';
+      if (error.message && error.message !== `HTTP error! status: ${error.status}`) {
+        errorMessage = error.message;
+      }
+      
+      Alert.alert('Error', errorMessage);
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const handleOtpChange = (text: string, index: number) => {
+    const newOtp = [...otp];
+    newOtp[index] = text;
+    setOtp(newOtp);
+    
+    // Auto-focus next input
+    if (text && index < 5) {
+      // Focus next input logic would go here
+      // For now, we'll just update the state
+    }
+  };
+
+  const resendCode = async () => {
+    // TODO: Implement resend verification code
+    Alert.alert('Info', 'Resend functionality will be implemented');
+  };
 
   return (
     <ScrollView 
@@ -25,7 +92,7 @@ export default function VerifyScreen() {
             We&apos;ve sent a verification code to
           </Text>
           <Text className='text-[#CBFD03] text-lg font-semibold'>
-            john.doe@example.com
+            your email
           </Text>
         </View>
 
@@ -41,16 +108,7 @@ export default function VerifyScreen() {
                 <TextInput
                   className='text-white text-2xl font-bold text-center'
                   value={digit}
-                  onChangeText={(text) => {
-                    const newOtp = [...otp];
-                    newOtp[index] = text;
-                    setOtp(newOtp);
-                    
-                    // Auto-focus next input
-                    if (text && index < 5) {
-                      // Focus next input logic would go here
-                    }
-                  }}
+                  onChangeText={(text) => handleOtpChange(text, index)}
                   keyboardType="number-pad"
                   maxLength={1}
                   style={{ width: 40, height: 40 }}
@@ -60,8 +118,14 @@ export default function VerifyScreen() {
           </View>
 
           {/* Verify Button */}
-          <TouchableOpacity className='bg-[#CBFD03] rounded-xl p-4 items-center mb-6'>
-            <Text className='text-black text-lg font-semibold'>Verify Email</Text>
+          <TouchableOpacity 
+            className={`rounded-xl p-4 items-center mb-6 ${isVerifying ? 'bg-stone-600' : 'bg-[#CBFD03]'}`}
+            onPress={handleSubmit}
+            disabled={isVerifying}
+          >
+            <Text className={`text-lg font-semibold ${isVerifying ? 'text-gray-400' : 'text-black'}`}>
+              {isVerifying ? 'Verifying...' : 'Verify Email'}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -77,7 +141,7 @@ export default function VerifyScreen() {
               <Text className='text-[#CBFD03] text-base font-semibold'>{timeLeft}s</Text>
             </View>
           ) : (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={resendCode}>
               <Text className='text-[#CBFD03] text-base font-semibold'>Resend Code</Text>
             </TouchableOpacity>
           )}
