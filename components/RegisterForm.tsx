@@ -1,5 +1,4 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../hooks';
@@ -38,8 +37,8 @@ export default function RegisterForm() {
       
       Alert.alert(
         'Success',
-        'Account created successfully! Please check your email for verification.',
-        [{ text: 'OK', onPress: () => router.replace('/(tabs)') }]
+        'Account created successfully! Please check your email. We have sent you a verification code.',
+        [{ text: 'OK' }]
       );
     } catch (error) {
       console.error("Registration failed:", error);
