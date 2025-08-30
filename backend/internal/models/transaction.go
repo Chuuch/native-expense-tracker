@@ -11,8 +11,8 @@ type Transaction struct {
 	UserID      uint           `json:"user_id" gorm:"not null"`
 	Amount      float64        `json:"amount" gorm:"not null"`
 	Type        string         `json:"type" gorm:"not null;check:type IN ('income','expense')"`
-	Category    string         `json:"category" gorm:"not null"`
-	Description string         `json:"description"`
+	Category    string         `json:"category" gorm:"size:100;not null"`
+	Description string         `json:"description" gorm:"size:500"`
 	Date        time.Time      `json:"date" gorm:"not null"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
