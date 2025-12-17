@@ -112,7 +112,7 @@ func (h *TransactionHandler) UpdateTransaction(c *gin.Context) {
 		return
 	}
 
-	updates := make(map[string]interface{})
+	updates := make(map[string]any)
 
 	if req.Amount != nil {
 		updates["amount"] = *req.Amount

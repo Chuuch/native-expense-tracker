@@ -126,7 +126,7 @@ func main() {
 	})
 
 	// Start server
-	log.Printf("�� Server starting on port %s", cfg.Port)
+	log.Printf("Server starting on port %s", cfg.Port)
 	log.Printf("📊 Environment: %s", cfg.Environment)
 	log.Printf("🗄️  Database: Connected successfully")
 

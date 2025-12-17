@@ -6,8 +6,13 @@ require (
 	github.com/gin-gonic/gin v1.10.1
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/joho/godotenv v1.5.1
+<<<<<<< Updated upstream
 	golang.org/x/crypto v0.41.0
 	gopkg.in/mail.v2 v2.3.1
+=======
+	github.com/sendgrid/sendgrid-go v3.16.1+incompatible
+	golang.org/x/crypto v0.41.0
+>>>>>>> Stashed changes
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/gorm v1.30.2
 )
@@ -34,6 +39,10 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
+<<<<<<< Updated upstream
+=======
+	github.com/sendgrid/rest v2.6.9+incompatible // indirect
+>>>>>>> Stashed changes
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	golang.org/x/arch v0.8.0 // indirect

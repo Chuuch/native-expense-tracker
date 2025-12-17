@@ -92,7 +92,7 @@ func (h *SavingsGoalHandler) UpdateSavingsGoal(c *gin.Context) {
 		return
 	}
 
-	updates := make(map[string]interface{})
+	updates := make(map[string]any)
 	if req.Name != nil {
 		updates["name"] = *req.Name
 	}
