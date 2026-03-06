@@ -79,27 +79,8 @@ const darkTheme: ThemeConfig = {
   tint: { active: "#6366f1", inactive: "#a8a29e", text: "#fafafa", textSecondary: "#a8a29e", accent: "#6366f1" },
 };
 
-const oledTheme: ThemeConfig = {
-  id: "oled",
-  name: "OLED Black",
-  description: "True black for OLED screens",
-  colors: {
-    background: "bg-black",
-    card: "bg-gray-900",
-    cardSecondary: "bg-gray-800",
-    text: "text-white",
-    textSecondary: "text-gray-400",
-    accent: "bg-indigo-500",
-    border: "border-gray-800",
-    success: "bg-green-500",
-    warning: "bg-yellow-500",
-    error: "bg-red-500",
-    tabBar: "bg-gray-900",
-  },
-  tint: { active: "#6366f1", inactive: "#a8a29e", text: "#fafafa", textSecondary: "#a8a29e", accent: "#6366f1" },
-};
 
-export const themes: ThemeConfig[] = [lightTheme, darkTheme, oledTheme];
+export const themes: ThemeConfig[] = [lightTheme, darkTheme];
 
 interface ThemeContextType {
   currentTheme: ThemeConfig;
@@ -144,8 +125,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
         effectiveTheme = lightTheme;
       } else if (themeMode === "dark") {
         effectiveTheme = darkTheme;
-      } else if (themeMode === "oled") {
-        effectiveTheme = oledTheme;
       } else {
         effectiveTheme = darkTheme; // fallback
       }
@@ -160,7 +139,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       const savedTheme = SecureStore.getItem("themeMode");
       if (
         savedTheme &&
-        ["light", "dark", "auto", "oled"].includes(savedTheme)
+        ["light", "dark", "auto"].includes(savedTheme)
       ) {
         setThemeMode(savedTheme as ThemeMode);
       }
@@ -182,7 +161,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     currentTheme,
     themeMode,
     setThemeMode: setThemeModeAndSave,
-    isDark: currentTheme.id === "dark" || currentTheme.id === "oled",
+    isDark: currentTheme.id === "dark",
     colors: currentTheme.colors,
     tint: currentTheme.tint,
   };
