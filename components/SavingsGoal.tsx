@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import { Feather, FontAwesome } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
@@ -36,7 +36,7 @@ export default function SavingsGoal() {
       targetDate: "2024-12-31",
       category: "Travel",
       icon: "plane",
-      color: "#CBFD03",
+      color: "#8e52ff",
       progress: 60,
     },
     {
@@ -83,9 +83,9 @@ export default function SavingsGoal() {
         <Text className={`${colors.text} text-2xl font-bold`}>Savings Goals</Text>
         <TouchableOpacity
           onPress={() => setShowAddModal(true)}
-          className="bg-[#CBFD03] rounded-full p-2"
+          className="bg-indigo-500 rounded-full p-2"
         >
-          <Feather name="plus" size={20} color="black" />
+          <Feather name="plus" size={20} color="white" />
         </TouchableOpacity>
       </View>
 
@@ -98,7 +98,7 @@ export default function SavingsGoal() {
                   className="rounded-full p-2" 
                   style={{ backgroundColor: goal.color + '20' }}
                 >
-                  <Feather name={goal.icon as any} size={16} color={goal.color} />
+                  <FontAwesome name={goal.icon as any} size={16} color={goal.color} />
                 </View>
                 <View>
                   <Text className={`${colors.text} text-base font-semibold`}>
@@ -109,12 +109,12 @@ export default function SavingsGoal() {
                   </Text>
                 </View>
               </View>
-              <Text className={`text-[#CBFD03] text-sm font-semibold`}>
+              <Text className={`text-green-600 text-sm font-semibold`}>
                 {formatCurrency(goal.currentAmount)} / {formatCurrency(goal.targetAmount)}
               </Text>
             </View>
             
-            <View className="w-full bg-stone-700 rounded-full h-2">
+            <View className="w-full bg-stone-300 rounded-full h-2">
               <View 
                 className="h-2 rounded-full" 
                 style={{ 

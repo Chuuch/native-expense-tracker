@@ -1,3 +1,4 @@
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -122,6 +123,7 @@ Last updated: ${new Date().toLocaleDateString()}`
 ];
 
 export default function TermsScreen() {
+  const { colors, tint } = useTheme();
   const router = useRouter();
   const [expandedSection, setExpandedSection] = useState<string | null>('acceptance');
 
@@ -130,60 +132,60 @@ export default function TermsScreen() {
   };
 
   return (
-    <View className='flex-1 bg-stone-950 pt-20'>
+    <View className={`flex-1 ${colors.background} pt-20`}>
       {/* Header */}
       <View className='flex-row items-center justify-between w-full p-4'>
         <TouchableOpacity 
-          className='bg-stone-800 rounded-xl p-2'
+          className={`${colors.card} rounded-xl p-2`}
           onPress={() => router.back()}
         >
-          <Feather name="arrow-left" size={24} color="#CBFD03" />
+          <Feather name="arrow-left" size={24} color={tint.text} />
         </TouchableOpacity>
-        <Text className='text-white text-4xl font-bold'>Terms of Service</Text>
-        <TouchableOpacity className='bg-stone-800 rounded-xl p-2'>
-          <Feather name="info" size={24} color="#CBFD03" />
+        <Text className={`${colors.text} text-4xl font-bold`}>Terms of Service</Text>
+        <TouchableOpacity className={`${colors.card} rounded-xl p-2`}>
+          <Feather name="info" size={24} color={tint.textSecondary} />
         </TouchableOpacity>
       </View>
 
       <ScrollView 
-        className='flex-1 bg-stone-950 px-4'
+        className={`flex-1 ${colors.background} px-4`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
       >
 
         {/* Introduction */}
-        <View className='w-full bg-stone-800 rounded-xl p-6'>
-          <Text className='text-white text-xl font-bold mb-4'>Terms of Service</Text>
-          <Text className='text-gray-400 text-base mb-4'>
+        <View className={`w-full ${colors.card} rounded-xl p-6`}>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Terms of Service</Text>
+          <Text className={`${colors.textSecondary} text-base mb-4`}>
             These Terms of Service govern your use of the Expense Tracker app. Please read them carefully before using our service.
           </Text>
-          <Text className='text-gray-400 text-sm'>
+          <Text className={`${colors.textSecondary} text-sm`}>
             Last updated: {new Date().toLocaleDateString()}
           </Text>
         </View>
 
         {/* Terms Sections */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Terms and Conditions</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-2'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Terms and Conditions</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-2`}>
             {termsSections.map((section) => (
-              <View key={section.id} className='border-b border-stone-700 last:border-b-0'>
+              <View key={section.id} className={`border-b border-[${colors.border}] last:border-b-0`}>
                 <TouchableOpacity
                   className='flex-row items-center justify-between w-full p-4'
                   onPress={() => handleSectionToggle(section.id)}
                 >
-                  <Text className='text-white text-base font-semibold flex-1 mr-4'>
+                    <Text className={`${colors.text} text-base font-semibold flex-1 mr-4`}>
                     {section.title}
                   </Text>
                   <Feather 
                     name={expandedSection === section.id ? "chevron-up" : "chevron-down"} 
                     size={20} 
-                    color="#CBFD03" 
+                    color={tint.text} 
                   />
                 </TouchableOpacity>
                 {expandedSection === section.id && (
                   <View className='px-4 pb-4'>
-                    <Text className='text-gray-400 text-sm leading-6'>
+                    <Text className={`${colors.textSecondary} text-sm leading-6`}>
                       {section.content}
                     </Text>
                   </View>
@@ -194,32 +196,32 @@ export default function TermsScreen() {
         </View>
 
         {/* Acceptance Section */}
-        <View className='w-full bg-stone-800 rounded-xl p-6'>
-          <Text className='text-white text-lg font-semibold mb-4'>Acceptance of Terms</Text>
-          <Text className='text-gray-400 text-base mb-6'>
+        <View className={`w-full ${colors.card} rounded-xl p-6`}>
+          <Text className={`${colors.text} text-lg font-semibold mb-4`}>Acceptance of Terms</Text>
+          <Text className={`${colors.textSecondary} text-base mb-6`}>
             By using the Expense Tracker app, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.
           </Text>
           <View className='flex-row gap-3'>
-            <TouchableOpacity className='bg-[#CBFD03] rounded-xl px-6 py-3 flex-1'>
-              <Text className='text-black text-base font-semibold text-center'>I Accept</Text>
+            <TouchableOpacity className={`${colors.accent} rounded-xl px-6 py-3 flex-1`}>
+              <Text className={`${colors.text} text-base font-semibold text-center`}>I Accept</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-              className='bg-stone-700 rounded-xl px-6 py-3 flex-1'
+              className={`${colors.cardSecondary} rounded-xl px-6 py-3 flex-1`}
               onPress={() => router.back()}
             >
-              <Text className='text-white text-base font-semibold text-center'>Decline</Text>
+              <Text className={`${colors.text} text-base font-semibold text-center`}>Decline</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Contact Legal */}
-        <View className='w-full bg-stone-800 rounded-xl p-4 mb-20'>
-          <Text className='text-white text-lg font-semibold mb-3'>Questions?</Text>
-          <Text className='text-gray-400 text-sm mb-4'>
+          <View className={`w-full ${colors.card} rounded-xl p-4`}>
+          <Text className={`${colors.text} text-lg font-semibold mb-3`}>Questions?</Text>
+          <Text className={`${colors.textSecondary} text-sm mb-4`}>
             If you have any questions about these Terms of Service, please contact our legal team.
           </Text>
-          <TouchableOpacity className='bg-[#CBFD03] rounded-xl p-3 items-center'>
-            <Text className='text-black text-base font-semibold'>Contact Legal Team</Text>
+          <TouchableOpacity className={`${colors.accent} rounded-xl p-3 items-center`}>
+            <Text className={`${colors.text} text-base font-semibold`}>Contact Legal Team</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

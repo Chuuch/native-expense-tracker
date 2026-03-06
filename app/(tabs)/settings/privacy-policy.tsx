@@ -2,6 +2,7 @@ import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const privacySections = [
   {
@@ -306,6 +307,7 @@ Last updated: ${new Date().toLocaleDateString()}`
 ];
 
 export default function PrivacyPolicyScreen() {
+  const { colors, tint } = useTheme();
   const router = useRouter();
   const [expandedSection, setExpandedSection] = useState<string | null>('introduction');
 
@@ -314,60 +316,60 @@ export default function PrivacyPolicyScreen() {
   };
 
   return (
-    <View className='flex-1 bg-stone-950 pt-20'>
+    <View className={`flex-1 ${colors.background} pt-20`}>
       {/* Header */}
       <View className='flex-row items-center justify-between w-full p-4'>
         <TouchableOpacity 
-          className='bg-stone-800 rounded-xl p-2'
+          className={`${colors.card} rounded-xl p-2`}
           onPress={() => router.back()}
         >
-          <Feather name="arrow-left" size={24} color="#CBFD03" />
+          <Feather name="arrow-left" size={24} color={tint.text} />
         </TouchableOpacity>
-        <Text className='text-white text-4xl font-bold'>Privacy Policy</Text>
-        <TouchableOpacity className='bg-stone-800 rounded-xl p-2'>
-          <Feather name="info" size={24} color="#CBFD03" />
+        <Text className={`${colors.text} text-4xl font-bold`}>Privacy Policy</Text>
+        <TouchableOpacity className={`${colors.card} rounded-xl p-2`}>
+          <Feather name="info" size={24} color={tint.textSecondary} />
         </TouchableOpacity>
       </View>
 
       <ScrollView 
-        className='flex-1 bg-stone-950 px-4'
+        className={`flex-1 ${colors.background} px-4`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
       >
 
         {/* Introduction */}
-        <View className='w-full bg-stone-800 rounded-xl p-6'>
-          <Text className='text-white text-xl font-bold mb-4'>Privacy Policy</Text>
-          <Text className='text-gray-400 text-base mb-4'>
+        <View className={`w-full ${colors.card} rounded-xl p-6`}>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Privacy Policy</Text>
+          <Text className={`${colors.textSecondary} text-base mb-4`}>
             This Privacy Policy explains how we collect, use, and protect your personal information when you use the Expense Tracker app.
           </Text>
-          <Text className='text-gray-400 text-sm'>
+          <Text className={`${colors.textSecondary} text-sm`}>
             Last updated: {new Date().toLocaleDateString()}
           </Text>
         </View>
 
         {/* Privacy Sections */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Privacy Policy Details</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-2'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Privacy Policy Details</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-2`}>
             {privacySections.map((section) => (
-              <View key={section.id} className='border-b border-stone-700 last:border-b-0'>
+              <View key={section.id} className={`border-b border-[${colors.border}] last:border-b-0`}>
                 <TouchableOpacity
                   className='flex-row items-center justify-between w-full p-4'
                   onPress={() => handleSectionToggle(section.id)}
                 >
-                  <Text className='text-white text-base font-semibold flex-1 mr-4'>
+                  <Text className={`${colors.text} text-base font-semibold flex-1 mr-4`}>
                     {section.title}
                   </Text>
                   <Feather 
                     name={expandedSection === section.id ? "chevron-up" : "chevron-down"} 
                     size={20} 
-                    color="#CBFD03" 
+                    color={tint.text} 
                   />
                 </TouchableOpacity>
                 {expandedSection === section.id && (
                   <View className='px-4 pb-4'>
-                    <Text className='text-gray-400 text-sm leading-6'>
+                    <Text className={`${colors.textSecondary} text-sm leading-6`}>
                       {section.content}
                     </Text>
                   </View>
@@ -378,44 +380,44 @@ export default function PrivacyPolicyScreen() {
         </View>
 
         {/* Data Rights Summary */}
-        <View className='w-full bg-stone-800 rounded-xl p-6'>
-          <Text className='text-white text-lg font-semibold mb-4'>Your Data Rights</Text>
+              <View className={`w-full ${colors.card} rounded-xl p-6`}>
+          <Text className={`${colors.text} text-lg font-semibold mb-4`}>Your Data Rights</Text>
           <View className='space-y-3'>
             <View className='flex-row items-start gap-3'>
-              <Feather name="eye" size={16} color="#CBFD03" style={{ marginTop: 2 }} />
-              <Text className='text-gray-400 text-sm flex-1'>
-                <Text className='text-white font-semibold'>Access:</Text> View and download your data
+              <Feather name="eye" size={16} color={tint.text} style={{ marginTop: 2 }} />
+              <Text className={`${colors.textSecondary} text-sm flex-1`}>
+                <Text className={`${colors.text} font-semibold`}>Access:</Text> View and download your data
               </Text>
             </View>
             <View className='flex-row items-start gap-3'>
-              <Feather name="edit" size={16} color="#CBFD03" style={{ marginTop: 2 }} />
-              <Text className='text-gray-400 text-sm flex-1'>
-                <Text className='text-white font-semibold'>Correct:</Text> Update inaccurate information
+              <Feather name="edit" size={16} color={tint.text} style={{ marginTop: 2 }} />
+              <Text className={`${colors.textSecondary} text-sm flex-1`}>
+                <Text className={`${colors.text} font-semibold`}>Correct:</Text> Update inaccurate information
               </Text>
             </View>
             <View className='flex-row items-start gap-3'>
-              <Feather name="trash-2" size={16} color="#CBFD03" style={{ marginTop: 2 }} />
-              <Text className='text-gray-400 text-sm flex-1'>
-                <Text className='text-white font-semibold'>Delete:</Text> Remove your data completely
+              <Feather name="trash-2" size={16} color={tint.text} style={{ marginTop: 2 }} />
+              <Text className={`${colors.textSecondary} text-sm flex-1`}>
+                <Text className={`${colors.text} font-semibold`}>Delete:</Text> Remove your data completely
               </Text>
             </View>
             <View className='flex-row items-start gap-3'>
-              <Feather name="x-circle" size={16} color="#CBFD03" style={{ marginTop: 2 }} />
-              <Text className='text-gray-400 text-sm flex-1'>
-                <Text className='text-white font-semibold'>Opt-out:</Text> Stop data collection and processing
+              <Feather name="x-circle" size={16} color={tint.text} style={{ marginTop: 2 }} />
+              <Text className={`${colors.textSecondary} text-sm flex-1`}>
+                <Text className={`${colors.text} font-semibold`}>Opt-out:</Text> Stop data collection and processing
               </Text>
             </View>
           </View>
         </View>
 
         {/* Contact Privacy Team */}
-        <View className='w-full bg-stone-800 rounded-xl p-4 mb-20'>
-          <Text className='text-white text-lg font-semibold mb-3'>Questions About Privacy?</Text>
-          <Text className='text-gray-400 text-sm mb-4'>
+        <View className={`w-full ${colors.card} rounded-xl p-4 mb-20`}>
+          <Text className={`${colors.text} text-lg font-semibold mb-3`}>Questions About Privacy?</Text>
+          <Text className={`${colors.textSecondary} text-sm mb-4`}>
             If you have any questions about our privacy practices or want to exercise your data rights, please contact our privacy team.
           </Text>
-          <TouchableOpacity className='bg-[#CBFD03] rounded-xl p-3 items-center'>
-            <Text className='text-black text-base font-semibold'>Contact Privacy Team</Text>
+          <TouchableOpacity className={`${colors.accent} rounded-xl p-3 items-center`}>
+            <Text className={`${colors.text} text-base font-semibold`}>Contact Privacy Team</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -26,13 +26,13 @@ export default function SavingsGoalModal({
         onRequestClose={() => setShowAddModal(false)}
       >
         <View className="flex-1 justify-center items-center bg-black/50">
-          <View className={`bg-stone-800 rounded-xl p-6 w-80`}>
-            <Text className={`text-white text-xl font-bold mb-4`}>
+          <View className={`bg-gray-100 rounded-xl p-6 w-[90%]`}>
+            <Text className={`text-indigo-500 text-xl font-bold mb-4`}>
               Add Savings Goal
             </Text>
 
             <TextInput
-              className={`bg-stone-800 rounded-lg p-3 mb-3 text-white`}
+              className={`bg-gray-200 rounded-lg p-3 mb-3 text-gray-900`}
               placeholder="Goal name"
               placeholderTextColor="#6b7280"
               value={newGoal.name}
@@ -40,7 +40,7 @@ export default function SavingsGoalModal({
             />
 
             <TextInput
-              className={`bg-stone-800 rounded-lg p-3 mb-3 text-white`}
+              className={`bg-gray-200 rounded-lg p-3 mb-3 text-gray-900`}
               placeholder="Target amount"
               placeholderTextColor="#6b7280"
               value={newGoal.targetAmount}
@@ -51,7 +51,7 @@ export default function SavingsGoalModal({
             />
 
             <TextInput
-              className={`bg-stone-800 rounded-lg p-3 mb-3 text-white`}
+              className={`bg-gray-200 rounded-lg p-3 mb-3 text-gray-900`}
               placeholder="Category"
               placeholderTextColor="#6b7280"
               value={newGoal.category}
@@ -62,7 +62,7 @@ export default function SavingsGoalModal({
 
             <View className="flex-row gap-3">
               <TouchableOpacity
-                className="flex-1 bg-stone-600 rounded-lg p-3"
+                className="flex-1 bg-black rounded-lg p-3"
                 onPress={() => setShowAddModal(false)}
               >
                 <Text className="text-white text-center font-semibold">
@@ -71,10 +71,10 @@ export default function SavingsGoalModal({
               </TouchableOpacity>
 
               <TouchableOpacity
-                className="flex-1 bg-[#CBFD03] rounded-lg p-3"
+                className="flex-1 bg-indigo-500 rounded-lg p-3"
                 onPress={handleAddGoal}
               >
-                <Text className="text-black text-center font-semibold">
+                <Text className="text-white text-center font-semibold">
                   Add Goal
                 </Text>
               </TouchableOpacity>

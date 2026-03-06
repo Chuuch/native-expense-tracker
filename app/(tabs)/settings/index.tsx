@@ -22,8 +22,8 @@ export default function SettingsScreen() {
     <View className={`flex-1 ${colors.background} pt-20`}>
       {/* Header */}
       <View className="flex-row items-end justify-start w-full gap-2 p-4">
-        <View className="bg-[#CBFD03] rounded-full p-2">
-          <SimpleLineIcons name="settings" size={30} color="black" />
+        <View className="bg-indigo-500 rounded-full p-2">
+          <SimpleLineIcons name="settings" size={30} color="white" />
         </View>
         <Text className={`${colors.text} text-4xl font-bold`}>Settings</Text>
       </View>

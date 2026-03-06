@@ -1,3 +1,4 @@
+import { useTheme } from '@/contexts/ThemeContext';
 import { Entypo, Feather, FontAwesome6, Fontisto, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -18,7 +19,7 @@ const feedbackCategories = [
     subtitle: 'Suggest a new feature',
     icon: Feather,
     iconName: 'plus-circle' as const,
-    color: '#CBFD03'
+    color: '#615eff'
   },
   {
     id: 'improvement',
@@ -39,14 +40,15 @@ const feedbackCategories = [
 ];
 
 const ratingOptions = [
-  { value: 1, label: 'Poor', icon: <Entypo name="emoji-sad" size={24} color="#CBFD03" /> },
-  { value: 2, label: 'Fair', icon: <Entypo name="emoji-neutral" size={24} color="#CBFD03" /> },
-  { value: 3, label: 'Good', icon: <Entypo name="emoji-happy" size={24} color="#CBFD03" /> },
-  { value: 4, label: 'Very Good', icon: <FontAwesome6 name="smile-beam" size={24} color="#CBFD03" /> },
-  { value: 5, label: 'Excellent', icon: <Fontisto name="smiley" size={24} color="#CBFD03" /> }
+  { value: 1, label: 'Poor', icon: <Entypo name="emoji-sad" size={24} color="#615eff" /> },
+  { value: 2, label: 'Fair', icon: <Entypo name="emoji-neutral" size={24} color="#615eff" /> },
+  { value: 3, label: 'Good', icon: <Entypo name="emoji-happy" size={24} color="#615eff" /> },
+  { value: 4, label: 'Very Good', icon: <FontAwesome6 name="smile-beam" size={24} color="#615eff" /> },
+  { value: 5, label: 'Excellent', icon: <Fontisto name="smiley" size={24} color="#615eff" /> }
 ];
 
 export default function FeedbackScreen() {
+  const { colors, tint } = useTheme();
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState('');
   const [rating, setRating] = useState(0);
@@ -75,38 +77,38 @@ export default function FeedbackScreen() {
   };
 
   return (
-    <View className='flex-1 bg-stone-950 pt-20'>
+    <View className={`flex-1 ${colors.background} pt-20`}>
       {/* Header */}
       <View className='flex-row items-center justify-between w-full p-4'>
         <TouchableOpacity 
-          className='bg-stone-800 rounded-xl p-2'
+          className={`${colors.card} rounded-xl p-2`}
           onPress={() => router.back()}
         >
-          <Feather name="arrow-left" size={24} color="#CBFD03" />
+          <Feather name="arrow-left" size={24} color="#615eff" />
         </TouchableOpacity>
-        <Text className='text-white text-4xl font-bold'>Feedback</Text>
-        <TouchableOpacity className='bg-stone-800 rounded-xl p-2'>
-          <Feather name="info" size={24} color="#CBFD03" />
+        <Text className={`${colors.text} text-4xl font-bold`}>Feedback</Text>
+        <TouchableOpacity className={`${colors.card} rounded-xl p-2`}>
+          <Feather name="info" size={24} color={tint.textSecondary} />
         </TouchableOpacity>
       </View>
 
       <ScrollView 
-        className='flex-1 bg-stone-950 px-4'
+        className={`flex-1 ${colors.background} px-4`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
       >
 
         {/* Welcome Message */}
-        <View className='w-full bg-stone-800 rounded-xl p-6'>
-          <Text className='text-white text-xl font-bold mb-4'>Share Your Thoughts</Text>
-          <Text className='text-gray-400 text-base'>
+        <View className={`w-full ${colors.card} rounded-xl p-6`}>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Share Your Thoughts</Text>
+          <Text className={`${colors.textSecondary} text-base`}>
             Your feedback helps us improve the app for everyone. We read every submission and use it to make our product better.
           </Text>
         </View>
 
         {/* Feedback Category */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>What type of feedback do you have? *</Text>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>What type of feedback do you have? *</Text>
           <View className='gap-3'>
             {feedbackCategories.map((category) => {
               const IconComponent = category.icon;
@@ -115,23 +117,23 @@ export default function FeedbackScreen() {
                   key={category.id}
                   className={`flex-row items-center justify-between w-full p-4 rounded-xl border-2 ${
                     selectedCategory === category.id 
-                      ? 'bg-stone-700 border-[#CBFD03]' 
-                      : 'bg-stone-800 border-stone-700'
+                      ? `${colors.accent} border-[${colors.accent}]` 
+                      : `${colors.cardSecondary} border-[${colors.border}]`
                   }`}
                   onPress={() => setSelectedCategory(category.id)}
                 >
                   <View className='flex-row items-center gap-3 flex-1'>
-                    <View className='bg-stone-700 rounded-full p-2'>
+                    <View className={`${colors.cardSecondary} rounded-full p-2`}>
                       <IconComponent name={category.iconName as any} size={24} color={category.color} />
                     </View>
                     <View className='flex-1'>
-                      <Text className='text-white text-base font-semibold'>{category.title}</Text>
-                      <Text className='text-gray-400 text-sm'>{category.subtitle}</Text>
+                      <Text className={`${colors.text} text-base font-semibold`}>{category.title}</Text>
+                      <Text className={`${colors.textSecondary} text-sm`}>{category.subtitle}</Text>
                     </View>
                   </View>
                   {selectedCategory === category.id && (
-                    <View className='bg-[#CBFD03] rounded-full p-1'>
-                      <Feather name="check" size={16} color="black" />
+                    <View className={`${colors.accent} rounded-full p-1`}>
+                      <Feather name="check" size={16} color="white" />
                     </View>
                   )}
                 </TouchableOpacity>
@@ -142,20 +144,20 @@ export default function FeedbackScreen() {
 
         {/* Overall Rating */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>How would you rate your experience?</Text>
-          <View className='bg-stone-800 rounded-xl p-6'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>How would you rate your experience?</Text>
+          <View className={`${colors.card} rounded-xl p-6`}>
             <View className='flex-row justify-between mb-4'>
               {ratingOptions.map((option) => (
                 <TouchableOpacity
                   key={option.value}
                   className={`flex-col items-center p-3 rounded-xl ${
-                    rating === option.value ? 'bg-stone-700' : ''
+                    rating === option.value ? `${colors.cardSecondary}` : ''
                   }`}
                   onPress={() => setRating(option.value)}
                 >
                   <Text className='text-3xl mb-2'>{option.icon}</Text>
                   <Text className={`text-sm font-semibold ${
-                    rating === option.value ? 'text-[#CBFD03]' : 'text-gray-400'
+                    rating === option.value ? `text-[${colors.text}]` : `text-[${colors.textSecondary}]`
                   }`}>
                     {option.label}
                   </Text>
@@ -163,7 +165,7 @@ export default function FeedbackScreen() {
               ))}
             </View>
             {rating > 0 && (
-              <Text className='text-gray-400 text-sm text-center'>
+              <Text className={`${colors.textSecondary} text-sm text-center`}>
                 Thank you for your {ratingOptions[rating - 1].label.toLowerCase()} rating!
               </Text>
             )}
@@ -172,10 +174,10 @@ export default function FeedbackScreen() {
 
         {/* Feedback Text */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Tell us more *</Text>
-          <View className='bg-stone-800 rounded-xl p-4'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Tell us more *</Text>
+          <View className={`${colors.card} rounded-xl p-4`}>
             <TextInput
-              className='text-white text-base min-h-[120px]'
+              className={`${colors.text} text-base min-h-[120px]`}
               placeholder='Describe your feedback in detail...'
               placeholderTextColor='#6b7280'
               multiline
@@ -184,17 +186,17 @@ export default function FeedbackScreen() {
               onChangeText={setFeedback}
             />
           </View>
-          <Text className='text-gray-400 text-sm mt-2'>
+          <Text className={`${colors.textSecondary} text-sm mt-2`}>
             Be as specific as possible. Include steps to reproduce if reporting a bug.
           </Text>
         </View>
 
         {/* Contact Email */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Contact Email (Optional)</Text>
-          <View className='bg-stone-800 rounded-xl p-4'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Contact Email (Optional)</Text>
+          <View className={`${colors.card} rounded-xl p-4`}>
             <TextInput
-              className='text-white text-base'
+              className={`${colors.text} text-base`}
               placeholder='your.email@example.com'
               placeholderTextColor='#6b7280'
               value={email}
@@ -203,30 +205,30 @@ export default function FeedbackScreen() {
               autoCapitalize='none'
             />
           </View>
-          <Text className='text-gray-400 text-sm mt-2'>
+          <Text className={`${colors.textSecondary} text-sm mt-2`}>
             We'll use this to follow up on your feedback if needed.
           </Text>
         </View>
 
         {/* Additional Options */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Additional Information</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-4'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Additional Information</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-4`}>
             <TouchableOpacity
               className='flex-row items-center justify-between w-full'
               onPress={() => setIncludeScreenshot(!includeScreenshot)}
             >
               <View className='flex-row items-center gap-3'>
-                <Feather name="image" size={20} color="#CBFD03" />
+                <Feather name="image" size={20} color="#615eff" />
                 <View>
-                  <Text className='text-white text-base font-semibold'>Include Screenshot</Text>
-                  <Text className='text-gray-400 text-sm'>Add a screenshot to help us understand</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Include Screenshot</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Add a screenshot to help us understand</Text>
                 </View>
               </View>
               <View className={`w-6 h-6 rounded-full border-2 items-center justify-center ${
-                includeScreenshot ? 'bg-[#CBFD03] border-[#CBFD03]' : 'border-stone-600'
+                includeScreenshot ? `bg-[${colors.accent}] border-[${colors.accent}]` : `border-[${colors.border}]`
               }`}>
-                {includeScreenshot && <Feather name="check" size={14} color="black" />}
+                {includeScreenshot && <Feather name="check" size={14} color="white" />}
               </View>
             </TouchableOpacity>
 
@@ -235,16 +237,16 @@ export default function FeedbackScreen() {
               onPress={() => setIncludeSystemInfo(!includeSystemInfo)}
             >
               <View className='flex-row items-center gap-3'>
-                <Feather name="smartphone" size={20} color="#CBFD03" />
+                <Feather name="smartphone" size={20} color="#615eff" />
                 <View>
-                  <Text className='text-white text-base font-semibold'>Include System Info</Text>
-                  <Text className='text-gray-400 text-sm'>Device info, app version, etc.</Text>
+                    <Text className={`${colors.text} text-base font-semibold`}>Include System Info</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Device info, app version, etc.</Text>
                 </View>
               </View>
               <View className={`w-6 h-6 rounded-full border-2 items-center justify-center ${
-                includeSystemInfo ? 'bg-[#CBFD03] border-[#CBFD03]' : 'border-stone-600'
+                includeSystemInfo ? `bg-[${colors.accent}] border-[${colors.accent}]` : `border-[${colors.border}]`
               }`}>
-                {includeSystemInfo && <Feather name="check" size={14} color="black" />}
+                {includeSystemInfo && <Feather name="check" size={14} color="white" />}
               </View>
             </TouchableOpacity>
           </View>
@@ -253,11 +255,11 @@ export default function FeedbackScreen() {
         {/* Screenshot Upload (if enabled) */}
         {includeScreenshot && (
           <View className='w-full'>
-            <Text className='text-white text-xl font-bold mb-4'>Screenshot</Text>
-            <TouchableOpacity className='bg-stone-800 rounded-xl p-6 border-2 border-dashed border-stone-600 items-center'>
-              <Feather name="upload" size={32} color="#CBFD03" />
-              <Text className='text-white text-base font-semibold mt-2'>Tap to add screenshot</Text>
-              <Text className='text-gray-400 text-sm mt-1'>PNG, JPG up to 5MB</Text>
+              <Text className={`${colors.text} text-xl font-bold mb-4`}>Screenshot</Text>
+            <TouchableOpacity className={`${colors.card} rounded-xl p-6 border-2 border-dashed border-[${colors.border}] items-center`}>
+              <Feather name="upload" size={32} color="#615eff" />
+              <Text className={`${colors.text} text-base font-semibold mt-2`}>Tap to add screenshot</Text>
+              <Text className={`${colors.textSecondary} text-sm mt-1`}>PNG, JPG up to 5MB</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -267,21 +269,21 @@ export default function FeedbackScreen() {
           <TouchableOpacity 
             className={`rounded-xl p-4 items-center ${
               selectedCategory && feedback.trim() 
-                ? 'bg-[#CBFD03]' 
-                : 'bg-stone-700'
+                ? `bg-[${colors.accent}]` 
+                : `${colors.cardSecondary}`
             }`}
             onPress={handleSubmit}
             disabled={!selectedCategory || !feedback.trim()}
           >
             <Text className={`text-lg font-semibold ${
               selectedCategory && feedback.trim() 
-                ? 'text-black' 
-                : 'text-gray-400'
+                ? `text-[${colors.text}]` 
+                : `text-white`
             }`}>
               Submit Feedback
             </Text>
           </TouchableOpacity>
-          <Text className='text-gray-400 text-sm text-center mt-2'>
+          <Text className={`${colors.textSecondary} text-sm text-center mt-2`}>
             We typically respond within 24-48 hours
           </Text>
         </View>

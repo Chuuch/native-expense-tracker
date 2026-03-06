@@ -1,48 +1,48 @@
-import { Feather } from '@expo/vector-icons';
+import welcomeOne from '@/assets/lottie/welcome_one.json';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useRouter } from 'expo-router';
+import LottieView from 'lottie-react-native';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 export default function WelcomeScreen() {
   const router = useRouter();
-
+  const { colors } = useTheme();
   const handleContinue = () => {
     router.push('/(onboarding)');
   };
 
   return (
-    <View className="flex-1 bg-stone-950">
+    <View className={`flex-1 ${colors.background}`}>
       {/* Header */}
       <View className="flex-1 justify-center items-center px-8">
         {/* App Icon */}
-        <View className="mb-8">
-          <View className="bg-[#CBFD03] p-6 rounded-3xl mb-6">
-            <Feather name="dollar-sign" size={80} color="#000" />
-          </View>
+        <View className="">
+            <LottieView source={welcomeOne} autoPlay loop style={{ width: 300, height: 300 }} />
         </View>
 
         {/* Welcome Text */}
-        <Text className="text-white text-4xl font-bold text-center mb-6">
+        <Text className={`${colors.text} text-4xl font-bold text-center mb-2`}>
           Welcome to
         </Text>
-        <Text className="text-[#CBFD03] text-5xl font-bold text-center mb-8">
+        <Text className={`text-indigo-500 text-5xl font-bold text-center mb-2`}>
           MoneyMate
         </Text>
 
         {/* Subtitle */}
-        <Text className="text-gray-400 text-xl text-center leading-8 px-4">
+        <Text className={`${colors.textSecondary} text-xl text-center leading-8 px-4`}>
           Your personal finance companion that helps you track expenses, save money, and achieve your financial goals
         </Text>
       </View>
 
       {/* Bottom Section */}
-      <View className="px-8 pb-16">
+      <View className="px-8 pb-32">
         {/* Continue Button */}
         <TouchableOpacity
-          className="bg-[#CBFD03] rounded-xl py-5 items-center mb-4"
+          className={`${colors.accent} rounded-xl py-5 items-center mb-4`}
           onPress={handleContinue}
         >
-          <Text className="text-black text-xl font-bold">
+          <Text className={`${colors.text} text-xl font-bold`}>
             Continue
           </Text>
         </TouchableOpacity>
@@ -52,7 +52,7 @@ export default function WelcomeScreen() {
           className="items-center"
           onPress={() => router.replace('/login')}
         >
-          <Text className="text-gray-500 text-base">
+          <Text className={`${colors.textSecondary} text-base font-semibold`}>
             I&apos;ll set this up later
           </Text>
         </TouchableOpacity>

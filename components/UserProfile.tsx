@@ -39,7 +39,7 @@ export default function UserProfile() {
           <Text className="text-white text-xl font-bold">Profile</Text>
           <TouchableOpacity
             onPress={() => setIsEditing(!isEditing)}
-            className="bg-[#CBFD03] px-4 py-2 rounded-lg"
+            className="bg-[#615eff] px-4 py-2 rounded-lg"
           >
             <Text className="text-black font-semibold">
               {isEditing ? 'Cancel' : 'Edit'}
@@ -104,7 +104,7 @@ export default function UserProfile() {
           <TouchableOpacity
             onPress={handleSaveProfile}
             disabled={isLoadingUpdateProfile}
-            className="bg-[#CBFD03] rounded-xl p-4 items-center mt-6"
+            className="bg-[#615eff] rounded-xl p-4 items-center mt-6"
           >
             <Text className="text-black text-lg font-semibold">
               {isLoadingUpdateProfile ? 'Saving...' : 'Save Changes'}

@@ -1,6 +1,7 @@
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Alert, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface TransactionModalProps {
   visible: boolean;
@@ -42,6 +43,7 @@ const incomeCategories: Category[] = [
 ];
 
 export default function TransactionModal({ visible, onClose, onSubmit }: TransactionModalProps) {
+  const { colors } = useTheme();
   const [transactionType, setTransactionType] = useState<'expense' | 'income'>('expense');
   const [amount, setAmount] = useState<string>('');
   const [title, setTitle] = useState<string>('');
@@ -106,35 +108,35 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
       presentationStyle="pageSheet"
       onRequestClose={handleClose}
     >
-      <View className="flex-1 bg-stone-950">
+      <View className={`flex-1 ${colors.background}`}>
         {/* Header */}
-        <View className="flex-row items-center justify-between p-4 pt-16 border-b border-stone-800">
+        <View className="flex-row items-center justify-between p-4 pt-16 border-b border-slate-800">
           <TouchableOpacity onPress={handleClose}>
-            <Feather name="x" size={24} color="white" />
+            <Feather name="x" size={24} color='#615eff' />
           </TouchableOpacity>
-          <Text className="text-white text-lg font-semibold">Add Transaction</Text>
+          <Text className="text-indigo-500 text-lg font-semibold">Add Transaction</Text>
           <TouchableOpacity onPress={handleSubmit}>
-            <Text className="text-[#CBFD03] text-lg font-semibold">Save</Text>
+            <Text className="text-indigo-500 text-lg font-semibold">Save</Text>
           </TouchableOpacity>
         </View>
 
         <ScrollView className="flex-1 p-4" showsVerticalScrollIndicator={false}>
           {/* Transaction Type Selector */}
           <View className="mb-6">
-            <Text className="text-white text-lg font-semibold mb-4">Transaction Type</Text>
+            <Text className="text-indigo-500 text-lg font-semibold mb-4">Transaction Type</Text>
             <View className="flex-row gap-3">
               <TouchableOpacity
                 className={`flex-1 rounded-xl p-4 border-2 ${
                   transactionType === 'expense' 
                     ? 'border-red-500 bg-red-500/20' 
-                    : 'border-stone-700 bg-stone-800'
+                    : `border-${colors.border} ${colors.card}`
                 }`}
                 onPress={() => setTransactionType('expense')}
               >
                 <View className="items-center">
-                  <Feather name="minus-circle" size={24} color={transactionType === 'expense' ? '#ef4444' : '#6b7280'} />
+                  <Feather name="minus-circle" size={24} color={transactionType === 'expense' ? '#ef4444' : '#615eff'} />
                   <Text className={`text-sm font-semibold mt-2 ${
-                    transactionType === 'expense' ? 'text-red-400' : 'text-gray-400'
+                    transactionType === 'expense' ? 'text-red-400' : 'text-indigo-500'
                   }`}>
                     Expense
                   </Text>
@@ -145,14 +147,14 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
                 className={`flex-1 rounded-xl p-4 border-2 ${
                   transactionType === 'income' 
                     ? 'border-green-500 bg-green-500/20' 
-                    : 'border-stone-700 bg-stone-800'
+                    : `border-${colors.border} ${colors.card}`
                 }`}
                 onPress={() => setTransactionType('income')}
               >
                 <View className="items-center">
-                  <Feather name="plus-circle" size={24} color={transactionType === 'income' ? '#22c55e' : '#6b7280'} />
+                  <Feather name="plus-circle" size={24} color={transactionType === 'income' ? '#22c55e' : '#615eff'} />
                   <Text className={`text-sm font-semibold mt-2 ${
-                    transactionType === 'income' ? 'text-green-400' : 'text-gray-400'
+                    transactionType === 'income' ? 'text-green-400' : 'text-indigo-500'
                   }`}>
                     Income
                   </Text>
@@ -163,13 +165,13 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
 
           {/* Amount Input */}
           <View className="mb-6">
-            <Text className="text-white text-lg font-semibold mb-4">Amount</Text>
-            <View className="bg-stone-800 rounded-xl p-4">
-              <Text className="text-gray-400 text-sm mb-2">$</Text>
+            <Text className={`${colors.text} text-lg font-semibold mb-4`}>Amount</Text>
+            <View className={`${colors.card} rounded-xl p-4`}>
+              <Text className="text-indigo-500 text-sm mb-2">$</Text>
               <TextInput
-                className="text-white text-3xl font-bold"
+                className="text-indigo-500 text-3xl font-bold"
                 placeholder="0.00"
-                placeholderTextColor="#6b7280"
+                placeholderTextColor="#615eff"
                 value={amount || ''}
                 onChangeText={setAmount}
                 keyboardType="numeric"
@@ -180,11 +182,11 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
 
           {/* Title Input */}
           <View className="mb-6">
-            <Text className="text-white text-lg font-semibold mb-4">Title</Text>
+            <Text className={`${colors.text} text-lg font-semibold mb-4`}>Title</Text>
             <TextInput
-              className="bg-stone-800 rounded-xl p-4 text-white text-base"
+              className={`${colors.card} rounded-xl p-4 ${colors.text} text-base`}
               placeholder="Enter transaction title"
-              placeholderTextColor="#6b7280"
+              placeholderTextColor="bg-gray-900"
               value={title || ''}
               onChangeText={setTitle}
             />
@@ -192,36 +194,43 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
 
           {/* Category Selection */}
           <View className="mb-6">
-            <Text className="text-white text-lg font-semibold mb-4">Category</Text>
-            <View className="flex-row flex-wrap gap-3">
-              {categories.map((category) => (
+            <Text className={`${colors.text} text-lg font-semibold mb-4`}>Category</Text>
+            <FlatList
+              data={categories}
+              keyExtractor={(item) => item.id}
+              numColumns={2}
+              columnWrapperStyle={{ justifyContent: 'space-between', gap: 12, marginBottom: 12 }}
+              scrollEnabled={false}
+              renderItem={({ item: category }) => (
                 <TouchableOpacity
-                  key={category.id}
-                  className={`flex-row items-center gap-2 rounded-xl p-3 border-2 ${
+                  className={`flex-1 flex-row items-center gap-2 rounded-xl p-3 border-2 ${
                     selectedCategory?.id === category.id
-                      ? 'border-[#CBFD03] bg-[#CBFD03]/20'
-                      : 'border-stone-700 bg-stone-800'
+                      ? 'border-indigo-500 bg-indigo-500/20'
+                      : `${colors.card} border-slate-800`
                   }`}
                   onPress={() => setSelectedCategory(category)}
                 >
                   <View className={`${category.color} rounded-full p-2`}>
                     {renderIcon(category)}
                   </View>
-                  <Text className={`text-sm font-semibold ${
-                    selectedCategory?.id === category.id ? 'text-[#CBFD03]' : 'text-white'
-                  }`}>
+                  <Text
+                    className={`text-sm font-semibold ${
+                      selectedCategory?.id === category.id ? colors.text : colors.textSecondary
+                    }`}
+                    numberOfLines={1}
+                  >
                     {category.name}
                   </Text>
                 </TouchableOpacity>
-              ))}
-            </View>
+              )}
+            />
           </View>
 
           {/* Note Input */}
           <View className="mb-6">
-            <Text className="text-white text-lg font-semibold mb-4">Note (Optional)</Text>
+            <Text className={`${colors.text} text-lg font-semibold mb-4`}>Note (Optional)</Text>
             <TextInput
-              className="bg-stone-800 rounded-xl p-4 text-white text-base"
+              className={`${colors.card} rounded-xl p-4 ${colors.text} text-base`}
               placeholder="Add a note..."
               placeholderTextColor="#6b7280"
               value={note || ''}
@@ -233,12 +242,12 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
           </View>
 
           {/* Date Input */}
-          <View className="mb-6">
-            <Text className="text-white text-lg font-semibold mb-4">Date</Text>
+          <View className="mb-20">
+            <Text className={`${colors.text} text-lg font-semibold mb-4`}>Date</Text>
             <TextInput
-              className="bg-stone-800 rounded-xl p-4 text-white text-base"
+              className={`${colors.card} rounded-xl p-4 ${colors.text} text-base`}
               placeholder="Select date"
-              placeholderTextColor="#6b7280"
+              placeholderTextColor="bg-gray-900"
               value={date}
               onChangeText={setDate}
             />

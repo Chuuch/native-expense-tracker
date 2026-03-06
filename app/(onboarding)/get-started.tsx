@@ -52,7 +52,7 @@ export default function GetStartedScreen() {
         <View className="px-8 flex-1">
           {features.map((feature, index) => (
             <View key={index} className="flex-row items-center mb-8 bg-stone-900 p-6 rounded-2xl">
-              <View className="bg-[#CBFD03] p-3 rounded-xl mr-4">
+              <View className="bg-[#615eff] p-3 rounded-xl mr-4">
                 <feature.icon 
                   name={feature.iconName as any} 
                   size={24} 
@@ -74,7 +74,7 @@ export default function GetStartedScreen() {
         {/* Action Buttons */}
         <View className="px-8 pb-16">
           <TouchableOpacity
-            className="bg-[#CBFD03] rounded-xl py-4 items-center mb-4"
+            className="bg-[#615eff] rounded-xl py-4 items-center mb-4"
             onPress={handleGetStarted}
           >
             <Text className="text-black text-lg font-semibold">

@@ -29,8 +29,8 @@ export default function TransactionsScreen() {
       <View className="flex-row items-end justify-start w-full gap-2 p-4">
         <View className="flex-row items-center justify-between w-full">
           <View className="flex-row items-end justify-center gap-4">
-            <View className="bg-[#CBFD03] rounded-full p-2">
-              <AntDesign name="swap" size={30} color="black" />
+            <View className="bg-indigo-500 rounded-full p-2">
+              <AntDesign name="swap" size={30} color="white" />
             </View>
             <Text className={`${colors.text} text-4xl font-bold`}>Transactions</Text>
           </View>
@@ -38,7 +38,7 @@ export default function TransactionsScreen() {
             <Image
               source={me}
               alt="Profile"
-              className="w-12 h-12 object-contain self-center rounded-full"
+              className="w-12 h-12 object-cover self-center rounded-full"
             />
           </View>
         </View>

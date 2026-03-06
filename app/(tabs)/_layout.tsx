@@ -1,46 +1,25 @@
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { View } from 'react-native';
 
 export default function TabLayout() {
+  const { colors, tint } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          position: 'absolute',
-          bottom: 40,
-          height: 60,
-          marginHorizontal: 20,
-          backgroundColor: '#0c0a09',
-          borderRadius: 30,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 4,
-          },
-          shadowOpacity: 0.15,
-          shadowRadius: 8,
-          elevation: 8,
-          borderTopWidth: 0,
-          overflow: 'hidden',
+          height: 80,
+          backgroundColor: 'transparent',
         },
         tabBarBackground: () => (
-          <BlurView 
-            intensity={20} 
-            tint="light"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-            }}
-          />
+          <View className={colors.tabBar} style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
         ),
-        tabBarActiveTintColor: '#CBFD03',
-        tabBarInactiveTintColor: '#6b7280',
+        tabBarActiveTintColor: tint.active,
+        tabBarInactiveTintColor: tint.inactive,
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '600',

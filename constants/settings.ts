@@ -17,7 +17,7 @@ export const settingsItems = [
     icon: Feather,
     iconName: "user" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
   {
     id: "subscription",
@@ -26,7 +26,7 @@ export const settingsItems = [
     icon: FontAwesome,
     iconName: "diamond" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
   {
     id: "notifications",
@@ -35,7 +35,7 @@ export const settingsItems = [
     icon: MaterialCommunityIcons,
     iconName: "bell-outline" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
   {
     id: "privacy",
@@ -44,7 +44,7 @@ export const settingsItems = [
     icon: MaterialIcons,
     iconName: "verified-user" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
 ];
 
@@ -56,7 +56,7 @@ export const preferencesItems = [
     icon: Ionicons,
     iconName: "bulb-outline" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
   {
     id: "currency",
@@ -65,7 +65,7 @@ export const preferencesItems = [
     icon: Feather,
     iconName: "dollar-sign" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
   {
     id: "language",
@@ -74,7 +74,7 @@ export const preferencesItems = [
     icon: Feather,
     iconName: "globe" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
 ];
 
@@ -86,7 +86,7 @@ export const supportItems = [
     icon: Feather,
     iconName: "help-circle" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
   {
     id: "feedback",
@@ -95,7 +95,7 @@ export const supportItems = [
     icon: MaterialCommunityIcons,
     iconName: "message-text-outline" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
   {
     id: "rate",
@@ -104,7 +104,7 @@ export const supportItems = [
     icon: AntDesign,
     iconName: "star" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
 ];
 
@@ -116,7 +116,7 @@ export const legalItems = [
     icon: MaterialCommunityIcons,
     iconName: "sticker-text-outline" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
   {
     id: "privacy-policy",
@@ -125,16 +125,16 @@ export const legalItems = [
     icon: MaterialCommunityIcons,
     iconName: "shield-account-outline" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
   {
     id: "application",
     title: "About App",
     subtitle: "Version 1.0.0",
     icon: AntDesign,
-    iconName: "mobile1" as const,
+    iconName: "mobile" as const,
     iconSize: 24,
-    iconColor: "#CBFD03",
+    iconColor: "#615eff",
   },
 ];
 

@@ -19,8 +19,8 @@ export default function DashboardScreen() {
       <View className="flex-row items-end justify-start w-full gap-2 p-4">
         <View className="flex-row items-center justify-between w-full">
           <View className="flex-row items-end justify-center gap-4">
-            <View className="bg-[#CBFD03] rounded-full p-2">
-              <Feather name="bar-chart-2" size={30} color="black" />
+            <View className="bg-indigo-500 rounded-full p-2">
+              <Feather name="bar-chart-2" size={30} color="white" />
             </View>
             <Text className={`${colors.text} text-4xl font-bold`}>Dashboard</Text>
           </View>

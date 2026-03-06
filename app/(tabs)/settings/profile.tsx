@@ -1,3 +1,4 @@
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -5,105 +6,105 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 export default function ProfileScreen() {
   const router = useRouter();
-
+  const { colors } = useTheme();
   return (
-    <View className='flex-1 bg-stone-950 pt-20'>
+    <View className={`flex-1 ${colors.background} pt-20`}>
       {/* Header with Back Button */}
       <View className='flex-row items-center justify-between w-full p-4'>
         <TouchableOpacity 
-          className='bg-stone-800 rounded-xl p-2'
+          className={`${colors.card} rounded-xl p-2`}
           onPress={() => router.back()}
         >
-          <Feather name="arrow-left" size={24} color="#CBFD03" />
+          <Feather name="arrow-left" size={24} color="#615eff" />
         </TouchableOpacity>
-        <Text className='text-white text-4xl font-bold mr-10'>Profile</Text>
+        <Text className={`${colors.text} text-4xl font-bold mr-10`}>Profile</Text>
         <View></View>
       </View>
 
       <ScrollView 
-        className='flex-1 bg-stone-950 px-4'
+        className={`flex-1 ${colors.background} px-4`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
       >
 
         {/* Profile Picture & Basic Info */}
-        <View className='w-full bg-stone-800 rounded-xl p-6 items-center'>
-          <View className='bg-[#CBFD03] rounded-full p-4 mb-4'>
-            <Feather name="user" size={60} color="black" />
+        <View className={`w-full ${colors.card} rounded-xl p-6 items-center`}>
+          <View className={`${colors.accent} rounded-full p-4 mb-4`}>
+            <Feather name="user" size={60} color="white" />
           </View>
-          <Text className='text-white text-2xl font-bold mb-2'>John Doe</Text>
-          <Text className='text-gray-400 text-base mb-4'>john.doe@example.com</Text>
+          <Text className={`${colors.text} text-2xl font-bold mb-2`}>John Doe</Text>
+          <Text className={`${colors.textSecondary} text-base mb-4`}>john.doe@example.com</Text>
           <View className='flex-row items-center gap-4'>
-            <View className='bg-stone-700 rounded-xl px-4 py-2'>
-              <Text className='text-[#CBFD03] text-sm font-semibold'>Premium Member</Text>
+            <View className={`${colors.cardSecondary} rounded-xl px-4 py-2`}>
+              <Text className={`${colors.text} text-sm font-semibold`}>Premium Member</Text>
             </View>
-            <View className='bg-stone-700 rounded-xl px-4 py-2'>
-              <Text className='text-gray-400 text-sm'>Member since Dec 2024</Text>
+            <View className={`${colors.cardSecondary} rounded-xl px-4 py-2`}>
+              <Text className={`${colors.textSecondary} text-sm`}>Member since Dec 2024</Text>
             </View>
           </View>
         </View>
 
         {/* Personal Information */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Personal Information</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-4'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Personal Information</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-4`}>
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="user" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="user" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Full Name</Text>
-                  <Text className='text-gray-400 text-sm'>John Doe</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Full Name</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>John Doe</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="edit-2" size={20} color="#CBFD03" />
+                <Feather name="edit-2" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
 
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="mail" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="mail" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Email</Text>
-                  <Text className='text-gray-400 text-sm'>john.doe@example.com</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Email</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>john.doe@example.com</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="edit-2" size={20} color="#CBFD03" />
+                <Feather name="edit-2" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
 
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="phone" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="phone" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Phone</Text>
-                  <Text className='text-gray-400 text-sm'>+1 (555) 123-4567</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Phone</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>+1 (555) 123-4567</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="edit-2" size={20} color="#CBFD03" />
+                <Feather name="edit-2" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
 
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="map-pin" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="map-pin" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Location</Text>
-                  <Text className='text-gray-400 text-sm'>New York, USA</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Location</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>New York, USA</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="edit-2" size={20} color="#CBFD03" />
+                <Feather name="edit-2" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
           </View>
@@ -111,50 +112,50 @@ export default function ProfileScreen() {
 
         {/* Financial Preferences */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Financial Preferences</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-4'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Financial Preferences</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-4`}>
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="dollar-sign" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="dollar-sign" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Default Currency</Text>
-                  <Text className='text-gray-400 text-sm'>USD - US Dollar</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Default Currency</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>USD - US Dollar</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="chevron-right" size={20} color="#CBFD03" />
+                <Feather name="chevron-right" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
 
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="calendar" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="calendar" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Budget Cycle</Text>
-                  <Text className='text-gray-400 text-sm'>Monthly</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Budget Cycle</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Monthly</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="chevron-right" size={20} color="#CBFD03" />
+                <Feather name="chevron-right" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
 
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <MaterialCommunityIcons name="target" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <MaterialCommunityIcons name="target" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Monthly Budget</Text>
-                  <Text className='text-gray-400 text-sm'>$2,500.00</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Monthly Budget</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>$2,500.00</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="edit-2" size={20} color="#CBFD03" />
+                <Feather name="edit-2" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
           </View>
@@ -162,50 +163,50 @@ export default function ProfileScreen() {
 
         {/* Account Security */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Account Security</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-4'>
+          <Text className='text-indigo-500 text-xl font-bold mb-4'>Account Security</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-4`}>
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="lock" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="lock" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Change Password</Text>
-                  <Text className='text-gray-400 text-sm'>Last changed 30 days ago</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Change Password</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Last changed 30 days ago</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="chevron-right" size={20} color="#CBFD03" />
+                <Feather name="chevron-right" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
 
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="smartphone" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="smartphone" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Two-Factor Auth</Text>
-                  <Text className='text-gray-400 text-sm'>Enabled</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Two-Factor Auth</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Enabled</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="chevron-right" size={20} color="#CBFD03" />
+                <Feather name="chevron-right" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
 
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="shield" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="shield" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Login Sessions</Text>
-                  <Text className='text-gray-400 text-sm'>2 active sessions</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Login Sessions</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>2 active sessions</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="chevron-right" size={20} color="#CBFD03" />
+                <Feather name="chevron-right" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
           </View>
@@ -213,44 +214,44 @@ export default function ProfileScreen() {
 
         {/* Data & Privacy */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Data & Privacy</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-4'>
+          <Text className='text-indigo-500 text-xl font-bold mb-4'>Data & Privacy</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-4`}>
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="download" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="download" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Export Data</Text>
-                  <Text className='text-gray-400 text-sm'>Download your data</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Export Data</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Download your data</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="chevron-right" size={20} color="#CBFD03" />
+                <Feather name="chevron-right" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
 
             <View className='flex-row items-center justify-between'>
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="trash-2" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="trash-2" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Delete Account</Text>
-                  <Text className='text-gray-400 text-sm'>Permanently delete your account</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Delete Account</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Permanently delete your account</Text>
                 </View>
               </View>
               <TouchableOpacity>
-                <Feather name="chevron-right" size={20} color="#CBFD03" />
+                <Feather name="chevron-right" size={20} color="#615eff" />
               </TouchableOpacity>
             </View>
           </View>
         </View>
 
         {/* Save Changes Button */}
-        <View className='w-full mb-20'>
-          <TouchableOpacity className='bg-[#CBFD03] w-full rounded-xl p-4 items-center justify-center'>
-            <Text className='text-black text-lg font-semibold'>Save Changes</Text>
+        <View className='w-full'>
+          <TouchableOpacity className={`${colors.accent} w-full rounded-xl p-4 items-center justify-center`}>
+            <Text className='text-white text-lg font-semibold'>Save Changes</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

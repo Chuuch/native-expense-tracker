@@ -1,3 +1,4 @@
+  import { useTheme } from "@/contexts/ThemeContext";
 import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -9,10 +10,11 @@ export default function AccountSettings({
   settingsItems: any;
   handleSettingPress: (id: string) => void;
 }) {
+  const { colors } = useTheme();
   return (
     <View className="w-full">
-      <Text className="text-white text-xl font-bold mb-4">Account</Text>
-      <View className="bg-stone-800 rounded-xl p-4 gap-2">
+      <Text className={`${colors.text} text-xl font-bold mb-4`}>Account</Text>
+      <View className={`${colors.card} rounded-xl p-4 gap-2`}>
         {settingsItems.map((item: any) => {
           const IconComponent = item.icon;
           return (
@@ -22,7 +24,7 @@ export default function AccountSettings({
               onPress={() => handleSettingPress(item.id)}
             >
               <View className="flex-row items-center justify-start gap-3 flex-1">
-                <View className="bg-stone-700 rounded-full p-2">
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
                   <IconComponent
                     name={item.iconName as any}
                     size={item.iconSize}
@@ -30,10 +32,10 @@ export default function AccountSettings({
                   />
                 </View>
                 <View className="flex-1">
-                  <Text className="text-white text-base font-semibold">
+                  <Text className={`${colors.text} text-base font-semibold`}>
                     {item.title}
                   </Text>
-                  <Text className="text-gray-400 text-sm">{item.subtitle}</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>{item.subtitle}</Text>
                 </View>
               </View>
               <Feather name="chevron-right" size={20} color="#6b7280" />

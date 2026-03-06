@@ -25,13 +25,13 @@ export default function LogoutButton() {
   };
 
   return (
-    <View className='w-full mb-20'>
+    <View className='w-full'>
       <TouchableOpacity
         onPress={handleLogout}
-        className='bg-[#CBFD03] w-full rounded-xl p-4 items-center justify-center flex-row gap-3'
+        className='bg-indigo-500 w-full rounded-xl p-4 items-center justify-center flex-row gap-3'
       >
-        <MaterialCommunityIcons name='exit-to-app' size={24} color='black'/>
-        <Text className='text-lg font-semibold text-black'>Log out</Text>
+        <MaterialCommunityIcons name='exit-to-app' size={24} color='white'/>
+        <Text className='text-lg font-semibold text-white'>Log out</Text>
       </TouchableOpacity>
     </View>
   )

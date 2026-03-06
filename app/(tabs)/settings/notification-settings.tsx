@@ -1,3 +1,4 @@
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -10,7 +11,7 @@ const notificationCategories = [
     subtitle: 'Daily and weekly expense tracking reminders',
     icon: MaterialIcons,
     iconName: 'account-balance-wallet' as const,
-    color: '#CBFD03',
+    color: '#615eff',
     enabled: true
   },
   {
@@ -19,7 +20,7 @@ const notificationCategories = [
     subtitle: 'Get notified when approaching budget limits',
     icon: MaterialCommunityIcons,
     iconName: 'target' as const,
-    color: '#CBFD03',
+    color: '#615eff',
     enabled: true
   },
   {
@@ -28,7 +29,7 @@ const notificationCategories = [
     subtitle: 'Updates on your savings progress',
     icon: MaterialCommunityIcons,
     iconName: 'piggy-bank' as const,
-    color: '#CBFD03',
+    color: '#615eff',
     enabled: false
   },
   {
@@ -37,7 +38,7 @@ const notificationCategories = [
     subtitle: 'Cryptocurrency and stock price notifications',
     icon: MaterialCommunityIcons,
     iconName: 'bitcoin' as const,
-    color: '#CBFD03',
+    color: '#615eff',
     enabled: true
   },
   {
@@ -46,7 +47,7 @@ const notificationCategories = [
     subtitle: 'Upcoming bill payment notifications',
     icon: MaterialIcons,
     iconName: 'receipt' as const,
-    color: '#CBFD03',
+    color: '#615eff',
     enabled: false
   },
   {
@@ -55,7 +56,7 @@ const notificationCategories = [
     subtitle: 'New features and app improvements',
     icon: MaterialIcons,
     iconName: 'system-update' as const,
-    color: '#CBFD03',
+    color: '#615eff',
     enabled: true
   }
 ];
@@ -91,6 +92,7 @@ const quietHours = [
 ];
 
 export default function NotificationSettings() {
+  const { colors } = useTheme();
   const router = useRouter();
   const [notifications, setNotifications] = useState(notificationCategories);
   const [reminders, setReminders] = useState(reminderOptions);
@@ -136,33 +138,33 @@ export default function NotificationSettings() {
   };
 
   return (
-    <View className='flex-1 bg-stone-950 pt-20'>
+    <View className={`flex-1 ${colors.background} pt-20`}>
       {/* Header */}
       <View className='flex-row items-center justify-between w-full p-4'>
         <TouchableOpacity 
-          className='bg-stone-800 rounded-xl p-2'
+          className={`${colors.card} rounded-xl p-2`}
           onPress={() => router.back()}
         >
-          <Feather name="arrow-left" size={24} color="#CBFD03" />
+          <Feather name="arrow-left" size={24} color="#615eff" />
         </TouchableOpacity>
-        <Text className='text-white text-4xl font-bold'>Notifications</Text>
-        <TouchableOpacity className='bg-stone-800 rounded-xl p-2'>
-          <Feather name="info" size={24} color="#CBFD03" />
+        <Text className={`${colors.text} text-4xl font-bold`}>Notifications</Text>
+        <TouchableOpacity className={`${colors.card} rounded-xl p-2`}>
+          <Feather name="info" size={24} color="#615eff" />
         </TouchableOpacity>
       </View>
 
       <ScrollView 
-        className='flex-1 bg-stone-950 px-4'
+        className={`flex-1 ${colors.background} px-4`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
       >
         {/* Description */}
-        <View className='w-full bg-stone-800 rounded-xl p-4'>
+        <View className={`w-full ${colors.card} rounded-xl p-4`}>
           <View className='flex-row items-start gap-3'>
-            <Feather name="bell" size={24} color="#CBFD03" />
+            <Feather name="bell" size={24} color="#615eff" />
             <View className='flex-1'>
-              <Text className='text-white text-base font-semibold mb-1'>Notification Settings</Text>
-              <Text className='text-gray-400 text-sm'>
+              <Text className={`${colors.text} text-base font-semibold mb-1`}>Notification Settings</Text>
+              <Text className={`${colors.textSecondary} text-sm`}>
                 Customize which notifications you want to receive and when. You can change these settings anytime.
               </Text>
             </View>
@@ -171,8 +173,8 @@ export default function NotificationSettings() {
 
         {/* Notification Categories */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Notification Types</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-2'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Notification Types</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-2`}>
             {notifications.map((notification) => {
               const IconComponent = notification.icon;
               return (
@@ -182,7 +184,7 @@ export default function NotificationSettings() {
                   onPress={() => toggleNotification(notification.id)}
                 >
                   <View className='flex-row items-center justify-start gap-3 flex-1'>
-                    <View className='bg-stone-700 rounded-full p-2'>
+                      <View className={`${colors.cardSecondary} rounded-full p-2`}>
                       <IconComponent
                         name={notification.iconName as any}
                         size={20}
@@ -190,13 +192,13 @@ export default function NotificationSettings() {
                       />
                     </View>
                     <View className='flex-1'>
-                      <Text className='text-white text-base font-semibold'>{notification.title}</Text>
-                      <Text className='text-gray-400 text-sm'>{notification.subtitle}</Text>
+                      <Text className={`${colors.text} text-base font-semibold`}>{notification.title}</Text>
+                      <Text className={`${colors.textSecondary} text-sm`}>{notification.subtitle}</Text>
                     </View>
                   </View>
                   <TouchableOpacity 
                     className={`w-12 h-6 rounded-full p-1 ${
-                      notification.enabled ? 'bg-[#CBFD03]' : 'bg-stone-600'
+                      notification.enabled ? `${colors.accent}` : `${colors.cardSecondary}`
                     }`}
                     onPress={() => toggleNotification(notification.id)}
                   >
@@ -212,8 +214,8 @@ export default function NotificationSettings() {
 
         {/* Reminder Schedule */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Reminder Schedule</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-2'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Reminder Schedule</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-2`}>
             {reminders.map((reminder) => (
               <TouchableOpacity
                 key={reminder.id}
@@ -221,17 +223,17 @@ export default function NotificationSettings() {
                 onPress={() => toggleReminder(reminder.id)}
               >
                 <View className='flex-row items-center justify-start gap-3 flex-1'>
-                  <View className='bg-stone-700 rounded-full p-2'>
-                    <Feather name="clock" size={20} color="#CBFD03" />
+                  <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                    <Feather name="clock" size={20} color="#615eff" />
                   </View>
                   <View className='flex-1'>
-                    <Text className='text-white text-base font-semibold'>{reminder.title}</Text>
-                    <Text className='text-gray-400 text-sm'>{reminder.subtitle}</Text>
+                    <Text className={`${colors.text} text-base font-semibold`}>{reminder.title}</Text>
+                    <Text className={`${colors.textSecondary} text-sm`}>{reminder.subtitle}</Text>
                   </View>
                 </View>
                 <TouchableOpacity 
                   className={`w-12 h-6 rounded-full p-1 ${
-                    reminder.enabled ? 'bg-[#CBFD03]' : 'bg-stone-600'
+                    reminder.enabled ? `${colors.accent}` : `${colors.cardSecondary}`
                   }`}
                   onPress={() => toggleReminder(reminder.id)}
                 >
@@ -246,24 +248,24 @@ export default function NotificationSettings() {
 
         {/* Quiet Hours */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Quiet Hours</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-2'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Quiet Hours</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-2`}>
             <TouchableOpacity
               className='flex-row items-center justify-between w-full p-3 rounded-lg'
               onPress={toggleQuietHours}
             >
               <View className='flex-row items-center justify-start gap-3 flex-1'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="moon" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="moon" size={20} color="#615eff" />
                 </View>
                 <View className='flex-1'>
-                  <Text className='text-white text-base font-semibold'>Quiet Hours</Text>
-                  <Text className='text-gray-400 text-sm'>10:00 PM - 8:00 AM</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Quiet Hours</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>10:00 PM - 8:00 AM</Text>
                 </View>
               </View>
               <TouchableOpacity 
                 className={`w-12 h-6 rounded-full p-1 ${
-                  quietHoursEnabled ? 'bg-[#CBFD03]' : 'bg-stone-600'
+                  quietHoursEnabled ? `${colors.accent}` : `${colors.cardSecondary}`
                 }`}
                 onPress={toggleQuietHours}
               >
@@ -277,24 +279,24 @@ export default function NotificationSettings() {
 
         {/* Sound & Vibration */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Sound & Vibration</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-4'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Sound & Vibration</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-4`}>
             <TouchableOpacity 
               className='flex-row items-center justify-between w-full'
               onPress={toggleSound}
             >
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="volume-2" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="volume-2" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Sound</Text>
-                  <Text className='text-gray-400 text-sm'>Play notification sounds</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Sound</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Play notification sounds</Text>
                 </View>
               </View>
               <TouchableOpacity 
                 className={`w-12 h-6 rounded-full p-1 ${
-                  soundEnabled ? 'bg-[#CBFD03]' : 'bg-stone-600'
+                  soundEnabled ? `${colors.accent}` : `${colors.cardSecondary}`
                 }`}
                 onPress={toggleSound}
               >
@@ -309,17 +311,17 @@ export default function NotificationSettings() {
               onPress={toggleVibration}
             >
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="smartphone" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="smartphone" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Vibration</Text>
-                  <Text className='text-gray-400 text-sm'>Vibrate on notifications</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Vibration</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Vibrate on notifications</Text>
                 </View>
               </View>
               <TouchableOpacity 
                 className={`w-12 h-6 rounded-full p-1 ${
-                  vibrationEnabled ? 'bg-[#CBFD03]' : 'bg-stone-600'
+                  vibrationEnabled ? `${colors.accent}` : `${colors.cardSecondary}`
                 }`}
                 onPress={toggleVibration}
               >
@@ -334,17 +336,17 @@ export default function NotificationSettings() {
               onPress={toggleLockScreen}
             >
               <View className='flex-row items-center gap-3'>
-                <View className='bg-stone-700 rounded-full p-2'>
-                  <Feather name="eye" size={20} color="#CBFD03" />
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="eye" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className='text-white text-base font-semibold'>Show on Lock Screen</Text>
-                  <Text className='text-gray-400 text-sm'>Display notifications when locked</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Show on Lock Screen</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>Display notifications when locked</Text>
                 </View>
               </View>
               <TouchableOpacity 
                 className={`w-12 h-6 rounded-full p-1 ${
-                  lockScreenEnabled ? 'bg-[#CBFD03]' : 'bg-stone-600'
+                  lockScreenEnabled ? `${colors.accent}` : `${colors.cardSecondary}`
                 }`}
                 onPress={toggleLockScreen}
               >
@@ -358,20 +360,20 @@ export default function NotificationSettings() {
 
         {/* Notification Preview */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Preview</Text>
-          <View className='bg-stone-800 rounded-xl p-4'>
-            <Text className='text-gray-400 text-sm mb-4'>How your notifications will look:</Text>
-            <View className='bg-stone-700 rounded-xl p-4'>
+            <Text className={`${colors.text} text-xl font-bold mb-4`}>Preview</Text>
+          <View className={`${colors.card} rounded-xl p-4`}>
+            <Text className={`${colors.textSecondary} text-sm mb-4`}>How your notifications will look:</Text>
+            <View className={`${colors.card} rounded-xl p-4`}>
               <View className='flex-row items-center gap-3 mb-2'>
-                <View className='bg-[#CBFD03] rounded-full p-2'>
-                  <Feather name="bar-chart-2" size={16} color="black" />
+                <View className={`${colors.accent} rounded-full p-2`}>
+                  <Feather name="bar-chart-2" size={16} color="white" />
                 </View>
                 <View className='flex-1'>
-                  <Text className='text-white text-sm font-semibold'>Expense Tracker</Text>
-                  <Text className='text-gray-400 text-xs'>Just now</Text>
+                  <Text className={`${colors.text} text-sm font-semibold`}>Expense Tracker</Text>
+                  <Text className={`${colors.textSecondary} text-xs`}>Just now</Text>
                 </View>
               </View>
-              <Text className='text-white text-sm'>
+              <Text className={`${colors.text} text-sm`}>
                 Don't forget to log today's expenses! You've spent $45.20 so far.
               </Text>
             </View>
@@ -379,17 +381,17 @@ export default function NotificationSettings() {
         </View>
 
         {/* Save Button */}
-        <View className='w-full mb-20'>
+        <View className='w-full'>
           <TouchableOpacity 
-            className='bg-[#CBFD03] rounded-xl p-4 items-center'
+            className={`${colors.accent} rounded-xl p-4 items-center`}
             onPress={() => {
               console.log('Notification settings saved');
               router.back();
             }}
           >
-            <Text className='text-black text-lg font-semibold'>Save Settings</Text>
+            <Text className='text-white text-lg font-semibold'>Save Settings</Text>
           </TouchableOpacity>
-          <Text className='text-gray-400 text-sm text-center mt-2'>
+          <Text className={`${colors.textSecondary} text-sm text-center mt-2`}>
             Changes will take effect immediately
           </Text>
         </View>

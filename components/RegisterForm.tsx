@@ -1,3 +1,4 @@
+import { useTheme } from '@/contexts/ThemeContext';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -8,7 +9,7 @@ export default function RegisterForm() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  
+  const { colors } = useTheme();
   const { register, isLoadingRegister } = useAuth();
 
   async function signUpWithEmail() {
@@ -47,16 +48,16 @@ export default function RegisterForm() {
 
   return (
     <>
-      <View className='mb-6'>
+      <View className=''>
         {/* Full Name Input */}
         <View className='mb-4'>
-          <Text className='text-white text-base font-semibold mb-2'>Full Name</Text>
-          <View className='bg-stone-800 rounded-xl p-4 flex-row items-center'>
-            <Feather name="user" size={20} color="#6b7280" />
+          <Text className={`${colors.text} text-base font-semibold mb-2`}>Full Name</Text>
+          <View className={`${colors.cardSecondary} rounded-xl p-4 flex-row items-center`}>
+            <Feather name="user" size={20} color="#615eff" />
             <TextInput
-              className='flex-1 text-white text-base ml-3'
+              className={`flex-1 ${colors.text} text-base ml-3`}
               placeholder="Enter your full name"
-              placeholderTextColor="#6b7280"
+              placeholderTextColor="#615eff"
               autoCapitalize="words"
               value={fullName}
               onChangeText={setFullName}
@@ -66,13 +67,13 @@ export default function RegisterForm() {
 
         {/* Email Input */}
         <View className='mb-4'>
-          <Text className='text-white text-base font-semibold mb-2'>Email Address</Text>
-          <View className='bg-stone-800 rounded-xl p-4 flex-row items-center'>
-            <Feather name="mail" size={20} color="#6b7280" />
+          <Text className={`${colors.text} text-base font-semibold mb-2`}>Email Address</Text>
+          <View className={`${colors.cardSecondary} rounded-xl p-4 flex-row items-center`}>
+            <Feather name="mail" size={20} color="#615eff" />
             <TextInput
-              className='flex-1 text-white text-base ml-3'
+              className={`flex-1 ${colors.text} text-base ml-3`}
               placeholder="Enter your email"
-              placeholderTextColor="#6b7280"
+              placeholderTextColor="#615eff"
               keyboardType="email-address"
               autoCapitalize="none"
               value={email}
@@ -83,38 +84,38 @@ export default function RegisterForm() {
 
         {/* Password Input */}
         <View className='mb-4'>
-          <Text className='text-white text-base font-semibold mb-2'>Password</Text>
-          <View className='bg-stone-800 rounded-xl p-4 flex-row items-center'>
-            <Feather name="lock" size={20} color="#6b7280" />
+          <Text className={`${colors.text} text-base font-semibold mb-2`}>Password</Text>
+          <View className={`${colors.cardSecondary} rounded-xl p-4 flex-row items-center`}>
+            <Feather name="lock" size={20} color="#615eff" />
             <TextInput
-              className='flex-1 text-white text-base ml-3'
+              className={`flex-1 ${colors.text} text-base ml-3`}
               placeholder="Create a password"
-              placeholderTextColor="#6b7280"
+              placeholderTextColor="#615eff"
               secureTextEntry
               value={password}
               onChangeText={setPassword}
             />
             <TouchableOpacity>
-              <Feather name="eye" size={20} color="#6b7280" />
+              <Feather name="eye" size={20} color="#615eff" />
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Confirm Password Input */}
         <View className='mb-6'>
-          <Text className='text-white text-base font-semibold mb-2'>Confirm Password</Text>
-          <View className='bg-stone-800 rounded-xl p-4 flex-row items-center'>
-            <Feather name="lock" size={20} color="#6b7280" />
+          <Text className={`${colors.text} text-base font-semibold mb-2`}>Confirm Password</Text>
+          <View className={`${colors.cardSecondary} rounded-xl p-4 flex-row items-center`}>
+            <Feather name="lock" size={20} color="#615eff" />
             <TextInput
-              className='flex-1 text-white text-base ml-3'
+              className={`flex-1 ${colors.text} text-base ml-3`}
               placeholder="Confirm your password"
-              placeholderTextColor="#6b7280"
+              placeholderTextColor="#615eff"
               secureTextEntry
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
             <TouchableOpacity>
-              <Feather name="eye" size={20} color="#6b7280" />
+              <Feather name="eye" size={20} color="#615eff" />
             </TouchableOpacity>
           </View>
         </View>
@@ -122,15 +123,15 @@ export default function RegisterForm() {
         {/* Terms and Conditions */}
         <View className='flex-row items-start mb-6'>
           <TouchableOpacity className='flex-row items-start'>
-            <View className='w-5 h-5 bg-stone-700 rounded mr-3 mt-1'>
-              <View className='w-5 h-5 bg-[#CBFD03] rounded' />
+            <View className={`w-5 h-5 ${colors.cardSecondary} rounded mr-3 mt-1`}>
+              <View className={`w-5 h-5 ${colors.accent} rounded`} />
             </View>
             <View className='flex-1'>
-              <Text className='text-gray-400 text-sm leading-5'>
+              <Text className={`${colors.textSecondary} text-sm leading-5`}>
                 I agree to the{' '}
-                <Text className='text-[#CBFD03] font-semibold'>Terms of Service</Text>
+                <Text className={`${colors.text} font-semibold`}>Terms of Service</Text>
                 {' '}and{' '}
-                <Text className='text-[#CBFD03] font-semibold'>Privacy Policy</Text>
+                <Text className={`${colors.text} font-semibold`}>Privacy Policy</Text>
               </Text>
             </View>
           </TouchableOpacity>
@@ -139,10 +140,10 @@ export default function RegisterForm() {
         {/* Newsletter Subscription */}
         <View className='flex-row items-start mb-8'>
           <TouchableOpacity className='flex-row items-start'>
-            <View className='w-5 h-5 bg-stone-700 rounded mr-3 mt-1' />
+            <View className={`w-5 h-5 ${colors.cardSecondary} rounded mr-3 mt-1`} />
           </TouchableOpacity>
           <View className='flex-1'>
-            <Text className='text-gray-400 text-sm leading-5'>
+            <Text className={`${colors.textSecondary} text-sm leading-5`}>
               Subscribe to our newsletter for financial tips and updates
             </Text>
           </View>
@@ -150,32 +151,32 @@ export default function RegisterForm() {
 
         {/* Register Button */}
         <TouchableOpacity
-          className='bg-[#CBFD03] rounded-xl p-4 items-center mb-6'
+          className={`${colors.accent} rounded-xl p-4 items-center mb-6`}
           disabled={isLoadingRegister}
           onPress={signUpWithEmail}
         >
-          <Text className='text-black text-lg font-semibold'>
+          <Text className={`${colors.text} text-lg font-semibold`}>
             {isLoadingRegister ? 'Creating Account...' : 'Create Account'}
           </Text>
         </TouchableOpacity>
 
         {/* Divider */}
         <View className='flex-row items-center mb-6'>
-          <View className='flex-1 h-px bg-stone-700' />
-          <Text className='text-gray-400 text-sm mx-4'>or sign up with</Text>
-          <View className='flex-1 h-px bg-stone-700' />
+          <View className={`flex-1 h-px ${colors.cardSecondary}`} />
+          <Text className={`${colors.textSecondary} text-sm mx-4`}>or sign up with</Text>
+          <View className={`flex-1 h-px ${colors.cardSecondary}`} />
         </View>
 
         {/* Social Registration Buttons */}
         <View className='flex-row gap-4 mb-6'>
-          <TouchableOpacity className='flex-1 bg-stone-800 rounded-xl p-4 items-center'>
-            <AntDesign name="google" size={24} color="#CBFD03" />
+          <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
+            <AntDesign name="google" size={24} color="#615eff" />
           </TouchableOpacity>
-          <TouchableOpacity className='flex-1 bg-stone-800 rounded-xl p-4 items-center'>
-            <AntDesign name="apple1" size={24} color="#CBFD03" />
+          <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
+            <AntDesign name="apple" size={24} color="#615eff" />
           </TouchableOpacity>
-          <TouchableOpacity className='flex-1 bg-stone-800 rounded-xl p-4 items-center'>
-            <Feather name="smartphone" size={24} color="#CBFD03" />
+          <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
+            <Feather name="smartphone" size={24} color="#615eff" />
           </TouchableOpacity>
         </View>
       </View>

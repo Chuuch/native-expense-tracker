@@ -1,3 +1,4 @@
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -9,28 +10,28 @@ const faqCategories = [
     title: 'Getting Started',
     icon: Feather,
     iconName: 'play' as const,
-    color: '#CBFD03'
+    color: '#615eff'
   },
   {
     id: 'account',
     title: 'Account & Billing',
     icon: MaterialIcons,
     iconName: 'account-circle' as const,
-    color: '#CBFD03'
+    color: '#615eff'
   },
   {
     id: 'features',
     title: 'Features & Usage',
     icon: Feather,
     iconName: 'zap' as const,
-    color: '#CBFD03'
+    color: '#615eff'
   },
   {
     id: 'troubleshooting',
     title: 'Troubleshooting',
     icon: MaterialCommunityIcons,
     iconName: 'wrench' as const,
-    color: '#CBFD03'
+    color: '#615eff'
   }
 ];
 
@@ -116,6 +117,7 @@ const contactOptions = [
 ];
 
 export default function SupportScreen() {
+  const { colors, tint } = useTheme();
   const router = useRouter();
   const [expandedFaq, setExpandedFaq] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -129,57 +131,57 @@ export default function SupportScreen() {
     : faqs.filter(faq => faq.category === selectedCategory);
 
   return (
-    <View className='flex-1 bg-stone-950 pt-20'>
+    <View className={`flex-1 ${colors.background} pt-20`}>
       {/* Header */}
       <View className='flex-row items-center justify-between w-full p-4'>
         <TouchableOpacity 
-          className='bg-stone-800 rounded-xl p-2'
+          className={`${colors.card} rounded-xl p-2`}
           onPress={() => router.back()}
         >
-          <Feather name="arrow-left" size={24} color="#CBFD03" />
+          <Feather name="arrow-left" size={24} color="#615eff" />
         </TouchableOpacity>
         <View className='flex-row items-center gap-2'>
-          <Text className='text-white text-4xl font-bold'>Support</Text>
+          <Text className={`${colors.text} text-4xl font-bold`}>Support</Text>
         </View>
-        <TouchableOpacity className='bg-stone-800 rounded-xl p-2'>
-          <Feather name="search" size={24} color="#CBFD03" />
+        <TouchableOpacity className={`${colors.card} rounded-xl p-2`}>
+          <Feather name="search" size={24} color="#615eff" />
         </TouchableOpacity>
       </View>
 
       <ScrollView 
-        className='flex-1 bg-stone-950 px-4'
+        className={`flex-1 ${colors.background} px-4`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140, gap: 32 }}
       >
 
         {/* Quick Help */}
-        <View className='w-full bg-stone-800 rounded-xl p-6'>
-          <Text className='text-white text-xl font-bold mb-4'>How can we help?</Text>
-          <Text className='text-gray-400 text-base mb-4'>
+        <View className={`w-full ${colors.card} rounded-xl p-6`}>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>How can we help?</Text>
+          <Text className={`${colors.textSecondary} text-base mb-4`}>
             Find answers to common questions or get in touch with our support team. We're here to help you make the most of your expense tracking experience.
           </Text>
-          <TouchableOpacity className='bg-[#CBFD03] rounded-xl p-3 items-center'>
-            <Text className='text-black text-base font-semibold'>Search Help Articles</Text>
+          <TouchableOpacity className={`${colors.accent} rounded-xl p-3 items-center`}>
+            <Text className='text-white text-base font-semibold'>Search Help Articles</Text>
           </TouchableOpacity>
         </View>
 
         {/* FAQ Categories */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Help Categories</Text>
-          <View className='flex-row flex-wrap gap-3'>
+            <Text className={`${colors.text} text-xl font-bold mb-4`}>Help Categories</Text>
+          <View className={`flex-row flex-wrap gap-3`}>
             <TouchableOpacity
               className={`px-4 py-3 rounded-xl flex-row items-center gap-2 ${
-                selectedCategory === 'all' ? 'bg-[#CBFD03]' : 'bg-stone-700'
+                selectedCategory === 'all' ? `${colors.accent}` : `${colors.cardSecondary}`
               }`}
               onPress={() => setSelectedCategory('all')}
             >
               <Feather 
                 name="list" 
                 size={16} 
-                color={selectedCategory === 'all' ? 'black' : '#CBFD03'} 
+                color={selectedCategory === 'all' ? 'white' : tint.accent} 
               />
               <Text className={`text-sm font-semibold ${
-                selectedCategory === 'all' ? 'text-black' : 'text-white'
+                selectedCategory === 'all' ? 'text-white' : `${colors.text}`
               }`}>
                 All
               </Text>
@@ -190,17 +192,17 @@ export default function SupportScreen() {
                 <TouchableOpacity
                   key={category.id}
                   className={`px-4 py-3 rounded-xl flex-row items-center gap-2 ${
-                    selectedCategory === category.id ? 'bg-[#CBFD03]' : 'bg-stone-700'
+                      selectedCategory === category.id ? `${colors.accent}` : `${colors.cardSecondary}`
                   }`}
                   onPress={() => setSelectedCategory(category.id)}
                 >
                   <IconComponent 
                     name={category.iconName as any} 
                     size={16} 
-                    color={selectedCategory === category.id ? 'black' : category.color} 
+                    color={selectedCategory === category.id ? 'white' : tint.accent} 
                   />
                   <Text className={`text-sm font-semibold ${
-                    selectedCategory === category.id ? 'text-black' : 'text-white'
+                    selectedCategory === category.id ? 'text-white' : `${colors.text}`
                   }`}>
                     {category.title}
                   </Text>
@@ -212,26 +214,26 @@ export default function SupportScreen() {
 
         {/* FAQs */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Frequently Asked Questions</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-2'>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Frequently Asked Questions</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-2`}>
             {filteredFaqs.map((faq) => (
-              <View key={faq.id} className='border-b border-stone-700 last:border-b-0'>
+              <View key={faq.id} className={`border-b border-${colors.cardSecondary} last:border-b-0`}>
                 <TouchableOpacity
                   className='flex-row items-center justify-between w-full p-4'
                   onPress={() => handleFaqToggle(faq.id)}
                 >
-                  <Text className='text-white text-base font-semibold flex-1 mr-4'>
+                  <Text className={`${colors.text} text-base font-semibold flex-1 mr-4`}>
                     {faq.question}
                   </Text>
                   <Feather 
                     name={expandedFaq === faq.id ? "chevron-up" : "chevron-down"} 
                     size={20} 
-                    color="#CBFD03" 
+                    color={tint.textSecondary} 
                   />
                 </TouchableOpacity>
                 {expandedFaq === faq.id && (
                   <View className='px-4 pb-4'>
-                    <Text className='text-gray-400 text-sm leading-5'>
+                    <Text className={`${colors.textSecondary} text-sm leading-5`}>
                       {faq.answer}
                     </Text>
                   </View>
@@ -243,30 +245,30 @@ export default function SupportScreen() {
 
         {/* Contact Options */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Contact Support</Text>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Contact Support</Text>
           <View className='gap-4'>
             {contactOptions.map((option) => {
               const IconComponent = option.icon;
               return (
                 <TouchableOpacity
                   key={option.id}
-                  className='bg-stone-800 rounded-xl p-4'
+                  className={`${colors.cardSecondary} rounded-xl p-4`}
                 >
                   <View className='flex-row items-center justify-between mb-3'>
                     <View className='flex-row items-center gap-3'>
-                      <View className='bg-stone-700 rounded-full p-2'>
-                        <IconComponent name={option.iconName as any} size={24} color="#CBFD03" />
+                      <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                        <IconComponent name={option.iconName as any} size={24} color={tint.text} />
                       </View>
                       <View>
-                        <Text className='text-white text-lg font-semibold'>{option.title}</Text>
-                        <Text className='text-gray-400 text-sm'>{option.subtitle}</Text>
+                        <Text className={`${colors.text} text-lg font-semibold`}>{option.title}</Text>
+                        <Text className={`${colors.textSecondary} text-sm`}>{option.subtitle}</Text>
                       </View>
                     </View>
-                    <TouchableOpacity className='bg-[#CBFD03] rounded-xl px-4 py-2'>
-                      <Text className='text-black text-sm font-semibold'>{option.action}</Text>
+                    <TouchableOpacity className={`${colors.accent} rounded-xl px-4 py-2`}>
+                      <Text className={`${colors.text} text-sm font-semibold`}>{option.action}</Text>
                     </TouchableOpacity>
                   </View>
-                  <Text className='text-gray-400 text-sm'>{option.description}</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>{option.description}</Text>
                 </TouchableOpacity>
               );
             })}
@@ -275,50 +277,56 @@ export default function SupportScreen() {
 
         {/* Additional Resources */}
         <View className='w-full'>
-          <Text className='text-white text-xl font-bold mb-4'>Additional Resources</Text>
-          <View className='bg-stone-800 rounded-xl p-4 gap-3'>
-            <TouchableOpacity className='flex-row items-center justify-between w-full p-3 rounded-lg bg-stone-700'>
-              <View className='flex-row items-center gap-3'>
-                <Feather name="book" size={20} color="#CBFD03" />
-                <Text className='text-white text-base font-semibold'>User Guide</Text>
+          <Text className={`${colors.text} text-xl font-bold mb-4`}>Additional Resources</Text>
+          <View className={`${colors.card} rounded-xl p-4 gap-3`}>
+            <TouchableOpacity className={`flex-row items-center justify-between w-full p-3 rounded-lg ${colors.cardSecondary}`}>
+                <View className='flex-row items-center gap-3'>
+                  <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                    <Feather name="book" size={20} color={tint.accent} />
+                  </View>
+                <Text className={`${colors.text} text-base font-semibold`}>User Guide</Text>
               </View>
-              <Feather name="external-link" size={16} color="#CBFD03" />
+              <Feather name="external-link" size={16} color={tint.accent} />
             </TouchableOpacity>
             
-            <TouchableOpacity className='flex-row items-center justify-between w-full p-3 rounded-lg bg-stone-700'>
+            <TouchableOpacity className={`flex-row items-center justify-between w-full p-3 rounded-lg ${colors.cardSecondary}`}>
               <View className='flex-row items-center gap-3'>
-                <Feather name="video" size={20} color="#CBFD03" />
-                <Text className='text-white text-base font-semibold'>Video Tutorials</Text>
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="video" size={20} color={tint.accent} />
+                </View>
+                <Text className={`${colors.text} text-base font-semibold`}>Video Tutorials</Text>
               </View>
-              <Feather name="external-link" size={16} color="#CBFD03" />
+              <Feather name="external-link" size={16} color={tint.accent} />
             </TouchableOpacity>
             
-            <TouchableOpacity className='flex-row items-center justify-between w-full p-3 rounded-lg bg-stone-700'>
+            <TouchableOpacity className={`flex-row items-center justify-between w-full p-3 rounded-lg ${colors.cardSecondary}`}>
               <View className='flex-row items-center gap-3'>
-                <Feather name="message-circle" size={20} color="#CBFD03" />
-                <Text className='text-white text-base font-semibold'>Community Forum</Text>
+                  <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="message-circle" size={20} color={tint.accent} />
+                </View>
+                <Text className={`${colors.text} text-base font-semibold`}>Community Forum</Text>
               </View>
-              <Feather name="external-link" size={16} color="#CBFD03" />
+              <Feather name="external-link" size={16} color={tint.accent} />
             </TouchableOpacity>
             
-            <TouchableOpacity className='flex-row items-center justify-between w-full p-3 rounded-lg bg-stone-700'>
-              <View className='flex-row items-center gap-3'>
-                <Feather name="file-text" size={20} color="#CBFD03" />
-                <Text className='text-white text-base font-semibold'>API Documentation</Text>
-              </View>
-              <Feather name="external-link" size={16} color="#CBFD03" />
-            </TouchableOpacity>
+            <TouchableOpacity className={`flex-row items-center justify-between w-full p-3 rounded-lg ${colors.cardSecondary}`}>
+                <View className={`${colors.cardSecondary} rounded-full p-2`}>
+                  <Feather name="file-text" size={20} color={tint.accent} />
+                </View>
+                <Text className={`${colors.text} text-base font-semibold`}>API Documentation</Text>
+                <Feather name="external-link" size={16} color={tint.accent} />
+              </TouchableOpacity>
           </View>
         </View>
 
         {/* Support Status */}
-        <View className='w-full bg-stone-800 rounded-xl p-4 mb-20'>
-          <Text className='text-white text-lg font-semibold mb-3'>System Status</Text>
+        <View className={`w-full ${colors.card} rounded-xl p-4`}>
+          <Text className={`${colors.text} text-lg font-semibold mb-3`}>System Status</Text>
           <View className='flex-row items-center justify-between mb-3'>
-            <Text className='text-gray-400 text-sm'>All systems operational</Text>
+            <Text className={`${colors.textSecondary} text-sm`}>All systems operational</Text>
             <View className='bg-green-500 rounded-full w-3 h-3'></View>
           </View>
-          <Text className='text-gray-400 text-xs'>
+          <Text className={`${colors.textSecondary} text-xs`}>
             Last updated: {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString()}
           </Text>
         </View>
