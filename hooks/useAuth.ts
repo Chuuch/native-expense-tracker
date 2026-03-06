@@ -1,14 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
-import { useEffect } from 'react';
-import { authAPI, userAPI } from '../lib/api';
+import { useEffect, useState } from 'react';
+import { API_BASE_URL, authAPI, userAPI } from '../lib/api';
 import { clearAllQueries, queryKeys } from '../lib/queryClient';
+import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
+import { Alert } from 'react-native';
 
 export function useAuth() {
   const queryClient = useQueryClient();
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState<boolean>(false);
 
-  // Get user profile
   const {
     data: user,
     isLoading: isLoadingProfile,
@@ -16,43 +19,39 @@ export function useAuth() {
   } = useQuery({
     queryKey: queryKeys.auth.profile,
     queryFn: userAPI.getProfile,
-    enabled: false, // Don't auto-fetch, we'll fetch manually after login
+    enabled: false, 
   });
 
-  // Login mutation
+  const setTokensAndNavigate = async (accessToken: string, refreshToken: string) => {
+    await AsyncStorage.setItem('accessToken', accessToken);
+    await AsyncStorage.setItem('refreshToken', refreshToken);
+    await queryClient.fetchQuery({
+      queryKey: queryKeys.auth.profile,
+      queryFn: userAPI.getProfile,
+    });
+    router.replace('/(tabs)');
+  }
+
+
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => 
       authAPI.login(email, password),
     onSuccess: async (data) => {
-      // Validate response data before storing tokens
       if (!data || !data.access_token || !data.refresh_token) {
         console.error('Login response missing required fields:', data);
         throw new Error('Invalid login response from server');
       }
       
-      // Store tokens
-      await AsyncStorage.setItem('accessToken', data.access_token);
-      await AsyncStorage.setItem('refreshToken', data.refresh_token);
-      
-      // Fetch user profile
-      await queryClient.fetchQuery({
-        queryKey: queryKeys.auth.profile,
-        queryFn: userAPI.getProfile,
-      });
-      
-      // Navigate to main app
-      router.replace('/(tabs)');
+      await setTokensAndNavigate(data.access_token, data.refresh_token);
     },
     onError: (error) => {
       console.error('Login failed:', error);
     },
   });
 
-  // Register mutation
   const registerMutation = useMutation({
     mutationFn: (userData: any) => authAPI.register(userData),
     onSuccess: async (data) => {
-      // Navigate to email verification screen
       router.replace('/(auth)/verify');
     },
     onError: (error) => {
@@ -60,33 +59,24 @@ export function useAuth() {
     },
   });
 
-  // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: authAPI.logout,
     onSuccess: async () => {
-      // Clear tokens
       await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
-      
-      // Clear all queries
       clearAllQueries();
-      
-      // Navigate to auth
       router.replace('/(auth)/login');
     },
     onError: async (error) => {
       console.error('Logout failed:', error);
-      // Even if logout fails on server, clear local state
       await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
       clearAllQueries();
       router.replace('/(auth)/login');
     },
   });
 
-  // Update profile mutation
   const updateProfileMutation = useMutation({
     mutationFn: userAPI.updateProfile,
     onSuccess: (updatedUser) => {
-      // Update the profile in cache
       queryClient.setQueryData(queryKeys.auth.profile, updatedUser);
     },
     onError: (error) => {
@@ -94,35 +84,55 @@ export function useAuth() {
     },
   });
 
-  // Check if user is authenticated
   const isAuthenticated = !!user;
 
-  // Login function
   const login = async (email: string, password: string) => {
     return loginMutation.mutateAsync({ email, password });
   };
 
-  // Register function
   const register = async (userData: any) => {
     return registerMutation.mutateAsync(userData);
   };
 
-  // Logout function
   const logout = async () => {
     return logoutMutation.mutateAsync();
   };
 
-  // Update profile function
   const updateProfile = async (updates: any) => {
     return updateProfileMutation.mutateAsync(updates);
   };
 
-  // Check authentication status on mount
+  const loginWithGoogle = async () => {
+    setIsLoadingGoogle(true);
+    try {
+      const redirectUri = AuthSession.makeRedirectUri({
+        scheme: 'nativeexpensetracker',
+        path: 'redirect',
+      });
+      const authUrl = `${API_BASE_URL}/auth/google?redirect_uri=${encodeURIComponent(redirectUri)}`;
+      const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
+      if (result.type === 'success' && result.url) {
+        const url = new URL(result.url);
+        const accessToken = url.searchParams.get('access_token');
+        const refreshToken = url.searchParams.get('refresh_token');
+        if (accessToken && refreshToken) {
+          await setTokensAndNavigate(accessToken, refreshToken);
+        } else {
+          Alert.alert('Error', 'Google sign-in failed. Missing tokens.');
+        }
+      }
+    } catch (error) {
+      console.error('Google sign-in failed:', error);
+      Alert.alert('Error', 'Google sign-in failed. Please try again.');
+    } finally {
+      setIsLoadingGoogle(false);
+    }
+  }
+
   useEffect(() => {
     const checkAuth = async () => {
       const token = await AsyncStorage.getItem('accessToken');
       if (token) {
-        // Try to fetch profile to validate token
         try {
           await queryClient.fetchQuery({
             queryKey: queryKeys.auth.profile,
@@ -130,7 +140,6 @@ export function useAuth() {
           });
         } catch (error) {
           console.error('Token is invalid, clearing it', error);
-          // Token is invalid, clear it
           await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
           clearAllQueries();
         }
@@ -141,7 +150,6 @@ export function useAuth() {
   }, [queryClient]);
 
   return {
-    // State
     user,
     isAuthenticated,
     isLoading: isLoadingProfile || loginMutation.isPending || registerMutation.isPending,
@@ -150,23 +158,21 @@ export function useAuth() {
     isLoadingRegister: registerMutation.isPending,
     isLoadingLogout: logoutMutation.isPending,
     isLoadingUpdateProfile: updateProfileMutation.isPending,
-    
-    // Errors
+    isLoadingGoogle,
     error: profileError || loginMutation.error || registerMutation.error,
     loginError: loginMutation.error,
     registerError: registerMutation.error,
     profileError,
     
-    // Actions
     login,
     register,
     logout,
     updateProfile,
     
-    // Mutations (for advanced usage)
     loginMutation,
     registerMutation,
     logoutMutation,
     updateProfileMutation,
+    loginWithGoogle,
   };
 }
