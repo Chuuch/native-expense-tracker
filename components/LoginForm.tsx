@@ -2,7 +2,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../hooks";
 
 export default function LoginForm() {
@@ -10,7 +10,8 @@ export default function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { login, isLoadingLogin } = useAuth();
+  const { login, isLoadingLogin, loginWithGoogle, isLoadingGoogle } = useAuth();
+  const isLoading = isLoadingLogin || isLoadingGoogle;
 
   async function signInWithEmail() {
     if (!email || !password) {
@@ -90,7 +91,7 @@ export default function LoginForm() {
         {/* Login Button */}
         <TouchableOpacity
           className={`${colors.accent} rounded-xl p-4 items-center mb-6`}
-          disabled={isLoadingLogin}
+          disabled={isLoading}
           onPress={signInWithEmail}
         >
           <Text className={`${colors.text} text-lg font-semibold`}>
@@ -107,8 +108,13 @@ export default function LoginForm() {
 
         {/* Social Login Buttons */}
         <View className="flex-row gap-4 mb-8">
-            <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
+            <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}
+            disabled={isLoading}
+            onPress={loginWithGoogle}>
             <AntDesign name="google" size={24} color="#615eff" />
+            {isLoadingGoogle ? (
+              <ActivityIndicator size='small' color='#615eff' style={{ marginTop: 4 }}/>
+            ): null}
           </TouchableOpacity>
           <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
             <AntDesign name="apple" size={24} color="#615eff" />
