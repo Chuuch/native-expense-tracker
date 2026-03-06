@@ -114,7 +114,7 @@ export default function DarkModeScreen() {
                     {/* Balance Card */}
                     <View className={`${selectedThemeOption.colors.card} rounded-xl p-4 mb-4`}>
                       <Text className={`${selectedThemeOption.colors.textSecondary} text-sm mb-2`}>Total Balance</Text>
-                      <Text className={`${selectedThemeOption.colors.text} text-2xl font-bold mb-2`}>$2,450.75</Text>
+                      <Text className={` text-2xl font-bold mb-2`}>$2,450.75</Text>
                       <View className="flex-row items-center gap-2">
                         <Feather name="trending-up" size={16} color={selectedThemeOption.colors.accent.includes('CBFD03') ? '#615eff' : '#22c55e'} />
                         <Text className={`${selectedThemeOption.colors.text} text-sm font-semibold`}>+$125.50</Text>
