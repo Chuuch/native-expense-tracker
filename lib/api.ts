@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = 'http://localhost:8080'; // Update with your actual backend URL
+export const API_BASE_URL = 'http://localhost:8080/api/v1'; // Update with your actual backend URL
 
 // API client with authentication
 class ApiClient {
