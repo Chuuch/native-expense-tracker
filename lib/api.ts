@@ -1,8 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const API_BASE_URL = 'http://localhost:8080/api/v1'; // Update with your actual backend URL
+export const API_BASE_URL = 'http://localhost:8080/api/v1'; 
 
-// API client with authentication
 class ApiClient {
   private baseURL: string;
 
@@ -27,7 +26,6 @@ class ApiClient {
           errorMessage = errorData.message;
         }
       } catch (parseError) {
-        // If we can't parse JSON, use the status text
         errorMessage = response.statusText || errorMessage;
       }
       
@@ -92,7 +90,6 @@ class ApiClient {
 
 export const apiClient = new ApiClient(API_BASE_URL);
 
-// Auth API
 export const authAPI = {
   login: async (email: string, password: string) => {
     return apiClient.post<{ user: User; access_token: string; refresh_token: string }>('/auth/login', {
