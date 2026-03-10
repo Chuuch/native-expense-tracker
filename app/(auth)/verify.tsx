@@ -1,10 +1,10 @@
 import verify from '@/assets/lottie/verify.json';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { useEffect, useRef, useState } from 'react';
-import { Alert, NativeSyntheticEvent, ScrollView, Text, TextInput, TextInputKeyPressEventData, TouchableOpacity, View } from 'react-native';
+import type { TextInputProps } from 'react-native';
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { authAPI } from '../../lib/api';
 
 export default function VerifyScreen() {
@@ -14,12 +14,9 @@ export default function VerifyScreen() {
   const [timeLeft, setTimeLeft] = useState(30);
   const [isVerifying, setIsVerifying] = useState(false);
   
-  // Create refs for each input box
   const inputRefs = useRef<(TextInput | null)[]>([]);
   
-  // Auto-focus first input when component mounts
   useEffect(() => {
-    // Focus the first input after a short delay to ensure component is rendered
     const timer = setTimeout(() => {
       inputRefs.current[0]?.focus();
     }, 100);
@@ -27,10 +24,8 @@ export default function VerifyScreen() {
   }, []);
   
   const handleSubmit = async () => {
-    // Combine OTP digits into a single string
     const code = otp.join('');
     
-    // Validate OTP
     if (code.length !== 6) {
       Alert.alert('Error', 'Please enter the complete 6-digit code');
       return;
@@ -46,10 +41,7 @@ export default function VerifyScreen() {
         [{ text: 'OK', onPress: () => router.replace('/(auth)/login') }]
       );
     } catch (error: any) {
-      console.error('🔍 Verification failed - Full error:', error);
-      console.error('🔍 Error message:', error.message);
-      console.error('🔍 Error status:', error.status);
-      console.error('🔍 Error statusText:', error.statusText);
+      console.error('Verification failed - Full error:', error);
       
       let errorMessage = 'Failed to verify email. Please try again.';
       if (error.message && error.message !== `HTTP error! status: ${error.status}`) {
@@ -67,10 +59,7 @@ export default function VerifyScreen() {
   };
 
   const handleOtpChange = (text: string, index: number) => {
-    // Keep digits only
     const digits = (text ?? '').replace(/\D/g, '');
-
-    // Paste support: if user pastes multiple digits, fill forward
     if (digits.length > 1) {
       const newOtp = [...otp];
       let writeIndex = index;
@@ -94,7 +83,7 @@ export default function VerifyScreen() {
   };
 
   const handleOtpKeyPress = (
-    e: NativeSyntheticEvent<TextInputKeyPressEventData>,
+    e: Parameters<NonNullable<TextInputProps['onKeyPress']>>[0],
     index: number
   ) => {
     if (e.nativeEvent.key === 'Backspace' && !otp[index] && index > 0) {
@@ -116,7 +105,7 @@ export default function VerifyScreen() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
     >
-      <View className={`flex-1 ${colors.background} p-6 justify-center mt-20`}>
+      <View className={`flex-1 ${colors.background} p-6 justify-center mt-10`}>
         {/* Header */}
         <View className='items-center mb-12'>
           <LottieView source={verify} autoPlay loop style={{ width: 200, height: 200 }} />
@@ -191,15 +180,6 @@ export default function VerifyScreen() {
             <Text className='text-gray-400 text-sm mx-4'>or</Text>
             <View className={`flex-1 h-px ${colors.cardSecondary}`} />
           </View>
-
-          <TouchableOpacity className={`${colors.cardSecondary} rounded-xl p-4 items-center`}>
-            <View className='flex-row items-center'>
-              <Feather name="mail" size={20} color="#615eff" />
-              <Text className={`${colors.text} text-base font-semibold ml-3`}>
-                Change Email Address
-              </Text>
-            </View>
-          </TouchableOpacity>
         </View>
 
         {/* Back to Login */}
@@ -209,14 +189,6 @@ export default function VerifyScreen() {
             <Text className={`${colors.text} text-base font-semibold`}>Sign In</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Skip to App (for testing) */}
-        <TouchableOpacity 
-          className={`mt-8 ${colors.cardSecondary} rounded-xl p-4 items-center`}
-          onPress={() => router.replace('/(tabs)')}
-        >
-          <Text className={`${colors.textSecondary} text-sm`}>Skip to App</Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
