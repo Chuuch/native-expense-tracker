@@ -9,6 +9,8 @@ export default function LoginForm() {
   const { colors } = useTheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [enableBiometrics, setEnableBiometrics] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { login, isLoadingLogin, loginWithGoogle, isLoadingGoogle } = useAuth();
   const isLoading = isLoadingLogin || isLoadingGoogle;
@@ -20,10 +22,22 @@ export default function LoginForm() {
     }
 
     try {
+      setLoading(true);
       await login(email, password);
       router.replace("/(tabs)");
     } catch (error) {
       console.error("Login failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleBiometricLogin = async () => {
+    try {
+      setLoading(true);
+      await login(email, password, enableBiometrics);
+    } catch (error) {
+      
     }
   }
 
@@ -94,7 +108,7 @@ export default function LoginForm() {
           disabled={isLoading}
           onPress={signInWithEmail}
         >
-          <Text className={`${colors.text} text-lg font-semibold`}>
+          <Text className={`${colors.textButton} text-lg font-semibold`}>
             {isLoadingLogin ? "Signing In..." : "Sign In"}
           </Text>
         </TouchableOpacity>
@@ -107,7 +121,7 @@ export default function LoginForm() {
         </View>
 
         {/* Social Login Buttons */}
-        <View className="flex-row gap-4 mb-8">
+        <View className="flex-row gap-4">
             <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}
             disabled={isLoading}
             onPress={loginWithGoogle}>
@@ -119,7 +133,7 @@ export default function LoginForm() {
           <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
             <AntDesign name="apple" size={24} color="#615eff" />
           </TouchableOpacity>
-          <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
+          <TouchableOpacity onPress={handleBiometricLogin} disabled={loading} className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
             <Feather name="smartphone" size={24} color="#615eff" />
           </TouchableOpacity>
         </View>
