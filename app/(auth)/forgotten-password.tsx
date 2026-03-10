@@ -56,40 +56,8 @@ export default function ForgottenPasswordScreen() {
 
           {/* Reset Button */}
           <TouchableOpacity className={`${colors.accent} rounded-xl p-4 items-center mb-6`}>
-            <Text className={`${colors.text} text-lg font-semibold`}>Send Reset Link</Text>
+            <Text className={`${colors.textButton} text-lg font-semibold`}>Send Reset Link</Text>
           </TouchableOpacity>
-        </View>
-
-        {/* Alternative Recovery Options */}
-        <View className='mb-8'>
-          <View className='flex-row items-center mb-4'>
-              <View className={`flex-1 h-px ${colors.cardSecondary}`} />
-            <Text className={`${colors.textSecondary} text-sm mx-4`}>or try</Text>
-            <View className={`flex-1 h-px ${colors.cardSecondary}`} />
-          </View>
-
-          <TouchableOpacity className={`${colors.cardSecondary} rounded-xl p-4 items-center`}>
-            <View className='flex-row items-center'>
-              <Feather name="message-circle" size={20} color="#615eff" />
-              <Text className={`${colors.text} text-base font-semibold ml-3`}>
-                Contact Support
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Security Tips */}
-        <View className={`${colors.cardSecondary} rounded-xl p-4 mb-8`}>
-          <View className='flex-row items-start mb-3'>
-            <Feather name="shield" size={20} color="#615eff" />
-            <Text className={`${colors.text} text-base font-semibold ml-2`}>Security Tips</Text>
-          </View>
-          <View className='space-y-2'>
-            <Text className={`${colors.textSecondary} text-sm`}>• Use a strong, unique password</Text>
-            <Text className={`${colors.textSecondary} text-sm`}>• Enable two-factor authentication</Text>
-            <Text className={`${colors.textSecondary} text-sm`}>• Never share your password</Text>
-            <Text className={`${colors.textSecondary} text-sm`}>• Check for suspicious activity</Text>
-          </View>
         </View>
 
         {/* Back to Login */}
@@ -99,14 +67,6 @@ export default function ForgottenPasswordScreen() {
             <Text className={`${colors.text} text-base font-semibold`}>Sign In</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Skip to App (for testing) */}
-        <TouchableOpacity 
-          className={`mt-8 ${colors.cardSecondary} rounded-xl p-4 items-center mb-20`}
-          onPress={() => router.replace('/(tabs)')}
-        >
-          <Text className={`${colors.textSecondary} text-sm`}>Skip to App</Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
