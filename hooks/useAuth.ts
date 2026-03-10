@@ -1,12 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import * as AuthSession from 'expo-auth-session';
+import * as LocalAuthentication from 'expo-local-authentication';
 import { router } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { API_BASE_URL, authAPI, userAPI } from '../lib/api';
 import { clearAllQueries, queryKeys } from '../lib/queryClient';
-import * as AuthSession from 'expo-auth-session';
-import * as WebBrowser from 'expo-web-browser';
-import { Alert } from 'react-native';
+import { setBiometricEnabled } from '../stores/authStore';
 
 export function useAuth() {
   const queryClient = useQueryClient();
@@ -37,12 +39,12 @@ export function useAuth() {
     mutationFn: ({ email, password }: { email: string; password: string }) => 
       authAPI.login(email, password),
     onSuccess: async (data) => {
-      if (!data || !data.access_token || !data.refresh_token) {
+      if (!data || !data.accessToken || !data.refreshToken) {
         console.error('Login response missing required fields:', data);
         throw new Error('Invalid login response from server');
       }
       
-      await setTokensAndNavigate(data.access_token, data.refresh_token);
+      await setTokensAndNavigate(data.accessToken, data.refreshToken);
     },
     onError: (error) => {
       console.error('Login failed:', error);
@@ -86,8 +88,30 @@ export function useAuth() {
 
   const isAuthenticated = !!user;
 
-  const login = async (email: string, password: string) => {
-    return loginMutation.mutateAsync({ email, password });
+  const login = async (email: string, password: string, enableBiometrics?: boolean) => {
+    const data = await loginMutation.mutateAsync({ email, password });
+
+    if (enableBiometrics) {
+      try {
+        const supported = await LocalAuthentication.hasHardwareAsync();
+        const enrolled = supported && (await LocalAuthentication.isEnrolledAsync());
+
+        if (!enrolled) {
+          Alert.alert(
+            'Biometrics not available',
+            'Device does not support or have biometrics enrolled.'
+          );
+          await setBiometricEnabled(false);
+        } else {
+          await setBiometricEnabled(true);
+        }
+      } catch (error) {
+        console.error('Failed to enable biometrics:', error);
+        Alert.alert('Error', 'Failed to enable biometric authentication.');
+      }
+    }
+
+    return data;
   };
 
   const register = async (userData: any) => {
@@ -113,8 +137,8 @@ export function useAuth() {
       const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
       if (result.type === 'success' && result.url) {
         const url = new URL(result.url);
-        const accessToken = url.searchParams.get('access_token');
-        const refreshToken = url.searchParams.get('refresh_token');
+        const accessToken = url.searchParams.get('accessToken');
+        const refreshToken = url.searchParams.get('refreshToken');
         if (accessToken && refreshToken) {
           await setTokensAndNavigate(accessToken, refreshToken);
         } else {
