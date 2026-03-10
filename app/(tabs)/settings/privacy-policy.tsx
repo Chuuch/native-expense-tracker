@@ -417,7 +417,7 @@ export default function PrivacyPolicyScreen() {
             If you have any questions about our privacy practices or want to exercise your data rights, please contact our privacy team.
           </Text>
           <TouchableOpacity className={`${colors.accent} rounded-xl p-3 items-center`}>
-            <Text className={`${colors.text} text-base font-semibold`}>Contact Privacy Team</Text>
+            <Text className={`${colors.textButton} text-base font-semibold`}>Contact Privacy Team</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
