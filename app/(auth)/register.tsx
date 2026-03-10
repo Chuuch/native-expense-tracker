@@ -15,7 +15,7 @@ export default function RegisterScreen() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
     >
-      <View className={`flex-1 ${colors.background} p-6 justify-center mt-20`}>
+      <View className={`flex-1 ${colors.background} p-6 justify-center mt-10`}>
         {/* Header */}
         <View className='items-center mb-8'>
           <LottieView source={signup} autoPlay loop style={{ width: 200, height: 200 }} />
@@ -35,14 +35,6 @@ export default function RegisterScreen() {
             <Text className={`${colors.text} text-base font-semibold`}>Sign In</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Skip to App (for testing) */}
-        <TouchableOpacity 
-          className={`mt-6 ${colors.cardSecondary} rounded-xl p-4 items-center`}
-          onPress={() => router.replace('/(tabs)')}
-        >
-          <Text className={`${colors.textSecondary} text-sm`}>Skip to App</Text>
-        </TouchableOpacity>
 
         {/* Test Verify Screen (for testing) */}
         <TouchableOpacity 
