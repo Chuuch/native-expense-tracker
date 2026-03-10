@@ -306,7 +306,7 @@ export default function SubscriptionScreen() {
             Our support team is here to help you choose the right plan
           </Text>
           <TouchableOpacity className={`${colors.accent} rounded-xl px-6 py-3`}>
-            <Text className={`${colors.text} text-base font-semibold`}>Contact Support</Text>
+            <Text className={`${colors.textButton} text-base font-semibold`}>Contact Support</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
