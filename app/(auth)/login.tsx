@@ -15,7 +15,7 @@ export default function LoginScreen() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
     >
-      <View className={`flex-1 ${colors.background} p-6 justify-center mt-20`}>
+      <View className={`flex-1 ${colors.background} px-6 justify-center mt-10`}>
         {/* Header */}
         <View className='items-center mb-12'>
 
@@ -34,7 +34,7 @@ export default function LoginScreen() {
         <View className='flex-row justify-center items-center'>
           <Text className={`${colors.textSecondary} text-base`}>Don&apos;t have an account? </Text>
           <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-            <Text className={`${colors.text} text-base font-semibold`}>Sign Up</Text>
+            <Text className={`${colors.textSecondary} text-base font-semibold`}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>
