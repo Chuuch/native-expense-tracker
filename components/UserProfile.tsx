@@ -6,16 +6,16 @@ import { useAuth } from '../hooks';
 export default function UserProfile() {
   const { user, updateProfile, isLoadingUpdateProfile } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState(user?.fullName || '');
+  const [editUsername, setEditUsername] = useState(user?.username || '');
 
   const handleSaveProfile = async () => {
-    if (!editName.trim()) {
-      Alert.alert('Error', 'Name cannot be empty');
+    if (!editUsername.trim()) {
+      Alert.alert('Error', 'Username cannot be empty');
       return;
     }
 
     try {
-      await updateProfile({ fullName: editName.trim() });
+      await updateProfile({ username: editUsername.trim() });
       setIsEditing(false);
       Alert.alert('Success', 'Profile updated successfully');
     } catch (error) {
@@ -57,21 +57,21 @@ export default function UserProfile() {
             </View>
           </View>
 
-          {/* Full Name */}
+          {/* Username */}
           <View className="flex-row items-center">
             <Feather name="user" size={20} color="#6b7280" />
             <View className="ml-3 flex-1">
-              <Text className="text-gray-400 text-sm">Full Name</Text>
+              <Text className="text-gray-400 text-sm">Username</Text>
               {isEditing ? (
                 <TextInput
                   className="text-white text-base border-b border-gray-600 py-1"
-                  value={editName}
-                  onChangeText={setEditName}
-                  placeholder="Enter your name"
+                  value={editUsername}
+                  onChangeText={setEditUsername}
+                  placeholder="Enter your username"
                   placeholderTextColor="#6b7280"
                 />
               ) : (
-                <Text className="text-white text-base">{user.fullName}</Text>
+                <Text className="text-white text-base">{user.username}</Text>
               )}
             </View>
           </View>
