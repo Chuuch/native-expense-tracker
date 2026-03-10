@@ -54,8 +54,8 @@ export default function ProfileScreen() {
                   <Feather name="user" size={20} color="#615eff" />
                 </View>
                 <View>
-                  <Text className={`${colors.text} text-base font-semibold`}>Full Name</Text>
-                  <Text className={`${colors.textSecondary} text-sm`}>John Doe</Text>
+                  <Text className={`${colors.text} text-base font-semibold`}>Username</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>johndoe123</Text>
                 </View>
               </View>
               <TouchableOpacity>
@@ -70,7 +70,7 @@ export default function ProfileScreen() {
                 </View>
                 <View>
                   <Text className={`${colors.text} text-base font-semibold`}>Email</Text>
-                  <Text className={`${colors.textSecondary} text-sm`}>john.doe@example.com</Text>
+                  <Text className={`${colors.textSecondary} text-sm`}>johndoe@example.com</Text>
                 </View>
               </View>
               <TouchableOpacity>
