@@ -203,7 +203,7 @@ export default function TermsScreen() {
           </Text>
           <View className='flex-row gap-3'>
             <TouchableOpacity className={`${colors.accent} rounded-xl px-6 py-3 flex-1`}>
-              <Text className={`${colors.text} text-base font-semibold text-center`}>I Accept</Text>
+              <Text className={`${colors.textButton} text-base font-semibold text-center`}>I Accept</Text>
             </TouchableOpacity>
             <TouchableOpacity 
               className={`${colors.cardSecondary} rounded-xl px-6 py-3 flex-1`}
@@ -221,7 +221,7 @@ export default function TermsScreen() {
             If you have any questions about these Terms of Service, please contact our legal team.
           </Text>
           <TouchableOpacity className={`${colors.accent} rounded-xl p-3 items-center`}>
-            <Text className={`${colors.text} text-base font-semibold`}>Contact Legal Team</Text>
+            <Text className={`${colors.textButton} text-base font-semibold`}>Contact Legal Team</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
