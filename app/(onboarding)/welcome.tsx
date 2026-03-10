@@ -42,7 +42,7 @@ export default function WelcomeScreen() {
           className={`${colors.accent} rounded-xl py-5 items-center mb-4`}
           onPress={handleContinue}
         >
-          <Text className={`${colors.text} text-xl font-bold`}>
+          <Text className={`${colors.textButton} text-xl font-bold`}>
             Continue
           </Text>
         </TouchableOpacity>
