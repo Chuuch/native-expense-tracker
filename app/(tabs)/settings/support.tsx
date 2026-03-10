@@ -265,7 +265,7 @@ export default function SupportScreen() {
                       </View>
                     </View>
                     <TouchableOpacity className={`${colors.accent} rounded-xl px-4 py-2`}>
-                      <Text className={`${colors.text} text-sm font-semibold`}>{option.action}</Text>
+                      <Text className={`${colors.textButton} text-sm font-semibold`}>{option.action}</Text>
                     </TouchableOpacity>
                   </View>
                   <Text className={`${colors.textSecondary} text-sm`}>{option.description}</Text>
