@@ -117,8 +117,8 @@ export default function FeedbackScreen() {
                   key={category.id}
                   className={`flex-row items-center justify-between w-full p-4 rounded-xl border-2 ${
                     selectedCategory === category.id 
-                      ? `${colors.accent} border-[${colors.accent}]` 
-                      : `${colors.cardSecondary} border-[${colors.border}]`
+                      ? `${colors.accent} ${colors.border}` 
+                      : `${colors.border} ${colors.card}`
                   }`}
                   onPress={() => setSelectedCategory(category.id)}
                 >
@@ -226,7 +226,7 @@ export default function FeedbackScreen() {
                 </View>
               </View>
               <View className={`w-6 h-6 rounded-full border-2 items-center justify-center ${
-                includeScreenshot ? `bg-[${colors.accent}] border-[${colors.accent}]` : `border-[${colors.border}]`
+                includeScreenshot ? `${colors.accent} ${colors.border}` : `${colors.border} ${colors.card}`
               }`}>
                 {includeScreenshot && <Feather name="check" size={14} color="white" />}
               </View>
@@ -244,7 +244,7 @@ export default function FeedbackScreen() {
                 </View>
               </View>
               <View className={`w-6 h-6 rounded-full border-2 items-center justify-center ${
-                includeSystemInfo ? `bg-[${colors.accent}] border-[${colors.accent}]` : `border-[${colors.border}]`
+                includeSystemInfo ? `${colors.accent} ${colors.border}` : `${colors.border} ${colors.card}`
               }`}>
                 {includeSystemInfo && <Feather name="check" size={14} color="white" />}
               </View>
@@ -256,7 +256,7 @@ export default function FeedbackScreen() {
         {includeScreenshot && (
           <View className='w-full'>
               <Text className={`${colors.text} text-xl font-bold mb-4`}>Screenshot</Text>
-            <TouchableOpacity className={`${colors.card} rounded-xl p-6 border-2 border-dashed border-[${colors.border}] items-center`}>
+            <TouchableOpacity className={`${colors.card} rounded-xl p-6 border-2 border-dashed ${colors.border} items-center`}>
               <Feather name="upload" size={32} color="#615eff" />
               <Text className={`${colors.text} text-base font-semibold mt-2`}>Tap to add screenshot</Text>
               <Text className={`${colors.textSecondary} text-sm mt-1`}>PNG, JPG up to 5MB</Text>
@@ -269,7 +269,7 @@ export default function FeedbackScreen() {
           <TouchableOpacity 
             className={`rounded-xl p-4 items-center ${
               selectedCategory && feedback.trim() 
-                ? `bg-[${colors.accent}]` 
+                ? `${colors.accent}` 
                 : `${colors.cardSecondary}`
             }`}
             onPress={handleSubmit}
@@ -277,7 +277,7 @@ export default function FeedbackScreen() {
           >
             <Text className={`text-lg font-semibold ${
               selectedCategory && feedback.trim() 
-                ? `text-[${colors.text}]` 
+                ? `${colors.textButton}` 
                 : `text-white`
             }`}>
               Submit Feedback
