@@ -92,7 +92,7 @@ export const apiClient = new ApiClient(API_BASE_URL);
 
 export const authAPI = {
   login: async (email: string, password: string) => {
-    return apiClient.post<{ user: User; access_token: string; refresh_token: string }>('/auth/login', {
+    return apiClient.post<{ user: User; accessToken: string; refreshToken: string }>('/auth/login', {
       email,
       password,
     }, true);
@@ -202,7 +202,7 @@ export const savingsGoalAPI = {
 export interface User {
   id: string;
   email: string;
-  fullName: string;
+  username: string;
   phone?: string;
   createdAt: string;
   updatedAt: string;
@@ -210,7 +210,7 @@ export interface User {
 
 export interface RegisterData {
   email: string;
-  fullName: string;
+  username: string;
   phone?: string;
   password: string;
 }
