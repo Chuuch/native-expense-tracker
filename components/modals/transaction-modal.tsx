@@ -110,7 +110,7 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
     >
       <View className={`flex-1 ${colors.background}`}>
         {/* Header */}
-        <View className="flex-row items-center justify-between p-4 pt-16 border-b border-slate-800">
+        <View className={`flex-row items-center justify-between p-4 pt-16 border-b ${colors.border}`}>
           <TouchableOpacity onPress={handleClose}>
             <Feather name="x" size={24} color='#615eff' />
           </TouchableOpacity>
@@ -129,7 +129,7 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
                 className={`flex-1 rounded-xl p-4 border-2 ${
                   transactionType === 'expense' 
                     ? 'border-red-500 bg-red-500/20' 
-                    : `border-${colors.border} ${colors.card}`
+                    : `${colors.border} ${colors.card}`
                 }`}
                 onPress={() => setTransactionType('expense')}
               >
@@ -147,7 +147,7 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
                 className={`flex-1 rounded-xl p-4 border-2 ${
                   transactionType === 'income' 
                     ? 'border-green-500 bg-green-500/20' 
-                    : `border-${colors.border} ${colors.card}`
+                    : `${colors.border} ${colors.card}`
                 }`}
                 onPress={() => setTransactionType('income')}
               >
@@ -206,7 +206,7 @@ export default function TransactionModal({ visible, onClose, onSubmit }: Transac
                   className={`flex-1 flex-row items-center gap-2 rounded-xl p-3 border-2 ${
                     selectedCategory?.id === category.id
                       ? 'border-indigo-500 bg-indigo-500/20'
-                      : `${colors.card} border-slate-800`
+                      : `${colors.border} ${colors.card}`
                   }`}
                   onPress={() => setSelectedCategory(category)}
                 >
