@@ -2,7 +2,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Switch, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../hooks";
 
 export default function LoginForm() {
@@ -12,8 +12,8 @@ export default function LoginForm() {
   const [enableBiometrics, setEnableBiometrics] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { login, isLoadingLogin, loginWithGoogle, isLoadingGoogle } = useAuth();
-  const isLoading = isLoadingLogin || isLoadingGoogle;
+  const { login, loginWithBiometrics, loginWithGoogle, isLoadingLogin, isLoadingGoogle, isLoadingBiometric } = useAuth();
+  const isLoading = isLoadingLogin || isLoadingGoogle || isLoadingBiometric;
 
   async function signInWithEmail() {
     if (!email || !password) {
@@ -23,21 +23,12 @@ export default function LoginForm() {
 
     try {
       setLoading(true);
-      await login(email, password);
+      await login(email, password, enableBiometrics);
       router.replace("/(tabs)");
     } catch (error) {
       console.error("Login failed:", error);
     } finally {
       setLoading(false);
-    }
-  }
-
-  const handleBiometricLogin = async () => {
-    try {
-      setLoading(true);
-      await login(email, password, enableBiometrics);
-    } catch (error) {
-      
     }
   }
 
@@ -86,20 +77,31 @@ export default function LoginForm() {
         </View>
 
         {/* Remember Me & Forgot Password */}
-        <View className="flex-row items-center justify-between mb-8">
-          <TouchableOpacity className="flex-row items-center">
-            <View className={`w-5 h-5 ${colors.cardSecondary} rounded mr-2`}>
-              <View className={`w-5 h-5 ${colors.accent} rounded`} />
-            </View>
-            <Text className={`${colors.textSecondary} text-sm`}>Remember me</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => router.push("/(auth)/forgotten-password")}
-          >
-            <Text className={`${colors.text} text-sm font-semibold`}>
-              Forgot Password?
+        <View className="mb-4">
+          <View className="flex-row items-center justify-between mb-3">
+            <TouchableOpacity className="flex-row items-center">
+              <View className={`w-5 h-5 ${colors.cardSecondary} rounded mr-2`}>
+                <View className={`w-5 h-5 ${colors.accent} rounded`} />
+              </View>
+              <Text className={`${colors.textSecondary} text-sm`}>Remember me</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push("/(auth)/forgotten-password")}>
+              <Text className={`${colors.text} text-sm font-semibold`}>
+                Forgot Password?
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Biometric toggle */}
+          <View className="flex-row items-center justify-between">
+            <Text className={`${colors.textSecondary} text-sm`}>
+              Use Face ID / fingerprint next time
             </Text>
-          </TouchableOpacity>
+            <Switch
+              value={enableBiometrics}
+              onValueChange={setEnableBiometrics}
+            />
+          </View>
         </View>
 
         {/* Login Button */}
@@ -133,8 +135,15 @@ export default function LoginForm() {
           <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
             <AntDesign name="apple" size={24} color="#615eff" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleBiometricLogin} disabled={loading} className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
+          <TouchableOpacity
+            className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}
+            disabled={isLoading}
+            onPress={loginWithBiometrics}
+          >
             <Feather name="smartphone" size={24} color="#615eff" />
+            {isLoadingBiometric ? (
+              <ActivityIndicator size="small" color="#615eff" style={{ marginTop: 4 }} />
+            ) : null}
           </TouchableOpacity>
         </View>
       </View>
