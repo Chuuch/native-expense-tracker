@@ -5,16 +5,17 @@ import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../hooks';
 
 export default function RegisterForm() {
-  const [fullName, setFullName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isTermsAccepted, setIsTermsAccepted] = useState<boolean>(false);
   const { colors } = useTheme();
   const { register, isLoadingRegister } = useAuth();
 
   async function signUpWithEmail() {
     // Validation
-    if (!fullName || !email || !password || !confirmPassword) {
+    if (!username || !email || !password || !confirmPassword) {
       Alert.alert('Error', 'Please fill in all required fields');
       return;
     }
@@ -29,10 +30,15 @@ export default function RegisterForm() {
       return;
     }
 
+    if (!isTermsAccepted) {
+      Alert.alert('Error', 'You must agree to the terms and conditions');
+      return;
+    }
+
     try {
       await register({
         email,
-        fullName,
+        username,
         password,
       });
       
@@ -49,18 +55,18 @@ export default function RegisterForm() {
   return (
     <>
       <View className=''>
-        {/* Full Name Input */}
+        {/* Username Input */}
         <View className='mb-4'>
-          <Text className={`${colors.text} text-base font-semibold mb-2`}>Full Name</Text>
+          <Text className={`${colors.text} text-base font-semibold mb-2`}>Username</Text>
           <View className={`${colors.cardSecondary} rounded-xl p-4 flex-row items-center`}>
             <Feather name="user" size={20} color="#615eff" />
             <TextInput
               className={`flex-1 ${colors.text} text-base ml-3`}
-              placeholder="Enter your full name"
+              placeholder="Enter your username"
               placeholderTextColor="#615eff"
               autoCapitalize="words"
-              value={fullName}
-              onChangeText={setFullName}
+              value={username}
+              onChangeText={setUsername}
             />
           </View>
         </View>
@@ -102,7 +108,7 @@ export default function RegisterForm() {
         </View>
 
         {/* Confirm Password Input */}
-        <View className='mb-6'>
+        {/* <View className='mb-6'>
           <Text className={`${colors.text} text-base font-semibold mb-2`}>Confirm Password</Text>
           <View className={`${colors.cardSecondary} rounded-xl p-4 flex-row items-center`}>
             <Feather name="lock" size={20} color="#615eff" />
@@ -118,11 +124,11 @@ export default function RegisterForm() {
               <Feather name="eye" size={20} color="#615eff" />
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
 
         {/* Terms and Conditions */}
         <View className='flex-row items-start mb-6'>
-          <TouchableOpacity className='flex-row items-start'>
+          <TouchableOpacity className='flex-row items-start' onPress={() => setIsTermsAccepted(!isTermsAccepted)}>
             <View className={`w-5 h-5 ${colors.cardSecondary} rounded mr-3 mt-1`}>
               <View className={`w-5 h-5 ${colors.accent} rounded`} />
             </View>
@@ -137,25 +143,13 @@ export default function RegisterForm() {
           </TouchableOpacity>
         </View>
 
-        {/* Newsletter Subscription */}
-        <View className='flex-row items-start mb-8'>
-          <TouchableOpacity className='flex-row items-start'>
-            <View className={`w-5 h-5 ${colors.cardSecondary} rounded mr-3 mt-1`} />
-          </TouchableOpacity>
-          <View className='flex-1'>
-            <Text className={`${colors.textSecondary} text-sm leading-5`}>
-              Subscribe to our newsletter for financial tips and updates
-            </Text>
-          </View>
-        </View>
-
         {/* Register Button */}
         <TouchableOpacity
           className={`${colors.accent} rounded-xl p-4 items-center mb-6`}
           disabled={isLoadingRegister}
           onPress={signUpWithEmail}
         >
-          <Text className={`${colors.text} text-lg font-semibold`}>
+          <Text className={`${colors.textButton} text-lg font-semibold`}>
             {isLoadingRegister ? 'Creating Account...' : 'Create Account'}
           </Text>
         </TouchableOpacity>
@@ -174,9 +168,6 @@ export default function RegisterForm() {
           </TouchableOpacity>
           <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
             <AntDesign name="apple" size={24} color="#615eff" />
-          </TouchableOpacity>
-          <TouchableOpacity className={`flex-1 ${colors.cardSecondary} rounded-xl p-4 items-center`}>
-            <Feather name="smartphone" size={24} color="#615eff" />
           </TouchableOpacity>
         </View>
       </View>
