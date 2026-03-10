@@ -8,11 +8,18 @@ import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { API_BASE_URL, authAPI, userAPI } from '../lib/api';
 import { clearAllQueries, queryKeys } from '../lib/queryClient';
-import { setBiometricEnabled } from '../stores/authStore';
+import {
+  clearAuthStorage,
+  getRefreshToken,
+  isBiometricEnabled,
+  saveRefreshToken,
+  setBiometricEnabled,
+} from '../stores/authStore';
 
 export function useAuth() {
   const queryClient = useQueryClient();
   const [isLoadingGoogle, setIsLoadingGoogle] = useState<boolean>(false);
+  const [isLoadingBiometric, setIsLoadingBiometric] = useState<boolean>(false);
 
   const {
     data: user,
@@ -27,6 +34,7 @@ export function useAuth() {
   const setTokensAndNavigate = async (accessToken: string, refreshToken: string) => {
     await AsyncStorage.setItem('accessToken', accessToken);
     await AsyncStorage.setItem('refreshToken', refreshToken);
+    await saveRefreshToken(refreshToken);
     await queryClient.fetchQuery({
       queryKey: queryKeys.auth.profile,
       queryFn: userAPI.getProfile,
@@ -64,13 +72,13 @@ export function useAuth() {
   const logoutMutation = useMutation({
     mutationFn: authAPI.logout,
     onSuccess: async () => {
-      await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+      await clearAuthStorage();
       clearAllQueries();
       router.replace('/(auth)/login');
     },
     onError: async (error) => {
       console.error('Logout failed:', error);
-      await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+      await clearAuthStorage();
       clearAllQueries();
       router.replace('/(auth)/login');
     },
@@ -124,6 +132,43 @@ export function useAuth() {
 
   const updateProfile = async (updates: any) => {
     return updateProfileMutation.mutateAsync(updates);
+  };
+
+  const loginWithBiometrics = async () => {
+    setIsLoadingBiometric(true);
+    try {
+      const enabled = await isBiometricEnabled();
+      const refreshToken = await getRefreshToken();
+      if (!enabled || !refreshToken) {
+        Alert.alert(
+          'Biometric sign-in not set up',
+          'Sign in with email and turn on "Use Face ID / fingerprint next time" to use this option.'
+        );
+        return;
+      }
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: 'Sign in with biometrics',
+        cancelLabel: 'Cancel',
+      });
+      if (!result.success) {
+        if (result.error !== 'user_cancel') {
+          Alert.alert('Biometric sign-in failed', 'Please try again or sign in with email.');
+        }
+        return;
+      }
+      const data = await authAPI.refreshToken(refreshToken);
+      const accessToken = (data as { accessToken: string }).accessToken;
+      if (!accessToken) {
+        Alert.alert('Session expired', 'Please sign in with email and password.');
+        return;
+      }
+      await setTokensAndNavigate(accessToken, refreshToken);
+    } catch (error) {
+      console.error('Biometric login failed:', error);
+      Alert.alert('Error', 'Sign-in failed. Please try again or use email and password.');
+    } finally {
+      setIsLoadingBiometric(false);
+    }
   };
 
   const loginWithGoogle = async () => {
@@ -183,6 +228,7 @@ export function useAuth() {
     isLoadingLogout: logoutMutation.isPending,
     isLoadingUpdateProfile: updateProfileMutation.isPending,
     isLoadingGoogle,
+    isLoadingBiometric,
     error: profileError || loginMutation.error || registerMutation.error,
     loginError: loginMutation.error,
     registerError: registerMutation.error,
@@ -197,6 +243,7 @@ export function useAuth() {
     registerMutation,
     logoutMutation,
     updateProfileMutation,
+    loginWithBiometrics,
     loginWithGoogle,
   };
 }
