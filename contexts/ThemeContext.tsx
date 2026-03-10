@@ -10,6 +10,7 @@ export interface ThemeColors {
   cardSecondary: string;
   text: string;
   textSecondary: string;
+  textButton: string;
   accent: string;
   border: string;
   success: string;
@@ -49,6 +50,7 @@ const lightTheme: ThemeConfig = {
     cardSecondary: "bg-gray-200",
     text: "text-gray-900",
     textSecondary: "text-gray-600",
+    textButton: "text-white",
     accent: "bg-indigo-500",
     border: "border-gray-200",
     success: "bg-green-500",
@@ -69,6 +71,7 @@ const darkTheme: ThemeConfig = {
     cardSecondary: "bg-gray-900",
     text: "text-white",
     textSecondary: "text-gray-400",
+    textButton: "text-white",
     accent: "bg-indigo-500",
     border: "border-stone-700",
     success: "bg-green-500",
