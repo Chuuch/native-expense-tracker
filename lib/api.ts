@@ -114,6 +114,10 @@ export const authAPI = {
     return apiClient.post('/auth/verify-email', { code }, true);
   },
 
+  resendVerification: async (email: string) => {
+    return apiClient.post('/auth/resend-verification', { email }, true);
+  },
+
   forgotPassword: async (email: string) => {
     return apiClient.post('/auth/forgot-password', { email }, true);
   },
