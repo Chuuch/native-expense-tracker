@@ -61,8 +61,8 @@ export function useAuth() {
 
   const registerMutation = useMutation({
     mutationFn: (userData: any) => authAPI.register(userData),
-    onSuccess: async (data) => {
-      router.replace('/(auth)/verify');
+    onSuccess: async () => {
+      //
     },
     onError: (error) => {
       console.error('Registration failed:', error);
