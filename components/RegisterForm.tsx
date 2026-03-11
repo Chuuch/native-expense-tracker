@@ -1,5 +1,6 @@
 import { useTheme } from '@/contexts/ThemeContext';
 import { AntDesign, Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../hooks';
@@ -14,7 +15,6 @@ export default function RegisterForm() {
   const { register, isLoadingRegister } = useAuth();
 
   async function signUpWithEmail() {
-    // Validation
     if (!username || !email || !password || !confirmPassword) {
       Alert.alert('Error', 'Please fill in all required fields');
       return;
@@ -44,10 +44,13 @@ export default function RegisterForm() {
       
       Alert.alert(
         'Success',
-        'Account created successfully! Please check your email. We have sent you a verification code.',
-        [{ text: 'OK' }]
+        'Account created successfully! Please check your email for the verification code.',
+        [{ text: 'OK', onPress: () => router.replace('/(auth)/verify') }]
       );
     } catch (error) {
+      const message = typeof (error as any)?.message === 'string' ? (error as any).message :
+      'Registration failed. Please try again.';
+      Alert.alert('Error', message);
       console.error("Registration failed:", error);
     }
   }
