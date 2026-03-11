@@ -10,7 +10,8 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.daniel.sky.native-expense-tracker"
+      "bundleIdentifier": "com.daniel.sky.native-expense-tracker",
+      "NSFaceIDUsageDescription": "We need access to your Face ID to use biometric authentication"
     },
     "android": {
       "adaptiveIcon": {
