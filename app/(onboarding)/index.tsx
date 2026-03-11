@@ -3,6 +3,7 @@ import Finance from '@/assets/lottie/finance.json';
 import organized from '@/assets/lottie/organized.json';
 import saveMoney from '@/assets/lottie/saveMoney.json';
 import { useTheme } from '@/contexts/ThemeContext';
+import { setHasSeenOnboarding } from '@/stores/appStore';
 import { useRouter } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import React, { useRef, useState } from 'react';
@@ -55,7 +56,7 @@ export default function OnboardingScreen() {
     setCurrentIndex(index);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentIndex < introScreens.length - 1) {
       const nextIndex = currentIndex + 1;
       scrollViewRef.current?.scrollTo({
@@ -64,13 +65,14 @@ export default function OnboardingScreen() {
       });
       setCurrentIndex(nextIndex);
     } else {
-      // Navigate directly to auth flow
-      router.replace('/login');
+      await setHasSeenOnboarding(true);
+      router.replace('/(auth)/login');
     }
   };
 
-  const handleSkip = () => {
-    router.replace('/login');
+  const handleSkip = async () => {
+    await setHasSeenOnboarding(true);
+    router.replace('/(auth)/login');
   };
 
   return (
