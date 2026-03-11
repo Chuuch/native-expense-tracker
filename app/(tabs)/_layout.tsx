@@ -1,11 +1,21 @@
-import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Tabs } from 'expo-router';
+import { useAuth } from '@/hooks';
+import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
+import { Redirect, Tabs } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
 export default function TabLayout() {
   const { colors, tint } = useTheme();
+  const { isLoadingProfile, user } = useAuth();
+
+  if (isLoadingProfile) {
+    return <View style={{ flex: 1, backgroundColor: '#0c0a09'}}/>
+  }
+
+  if (!user) {
+    return <Redirect href='/(auth)/login' />
+  }
 
   return (
     <Tabs
