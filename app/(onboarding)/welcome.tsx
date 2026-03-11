@@ -1,5 +1,6 @@
 import welcomeOne from '@/assets/lottie/welcome_one.json';
 import { useTheme } from '@/contexts/ThemeContext';
+import { setHasSeenOnboarding } from '@/stores/appStore';
 import { useRouter } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import React from 'react';
@@ -8,7 +9,10 @@ import { Text, TouchableOpacity, View } from 'react-native';
 export default function WelcomeScreen() {
   const router = useRouter();
   const { colors } = useTheme();
-  const handleContinue = () => {
+
+
+  const handleContinue = async () => {
+    await setHasSeenOnboarding(true);
     router.push('/(onboarding)');
   };
 
@@ -50,7 +54,10 @@ export default function WelcomeScreen() {
         {/* Skip Option */}
         <TouchableOpacity
           className="items-center"
-          onPress={() => router.replace('/login')}
+          onPress={async () => {
+            await setHasSeenOnboarding(true);
+            router.replace('/(auth)/login');
+          }}
         >
           <Text className={`${colors.textSecondary} text-base font-semibold`}>
             I&apos;ll set this up later
