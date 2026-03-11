@@ -13,15 +13,29 @@ export default function VerifyScreen() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timeLeft, setTimeLeft] = useState(30);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   
   const inputRefs = useRef<(TextInput | null)[]>([]);
   
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const focusTimer = setTimeout(() => {
       inputRefs.current[0]?.focus();
     }, 100);
-    return () => clearTimeout(timer);
-  }, []);
+
+    const interval: ReturnType<typeof setInterval> | undefined =
+      timeLeft > 0
+        ? setInterval(() => {
+            setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+          }, 1000)
+        : undefined;
+
+    return () => {
+      clearTimeout(focusTimer);
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [timeLeft]);
   
   const handleSubmit = async () => {
     const code = otp.join('');
@@ -95,8 +109,25 @@ export default function VerifyScreen() {
   };
 
   const resendCode = async () => {
-    // TODO: Implement resend verification code
-    Alert.alert('Info', 'Resend functionality will be implemented');
+    if (timeLeft > 0 || isResending) return;
+
+    setIsResending(true);
+    try {
+      await authAPI.resendVerification('');
+      Alert.alert(
+        'Verification email sent',
+        'If your email is registered, we have sent you a new verification code.'
+      );
+      setTimeLeft(30);
+    } catch (error: any) {
+      const message =
+        typeof error?.message === 'string'
+          ? error.message
+          : 'Failed to resend verification code. Please try again.';
+      Alert.alert('Error', message);
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -158,19 +189,20 @@ export default function VerifyScreen() {
         {/* Resend Section */}
         <View className='items-center mb-8'>
           <Text className={`${colors.textSecondary} text-base text-center mb-4`}>
-            Didn&apos;t receive the code?
+            Didn&apos;t get it? Check spam or try again in 30s.
           </Text>
-          
-          {timeLeft > 0 ? (
-            <View className='flex-row items-center'>
-              <Text className={`${colors.textSecondary} text-base`}>Resend in </Text>
-              <Text className={`${colors.text} text-base font-semibold`}>{timeLeft}s</Text>
-            </View>
-          ) : (
-            <TouchableOpacity onPress={resendCode}>
-              <Text className={`${colors.text} text-base font-semibold`}>Resend Code</Text>
-            </TouchableOpacity>
-          )}
+
+          <TouchableOpacity
+            onPress={resendCode}
+            disabled={timeLeft > 0 || isResending}
+          >
+            <Text
+              className={`${colors.text} text-base font-semibold`}
+              style={{ opacity: timeLeft > 0 || isResending ? 0.5 : 1 }}
+            >
+              {timeLeft > 0 ? `Resend in ${timeLeft}s` : isResending ? 'Resending...' : 'Resend Code'}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Alternative Options */}
