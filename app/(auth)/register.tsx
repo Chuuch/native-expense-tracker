@@ -10,7 +10,7 @@ export default function RegisterScreen() {
   const router = useRouter();
 
   return (
-    <ScrollView 
+    <ScrollView
       className={`flex-1 ${colors.background}`}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
@@ -37,12 +37,14 @@ export default function RegisterScreen() {
         </View>
 
         {/* Test Verify Screen (for testing) */}
-        <TouchableOpacity 
-          className={`mt-4 ${colors.cardSecondary} rounded-xl p-4 items-center mb-20`}
-          onPress={() => router.push('/verify')}
-        >
-          <Text className={`${colors.textSecondary} text-sm`}>Test Verify Screen</Text>
-        </TouchableOpacity>
+        {__DEV__ ? (
+          <TouchableOpacity
+            className={`mt-4 ${colors.cardSecondary} rounded-xl p-4 items-center mb-20`}
+            onPress={() => router.push('/verify')}
+          >
+            <Text className={`${colors.textSecondary} text-sm`}>Test Verify Screen</Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
     </ScrollView>
   );
